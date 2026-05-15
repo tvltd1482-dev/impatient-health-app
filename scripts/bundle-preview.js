@@ -35,6 +35,7 @@ for (const file of fs.readdirSync(assetsDir)) {
   const dataUrl = `data:${mime};base64,${data}`;
   const ref = `assets/${file}`;
   html = html.split(`"${ref}"`).join(`"${dataUrl}"`);
+  html = html.split(`'${ref}'`).join(`'${dataUrl}'`);
 }
 
 fs.writeFileSync(OUT, html);

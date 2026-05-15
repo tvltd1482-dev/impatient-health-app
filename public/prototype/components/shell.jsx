@@ -54,6 +54,8 @@ const Sidebar = ({ current, onNav, persona }) => {
     { id: "integrations", label: "Integrations", icon: "integrations", badge: { text: "12" } },
     { id: "profile", label: "Profile", icon: "profile" },
     { id: "settings", label: "Settings", icon: "settings" },
+    { section: "Preview" },
+    { id: "onboarding", label: "Onboarding", icon: "pulse" },
   ];
   return (
     <aside className="sidebar">

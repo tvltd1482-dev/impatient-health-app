@@ -1,0 +1,205 @@
+/* iMpatient — Breathing object styles
+   Six variants, each with its own animation language. All honor
+   prefers-reduced-motion; speed is parameterized through --bo-speed
+   so a higher-speed instance scales the duration multipliers below.
+
+   --bo-speed defaults to 1 (= 1× base duration). The variant components
+   set it to 1/speed (so speed=2 yields --bo-speed=0.5 → animations run
+   in half the duration).
+*/
+
+.bo {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  --bo-speed: 1;
+}
+
+/* ============================================================
+   1 · LUMINOUS ORB — refined version of the current aura
+   ============================================================ */
+.bo-luminous { isolation: isolate; }
+.bo-luminous-halo {
+  position: absolute; inset: -30%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(168, 212, 255, 0.42) 0%,
+    rgba(122, 184, 255, 0.22) 32%,
+    rgba(45, 95, 224, 0.10) 60%,
+    transparent 78%);
+  filter: blur(10px);
+  animation: bo-breathe calc(6s * var(--bo-speed)) ease-in-out infinite;
+  pointer-events: none;
+}
+.bo-luminous-core {
+  position: absolute; inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(168, 212, 255, 0.92) 22%,
+    rgba(45, 95, 224, 0.88) 70%,
+    rgba(30, 64, 175, 1) 100%);
+  box-shadow:
+    inset 0 -8px 26px rgba(30, 64, 175, 0.55),
+    0 0 36px rgba(122, 184, 255, 0.42);
+  animation: bo-breathe-slow calc(8s * var(--bo-speed)) ease-in-out infinite;
+}
+.bo-luminous-highlight {
+  position: absolute;
+  top: 22%; left: 26%;
+  width: 22%; height: 16%;
+  background: radial-gradient(ellipse at center,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(255, 255, 255, 0) 70%);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: bo-breathe-slow calc(8s * var(--bo-speed)) ease-in-out infinite;
+}
+
+@keyframes bo-breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.95; }
+  50%      { transform: scale(1.05); opacity: 1; }
+}
+@keyframes bo-breathe-slow {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.025); }
+}
+
+/* ============================================================
+   2 · CONCENTRIC RINGS — sonar / pulse outward
+   ============================================================ */
+.bo-rings { isolation: isolate; }
+.bo-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(122, 184, 255, 0.45);
+  opacity: 0;
+  animation: bo-ring-pulse calc(3.6s * var(--bo-speed)) ease-out infinite;
+  pointer-events: none;
+}
+.bo-ring-1 { animation-delay: calc(0s    * var(--bo-speed)); }
+.bo-ring-2 { animation-delay: calc(0.9s  * var(--bo-speed)); }
+.bo-ring-3 { animation-delay: calc(1.8s  * var(--bo-speed)); }
+.bo-ring-4 { animation-delay: calc(2.7s  * var(--bo-speed)); }
+
+@keyframes bo-ring-pulse {
+  0%   { transform: scale(0.30); opacity: 0;    border-width: 2.5px; }
+  10%  {                          opacity: 0.85; }
+  100% { transform: scale(1.10); opacity: 0;    border-width: 0.5px; }
+}
+
+.bo-rings-center {
+  position: relative;
+  width: 30%; height: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(168, 212, 255, 0.88) 28%,
+    rgba(45, 95, 224, 0.88) 70%,
+    rgba(30, 64, 175, 1) 100%);
+  box-shadow:
+    inset 0 -3px 10px rgba(30, 64, 175, 0.5),
+    0 0 22px rgba(122, 184, 255, 0.5);
+  z-index: 1;
+  animation: bo-breathe-slow calc(3.6s * var(--bo-speed)) ease-in-out infinite;
+}
+
+/* ============================================================
+   3 · AURORA — northern lights, vertical ribbons
+   Five swaying curtains of color against deep navy sky. No circular
+   container — the ribbons are the shape. Stroke-based paths with
+   vertical gradient fade top/bottom, screen-blended, softly blurred.
+   Replaces the previous spherical mesh which read as planetary/fetal.
+   ============================================================ */
+.bo-mesh {
+  isolation: isolate;
+  overflow: visible;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+.bo-mesh-svg {
+  width: 100%; height: 100%;
+  display: block;
+  overflow: visible;
+}
+.bo-rib {
+  transform-origin: 50% 40%;
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+}
+.bo-rib-1 { animation: bo-aurora-sway-a calc(5.5s * var(--bo-speed)) ease-in-out infinite; }
+.bo-rib-2 { animation: bo-aurora-sway-b calc(6.2s * var(--bo-speed)) ease-in-out calc(-1.2s * var(--bo-speed)) infinite; }
+.bo-rib-3 { animation: bo-aurora-sway-c calc(4.8s * var(--bo-speed)) ease-in-out calc(-2.4s * var(--bo-speed)) infinite; }
+.bo-rib-4 { animation: bo-aurora-sway-b calc(7.0s * var(--bo-speed)) ease-in-out calc(-3.6s * var(--bo-speed)) infinite; }
+.bo-rib-5 { animation: bo-aurora-sway-a calc(5.8s * var(--bo-speed)) ease-in-out calc(-4.8s * var(--bo-speed)) infinite; }
+
+@keyframes bo-aurora-sway-a {
+  0%, 100% { transform: translateX(0)    skewX(0deg)   scaleY(1);    opacity: 0.92; }
+  33%      { transform: translateX(8px)  skewX(2deg)   scaleY(1.05); opacity: 1; }
+  66%      { transform: translateX(-6px) skewX(-1.5deg) scaleY(0.96); opacity: 0.86; }
+}
+@keyframes bo-aurora-sway-b {
+  0%, 100% { transform: translateX(0)     skewX(0deg);     opacity: 0.85; }
+  50%      { transform: translateX(-10px) skewX(-2.5deg);  opacity: 1; }
+}
+@keyframes bo-aurora-sway-c {
+  0%, 100% { transform: translateX(0)    skewX(0deg);     opacity: 1; }
+  25%      { transform: translateX(6px)  skewX(1.5deg);   opacity: 0.84; }
+  75%      { transform: translateX(-4px) skewX(-2deg);    opacity: 0.92; }
+}
+@keyframes bo-aurora-twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 1; }
+}
+
+/* ============================================================
+   4 · CONSTELLATION — twinkling dots + central spark
+   ============================================================ */
+@keyframes bo-twinkle {
+  0%, 100% { opacity: 0.32; transform: scale(0.85); }
+  50%      { opacity: 1;    transform: scale(1.4); }
+}
+@keyframes bo-spark-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.85; }
+  50%      { transform: scale(1.18); opacity: 1; }
+}
+
+/* ============================================================
+   5 · HEARTBEAT TRACE — running ECG in a circle
+   ============================================================ */
+@keyframes bo-hb-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   6 · MARK ORB — the logo, breathing
+   ============================================================ */
+.bo-mark { isolation: isolate; }
+.bo-mark-halo {
+  position: absolute; inset: -25%;
+  background: radial-gradient(circle at 50% 50%,
+    rgba(168, 212, 255, 0.48) 0%,
+    rgba(122, 184, 255, 0.22) 32%,
+    rgba(45, 95, 224, 0.10) 58%,
+    transparent 78%);
+  filter: blur(8px);
+  animation: bo-breathe calc(6s * var(--bo-speed)) ease-in-out infinite;
+  pointer-events: none;
+}
+.bo-mark-glow {
+  position: absolute; inset: 8%;
+  background: radial-gradient(circle, rgba(168, 212, 255, 0.16) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.bo-mark-logo {
+  position: relative;
+  z-index: 2;
+  animation: bo-breathe-slow calc(7s * var(--bo-speed)) ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bo *, .bo > * {
+    animation: none !important;
+  }
+}

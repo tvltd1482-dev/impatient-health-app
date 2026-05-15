@@ -6,9 +6,9 @@
 <title>iMpatient — Today</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700&display=swap">
-<link rel="stylesheet" href="styles/tokens.css?v=3" />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700,800&display=swap">
+<link rel="stylesheet" href="styles/tokens.css?v=4" />
 <link rel="stylesheet" href="styles/aura.css?v=1" />
 <link rel="stylesheet" href="styles/app.css?v=6" />
 <link rel="stylesheet" href="styles/pages.css?v=10" />
@@ -18,6 +18,8 @@
 <link rel="stylesheet" href="styles/forms.css?v=1" />
 <link rel="stylesheet" href="styles/integrations.css?v=1" />
 <link rel="stylesheet" href="styles/conditions.css?v=1" />
+<link rel="stylesheet" href="styles/breathing.css?v=1" />
+<link rel="stylesheet" href="styles/onboarding.css?v=1" />
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -84,12 +86,26 @@
 <script type="text/babel" src="components/concierge.jsx"></script>
 <script type="text/babel" src="components/profile.jsx"></script>
 <script type="text/babel" src="components/integrations.jsx"></script>
+<!-- Onboarding bundle (handoff 2026-05-15). Load order matters:
+     state → breathing → logo → shared → screens-* → flow → frame → desktop.
+     Each module self-registers on window. -->
+<script type="text/babel" src="components/onboarding/state.jsx"></script>
+<script type="text/babel" src="components/onboarding/breathing.jsx"></script>
+<script type="text/babel" src="components/onboarding/logo.jsx"></script>
+<script type="text/babel" src="components/onboarding/shared.jsx"></script>
+<script type="text/babel" src="components/onboarding/screens-opener.jsx"></script>
+<script type="text/babel" src="components/onboarding/screens-form.jsx"></script>
+<script type="text/babel" src="components/onboarding/screens-connect.jsx"></script>
+<script type="text/babel" src="components/onboarding/screens-firstread.jsx"></script>
+<script type="text/babel" src="components/onboarding/flow.jsx"></script>
 <script type="text/babel" data-presets="react" data-screen-label="00 App">
 const { useState } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "persona": "renee",
-  "textScale": 1
+  "textScale": 1,
+  "onboardingFlow": "deep-cold",
+  "onboardingTone": "literary"
 }/*EDITMODE-END*/;
 
 function App() {
@@ -119,6 +135,7 @@ function App() {
     integrations: "Integrations",
     profile: "Profile",
     settings: "Settings",
+    onboarding: "Onboarding · preview",
   };
 
   const activePersona = window.PERSONAS[tweaks.persona];
@@ -138,10 +155,11 @@ function App() {
          : page === "concierge" ? <ConciergePage key={tweaks.persona} />
          : page === "profile" ? <ProfilePage key={tweaks.persona} />
          : page === "integrations" ? <IntegrationsPage key={tweaks.persona} />
+         : page === "onboarding" ? <OnboardingPreviewPage flow={tweaks.onboardingFlow} tone={tweaks.onboardingTone} onExit={() => setPage("today")} />
          : <ComingSoon name={labels[page]} />}
       </main>
       <TweaksPanel title="Tweaks">
-        <TweakSection title="Persona · same engine, three lives">
+        <TweakSection label="Persona · same engine, three lives">
           <div className="persona-pick">
             {Object.values(window.PERSONAS).map(p => (
               <button
@@ -156,7 +174,7 @@ function App() {
             ))}
           </div>
         </TweakSection>
-        <TweakSection title="Text size · accessibility">
+        <TweakSection label="Text size · accessibility">
           <div className="text-scale-pick">
             {[
               { v: 0.92, label: "Compact",  hint: "denser overview" },
@@ -176,7 +194,73 @@ function App() {
             ))}
           </div>
         </TweakSection>
+        {page === "onboarding" && (
+          <>
+            <TweakSection label="Onboarding · flow">
+              <div className="ob-tweak-pick">
+                {[
+                  { v: "lean",            label: "Lean · 5 screens",  hint: "downloaded on a flare day" },
+                  { v: "deep-cold",       label: "Deep · cold",        hint: "just downloaded" },
+                  { v: "deep-clinician",  label: "Deep · clinician",   hint: "doctor invited them" },
+                  { v: "deep-community",  label: "Deep · community",   hint: "friend shared" },
+                ].map(opt => (
+                  <button
+                    key={opt.v}
+                    className={"ob-tweak-btn" + (tweaks.onboardingFlow === opt.v ? " active" : "")}
+                    onClick={() => setTweak('onboardingFlow', opt.v)}
+                  >
+                    <span className="ob-tweak-label">{opt.label}</span>
+                    <span className="ob-tweak-hint">{opt.hint}</span>
+                  </button>
+                ))}
+              </div>
+            </TweakSection>
+            <TweakSection label="Onboarding · tonal pitch">
+              <div className="ob-tweak-pick">
+                {[
+                  { v: "literary",   label: "Literary",   hint: "slow, validating" },
+                  { v: "validating", label: "Validating", hint: "direct, specific" },
+                  { v: "clinical",   label: "Clinical",   hint: "brisk, professional" },
+                ].map(opt => (
+                  <button
+                    key={opt.v}
+                    className={"ob-tweak-btn" + (tweaks.onboardingTone === opt.v ? " active" : "")}
+                    onClick={() => setTweak('onboardingTone', opt.v)}
+                  >
+                    <span className="ob-tweak-label">{opt.label}</span>
+                    <span className="ob-tweak-hint">{opt.hint}</span>
+                  </button>
+                ))}
+              </div>
+            </TweakSection>
+          </>
+        )}
       </TweaksPanel>
+    </div>
+  );
+}
+
+/* OnboardingPreviewPage — renders the handoff flow inside a phone-shaped
+   bezel so designers can review against the source canvas. The flow type
+   and tonal pitch come from Tweaks. In production the user lands here
+   once on first install; FirstReadScreen.onFinish routes back to /today. */
+function OnboardingPreviewPage({ flow, tone, onExit }) {
+  const Flow = flow === "lean" ? window.LeanFlow : window.DeepFlow;
+  const entry =
+    flow === "deep-clinician" ? "clinician" :
+    flow === "deep-community" ? "community" :
+    "cold";
+  // Remount when flow/tone/entry changes — FlowShell holds idx in local
+  // state, and we want a fresh sequence when the previewer picks a new
+  // variant. The composite key forces React to discard the prior tree.
+  const key = `${flow}:${tone}:${entry}`;
+  return (
+    <div className="ob-preview-page">
+      <div className="ob-preview-bezel">
+        {flow === "lean"
+          ? <window.LeanFlow key={key} tone={tone} />
+          : <window.DeepFlow key={key} tone={tone} entry={entry} />}
+      </div>
     </div>
   );
 }

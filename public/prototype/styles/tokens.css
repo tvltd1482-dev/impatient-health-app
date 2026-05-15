@@ -301,3 +301,162 @@ button { font-family: inherit; }
     animation: none;
   }
 }
+
+/* =============================================================
+   BRAND BIBLE v2.3 · 2026-05-15 — additive token layer.
+   Adds the formal token vocabulary (logo palette, gradient
+   library, type roles, semantic surface/text, layout, role
+   classes) on top of the existing scale. Existing tokens
+   (--s-N, --r-*, etc) remain for backwards compatibility.
+   Source: brand bible package, Azure Antoinette I. Robinson.
+   ============================================================= */
+:root {
+  /* §03 · Logo palette (trademark only — not for product UI) */
+  --logo-bright:  #1A55D1;
+  --logo-mid:     #123E9C;
+  --logo-deep:    #0A2A6C;
+  --logo-grad:    linear-gradient(135deg, #1A55D1 0%, #123E9C 55%, #0A2A6C 100%);
+
+  /* §04 · Aura gradient anchor */
+  --aura-grad:    linear-gradient(135deg, #7AB8FF 0%, #2D5FE0 50%, #1E40AF 100%);
+
+  /* §08 · Gradient library (seven sanctioned) */
+  --grad-logo:         linear-gradient(135deg, #1A55D1 0%, #123E9C 55%, #0A2A6C 100%);
+  --grad-aura:         linear-gradient(135deg, #7AB8FF 0%, #2D5FE0 50%, #1E40AF 100%);
+  --grad-aura-soft:    linear-gradient(135deg, #A8D4FF 0%, #7AB8FF 100%);
+  --grad-aura-royal:   linear-gradient(135deg, #7AB8FF 0%, #2D5FE0 100%);
+  --grad-aura-deep:    linear-gradient(135deg, #2D5FE0 0%, #1E40AF 100%);
+  --grad-pulse-veil:   radial-gradient(ellipse 70% 60% at 50% 50%, rgba(122,184,255,0.55) 0%, rgba(45,95,224,0.30) 40%, #060920 100%);
+  --grad-aura-descent: linear-gradient(180deg, #060920 0%, #0A1230 50%, #1E40AF 100%);
+
+  /* §10 · Type — body family now cascades through Manrope before system */
+  --font-body:    "Manrope", ui-sans-serif, "Helvetica Neue", system-ui, sans-serif;
+
+  /* §11 · Line-heights · letter-spacings · role shorthands */
+  --lh-display:    1.0;
+  --lh-headline:   1.04;
+  --lh-h1:         1.1;
+  --lh-h2:         1.15;
+  --lh-h3:         1.25;
+  --lh-lede:       1.5;
+  --lh-body:       1.6;
+  --lh-body-sm:    1.55;
+  --lh-tight:      1.0;
+
+  --ls-display:    -0.04em;
+  --ls-h1:         -0.03em;
+  --ls-h2:         -0.025em;
+  --ls-h3:         -0.02em;
+  --ls-body:        0em;
+  --ls-caption:     0.04em;
+  --ls-label:       0.16em;
+  --ls-eyebrow:     0.22em;
+  --ls-button:      0.01em;
+
+  --type-display:    var(--font-display) 800 var(--t-4xl) / var(--lh-display);
+  --type-headline:   var(--font-display) 800 var(--t-3xl) / var(--lh-headline);
+  --type-h1:         var(--font-display) 700 var(--t-2xl) / var(--lh-h1);
+  --type-h2:         var(--font-display) 700 var(--t-xl)  / var(--lh-h2);
+  --type-h3:         var(--font-display) 600 var(--t-lg)  / var(--lh-h3);
+  --type-lede:       var(--font-sans)    400 var(--t-md)  / var(--lh-lede);
+  --type-body:       var(--font-sans)    400 var(--t-base)/ var(--lh-body);
+  --type-body-sm:    var(--font-sans)    400 var(--t-sm)  / var(--lh-body-sm);
+  --type-caption:    var(--font-sans)    400 var(--t-xs)  / var(--lh-lede);
+  --type-eyebrow:    var(--font-mono)    500 var(--t-xs)  / var(--lh-tight);
+  --type-mono-label: var(--font-mono)    500 10px         / var(--lh-tight);
+  --type-button:     var(--font-sans)    500 14px         / var(--lh-tight);
+
+  /* §12 · Containers · breakpoints · z-index */
+  --container-xs:   480px;
+  --container-sm:   640px;
+  --container-md:   880px;
+  --container-lg:   1200px;
+  --container-xl:   1440px;
+  --container-2xl:  1680px;
+
+  --bp-sm:   640px;
+  --bp-md:   768px;
+  --bp-lg:   1024px;
+  --bp-xl:   1280px;
+  --bp-2xl:  1536px;
+
+  --z-base:      0;
+  --z-elevated:  10;
+  --z-sticky:    100;
+  --z-dropdown:  200;
+  --z-overlay:   500;
+  --z-modal:     600;
+  --z-toast:     800;
+  --z-tooltip:   900;
+
+  /* §13 · 8px-base spacing scale (canonical aliases — --s-* remain) */
+  --space-0:   0;
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+  --space-32:  128px;
+
+  --gap-tight:       var(--space-2);
+  --gap-component:   var(--space-4);
+  --gap-paragraph:   var(--space-6);
+  --gap-stack:       var(--space-8);
+  --gap-section:     var(--space-24);
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   22px;
+  --radius-pill: 999px;
+
+  /* Semantic surface + text roles (the 95% case) */
+  --bg-page:           var(--aura-bg-0);
+  --bg-surface:        var(--aura-bg-1);
+  --bg-elevated:       var(--aura-bg-2);
+  --border-default:    var(--ink-3);
+  --border-hover:      var(--ink-4);
+  --text-display:      var(--ink-9);
+  --text-primary:      var(--ink-8);
+  --text-body:         var(--ink-7);
+  --text-secondary:    var(--ink-6);
+  --text-disabled:     var(--ink-5);
+  --text-brand:        var(--brand-soft);
+  --text-link:         var(--brand-soft);
+
+  /* Aurora (SymbAIo parent — NOT for iMpatient UI; included for reference) */
+  --aurora-coral:    #E87461;
+  --aurora-peach:    #F0B8A0;
+  --aurora-gold:     #E8C870;
+  --aurora-sky:      #A8D4E6;
+  --aurora-lavender: #B8A0D4;
+}
+
+/* Drop-in role classes — fastest adoption path.
+   The existing prototype already styles .eyebrow / h1 / .surface etc.
+   These add the brand-bible role names without overriding existing ones. */
+.display          { font: var(--type-display);    letter-spacing: var(--ls-display); color: var(--text-display); }
+.headline         { font: var(--type-headline);   letter-spacing: var(--ls-display); color: var(--text-display); }
+.h1               { font: var(--type-h1);         letter-spacing: var(--ls-h1);      color: var(--text-display); }
+.h2               { font: var(--type-h2);         letter-spacing: var(--ls-h2);      color: var(--text-display); }
+.h3               { font: var(--type-h3);         letter-spacing: var(--ls-h3);      color: var(--text-display); }
+.lede, .subtitle  { font: var(--type-lede);       letter-spacing: var(--ls-body);    color: var(--text-primary); }
+.body             { font: var(--type-body);       letter-spacing: var(--ls-body);    color: var(--text-body); }
+.body-sm          { font: var(--type-body-sm);    letter-spacing: var(--ls-body);    color: var(--text-body); }
+.caption          { font: var(--type-caption);    letter-spacing: var(--ls-caption); color: var(--text-secondary); }
+.mono-label       { font: var(--type-mono-label); letter-spacing: var(--ls-label);   color: var(--text-secondary); text-transform: uppercase; }
+.stat-grad        { background: var(--grad-aura); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
+.btn-primary      { background: var(--grad-aura); color: var(--ink-9); border: none; padding: 14px 28px; border-radius: var(--radius-md); font: var(--type-button); letter-spacing: var(--ls-button); cursor: pointer; }
+.btn-secondary    { background: transparent; color: var(--text-brand); border: 1px solid var(--text-brand); padding: 13px 27px; border-radius: var(--radius-md); font: var(--type-button); letter-spacing: var(--ls-button); cursor: pointer; }
+.container-xs     { max-width: var(--container-xs); margin: 0 auto; padding: 0 var(--space-6); }
+.container-sm     { max-width: var(--container-sm); margin: 0 auto; padding: 0 var(--space-6); }
+.container-md     { max-width: var(--container-md); margin: 0 auto; padding: 0 var(--space-8); }
+.container-lg     { max-width: var(--container-lg); margin: 0 auto; padding: 0 var(--space-8); }
+.container-xl     { max-width: var(--container-xl); margin: 0 auto; padding: 0 var(--space-12); }
