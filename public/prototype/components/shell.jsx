@@ -98,7 +98,7 @@ const Sidebar = ({ current, onNav, persona }) => {
 };
 
 // Topbar
-const Topbar = ({ crumb }) => (
+const Topbar = ({ crumb, persona }) => (
   <header className="topbar">
     <div className="topbar-left">
       <div className="crumbs">
@@ -106,6 +106,7 @@ const Topbar = ({ crumb }) => (
       </div>
     </div>
     <div className="topbar-right">
+      {persona?.tier && <span className="pill tier-pill mono">{persona.tier}</span>}
       <span className="pill pulse"><span className="dot" /> live</span>
       <button className="btn btn-ghost">Last sync · 2m</button>
       <button className="btn">Export</button>
