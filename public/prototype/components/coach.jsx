@@ -233,7 +233,7 @@ const CoachPage = () => {
             )}
             {busy && !streamingText && (
               <div className="msg msg-assistant">
-                <div className="msg-avatar"><img src="assets/logo-mark.png" alt="" /></div>
+                <div className="msg-avatar"><img src="assets/logo-mark.svg" alt="" /></div>
                 <div className="msg-body">
                   <div className="typing"><span /><span /><span /></div>
                 </div>
@@ -294,7 +294,7 @@ const Message = ({ msg }) => {
   }
   return (
     <div className="msg msg-assistant">
-      <div className="msg-avatar"><img src="assets/logo-mark.png" alt="" /></div>
+      <div className="msg-avatar"><img src="assets/logo-mark.svg" alt="" /></div>
       <div className="msg-body">
         {msg.meta && <div className="msg-meta mono">{msg.meta}</div>}
         <div className="msg-text">{msg.text}</div>

@@ -29,7 +29,7 @@ const Icon = ({ name, size = 14 }) => {
 // Brand mark — uses real logo
 const Brand = () => (
   <div className="brand">
-    <img src="assets/logo-lockup.png" alt="iMpatient" className="brand-lockup" width="160" height="28" />
+    <img src="assets/logo-lockup.svg" alt="iMpatient" className="brand-lockup" width="160" height="28" />
   </div>
 );
 
