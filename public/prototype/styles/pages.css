@@ -130,16 +130,6 @@
 .persona-pick-tier { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pulse); }
 .persona-pick-name { font-size: var(--t-sm); margin-top: 4px; }
 .persona-pick-arch { font-size: var(--t-xs); color: var(--ink-6); margin-top: 2px; font-style: italic; }
-.persona-pick-model {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--brand-soft);
-  margin-top: 8px;
-  padding-top: 6px;
-  border-top: 1px solid var(--ink-3);
-}
 
 /* Text-scale picker (Tweaks panel) — four cards, each previews
    the multiplier in a calm Aa sample. Wraps cleanly on narrow panels. */

@@ -8,8 +8,6 @@ const PERSONAS = {
   kezia: {
     id: "kezia",
     tier: "Free",
-    // Display label only — authoritative model lives in pages/api/generate.js (PERSONA_CONFIG).
-    coachModel: "Haiku 4.5",
     archetype: "The Observer",
     name: "Harlow",
     age: 31,
@@ -89,7 +87,6 @@ const PERSONAS = {
   simone: {
     id: "simone",
     tier: "Essential",
-    coachModel: "Sonnet 4.6 · thinking",
     archetype: "The Manager",
     name: "Bella",
     age: 38,
@@ -174,7 +171,6 @@ const PERSONAS = {
   renee: {
     id: "renee",
     tier: "Pro",
-    coachModel: "Opus 4.7 · thinking · effort high",
     archetype: "The Complex Human",
     name: "Grayson",
     age: 47,

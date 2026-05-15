@@ -51,12 +51,13 @@ const CoachPage = () => {
   const [messages, setMessages] = React.useState(SEED_MESSAGES);
   const [input, setInput] = React.useState("");
   const [busy, setBusy] = React.useState(false);
+  const [streamingText, setStreamingText] = React.useState("");
   const [activeThread, setActiveThread] = React.useState("today");
   const scrollRef = React.useRef(null);
 
   React.useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-  }, [messages, busy]);
+  }, [messages, busy, streamingText]);
 
   async function send(text) {
     const trimmed = (text ?? input).trim();
@@ -64,6 +65,7 @@ const CoachPage = () => {
     const next = [...messages, { role: "user", text: trimmed }];
     setMessages(next);
     setInput("");
+    setStreamingText("");
     setBusy(true);
 
     try {
@@ -74,11 +76,13 @@ const CoachPage = () => {
             "\n\nReply as the AI Coach. Plainspoken, 2–4 short paragraphs max."
           }
         ],
+        onChunk: (delta) => setStreamingText((s) => s + delta),
       });
       setMessages([...next, { role: "assistant", text: reply }]);
     } catch (e) {
       setMessages([...next, { role: "assistant", text: "I'm having trouble reaching the model right now. Try again in a moment.", error: true }]);
     } finally {
+      setStreamingText("");
       setBusy(false);
     }
   }
@@ -146,7 +150,10 @@ const CoachPage = () => {
             {messages.map((m, i) => (
               <Message key={i} msg={m} />
             ))}
-            {busy && (
+            {busy && streamingText && (
+              <Message msg={{ role: "assistant", text: streamingText }} />
+            )}
+            {busy && !streamingText && (
               <div className="msg msg-assistant">
                 <div className="msg-avatar"><img src="assets/logo-mark.png" alt="" /></div>
                 <div className="msg-body">
