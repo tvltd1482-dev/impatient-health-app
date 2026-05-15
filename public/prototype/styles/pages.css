@@ -131,6 +131,31 @@
 .persona-pick-name { font-size: var(--t-sm); margin-top: 4px; }
 .persona-pick-arch { font-size: var(--t-xs); color: var(--ink-6); margin-top: 2px; font-style: italic; }
 
+/* Tier-locked pane — the upgrade card under the aura-hero on routes the
+   active persona's tier doesn't unlock. Centered, calm, one CTA. */
+.tier-locked-page .tier-locked-card {
+  max-width: 640px;
+  margin: 32px auto;
+  padding: 32px;
+  text-align: center;
+}
+.tier-locked-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brand-glow);
+  margin-bottom: 12px;
+}
+.tier-locked-body {
+  color: var(--ink-7);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  margin: 0 0 24px 0;
+}
+.tier-locked-cta {
+  margin: 0 auto;
+}
+
 /* Text-scale picker (Tweaks panel) — four cards, each previews
    the multiplier in a calm Aa sample. Wraps cleanly on narrow panels. */
 .text-scale-pick {

@@ -34,7 +34,8 @@ const Brand = () => (
 );
 
 // Sidebar
-const Sidebar = ({ current, onNav }) => {
+const Sidebar = ({ current, onNav, persona }) => {
+  const tier = persona?.tier || "Free";
   const items = [
     { section: "Now" },
     { id: "today", label: "Today", icon: "today" },
@@ -58,32 +59,37 @@ const Sidebar = ({ current, onNav }) => {
     <aside className="sidebar">
       <Brand />
       <nav className="nav">
-        {items.map((it, i) =>
-          it.section ? (
-            <div key={i} className="nav-section">{it.section}</div>
-          ) : (
+        {items.map((it, i) => {
+          if (it.section) return <div key={i} className="nav-section">{it.section}</div>;
+          const locked = window.isLockedAtTier && window.isLockedAtTier(it.id, tier);
+          const requiredTier = locked && window.ROUTE_TIER ? window.ROUTE_TIER[it.id] : null;
+          return (
             <div
               key={it.id}
-              className={"nav-item" + (current === it.id ? " active" : "")}
+              className={"nav-item" + (current === it.id ? " active" : "") + (locked ? " locked" : "")}
               onClick={() => onNav?.(it.id)}
             >
               <span className="nav-item-icon"><Icon name={it.icon} /></span>
               <span>{it.label}</span>
-              {it.badge && (
+              {locked ? (
+                <span className="nav-item-tier mono">{requiredTier}</span>
+              ) : it.badge ? (
                 <span className={"nav-item-badge" + (it.badge.kind === "alert" ? " alert" : "")}>
                   {it.badge.text}
                 </span>
-              )}
+              ) : null}
             </div>
-          )
-        )}
+          );
+        })}
       </nav>
       <div className="sidebar-foot">
         <div className="user-card">
-          <div className="user-avatar">AA</div>
+          <div className="user-avatar">{persona?.name ? persona.name.slice(0, 2).toUpperCase() : "AA"}</div>
           <div>
-            <div className="user-name">Azure A.</div>
-            <div className="user-status mono">NY · day 187</div>
+            <div className="user-name">{persona?.name || "Azure A."}</div>
+            <div className="user-status mono">
+              {(persona?.locationStr?.split(",")[0] || "NY")} · {tier.toLowerCase()} tier
+            </div>
           </div>
         </div>
       </div>

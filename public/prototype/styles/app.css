@@ -79,6 +79,27 @@
 }
 .nav-item-badge.alert { background: var(--flare-bg); color: var(--flare); border-color: var(--flare-dim); }
 
+/* Tier-locked nav item — dimmed but still clickable; clicking lands you
+   on the upgrade pane for that surface. The tier label sits where the
+   count badge would, in the warm-peach signal-weight color. */
+.nav-item.locked {
+  opacity: 0.55;
+}
+.nav-item.locked:hover {
+  opacity: 0.85;
+}
+.nav-item-tier {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: oklch(0.78 0.13 60);
+  padding: 2px 6px;
+  border: 1px solid oklch(0.55 0.10 60 / 0.45);
+  border-radius: 999px;
+}
+
 .sidebar-foot {
   margin-top: auto;
   padding-top: var(--s-4);
