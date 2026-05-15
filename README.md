@@ -30,12 +30,12 @@ Then open <http://localhost:3000>. The root rewrites to the prototype.
 ## Env
 
 - `INVITE_CODE` — your secret code
-- `BACKEND_URL` — Cloud Run / external backend, **or**
-- `OPENAI_API_KEY` — fallback used by `/api/generate`
+- `ANTHROPIC_API_KEY` — used by `/api/generate` (Anthropic SDK)
 
 The Coach surface calls `window.claude.complete({messages})`; a small
-shim in `public/prototype/index.html` flattens that into `{prompt}`
-and POSTs to `/api/generate`.
+shim in `public/prototype/index.html` POSTs the message list to
+`/api/generate`, which calls `claude-haiku-4-5` via the Anthropic SDK
+(per `design-docs/HANDOFF.md`, Coach is Haiku-powered).
 
 ## Endpoints
 

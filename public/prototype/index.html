@@ -28,15 +28,13 @@
 
 <script>
   // Shim Claude Design's window.claude.complete so Coach works in this host.
-  // Flattens the message list into a single prompt and proxies to /api/generate
-  // (which currently routes to BACKEND_URL or OPENAI_API_KEY — see README).
+  // /api/generate proxies to the Anthropic SDK (claude-haiku-4-5).
   window.claude = window.claude || {
     complete: async ({ messages }) => {
-      const prompt = (messages || []).map(m => m.content).join("\n\n");
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ messages }),
       });
       if (!res.ok) throw new Error("generate failed: " + res.status);
       const data = await res.json();
