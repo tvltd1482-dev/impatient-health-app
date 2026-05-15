@@ -1,0 +1,243 @@
+/* AI Coach styles */
+
+.coach-page { max-width: 1400px; }
+.coach-shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: var(--s-4);
+  height: calc(100vh - 220px);
+  min-height: 640px;
+}
+
+/* Threads */
+.coach-threads {
+  background: var(--ink-2);
+  border: var(--hairline-soft);
+  border-radius: var(--r-lg);
+  padding: var(--s-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-1);
+  overflow-y: auto;
+}
+.coach-threads-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s-2) var(--s-2) var(--s-3);
+  border-bottom: var(--hairline-soft);
+  margin-bottom: var(--s-2);
+}
+.coach-new { font-size: var(--t-xs); padding: 4px 8px; }
+
+.thread-item {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: var(--s-3);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  transition: background 0.12s, border-color 0.12s;
+}
+.thread-item:hover { background: var(--ink-1); }
+.thread-item.active {
+  background: var(--ink-3);
+  border-color: var(--ink-4);
+}
+.thread-title { font-size: var(--t-sm); color: var(--ink-9); line-height: 1.3; }
+.thread-preview { font-size: var(--t-xs); color: var(--ink-6); line-height: 1.4; margin-top: 2px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.thread-time { font-size: 10px; color: var(--ink-6); letter-spacing: 0.05em; margin-top: 4px; }
+
+/* Conversation */
+.coach-conv {
+  background: var(--ink-2);
+  border: var(--hairline-soft);
+  border-radius: var(--r-lg);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  min-height: 0;
+}
+
+.coach-conv-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--s-4) var(--s-5);
+  border-bottom: var(--hairline-soft);
+}
+.coach-conv-title { font-size: var(--t-md); color: var(--ink-9); }
+.coach-conv-sub { font-size: var(--t-xs); color: var(--ink-6); margin-top: 2px; letter-spacing: 0.05em; }
+.coach-conv-actions { display: flex; align-items: center; gap: var(--s-3); }
+
+/* Context strip */
+.coach-context-strip {
+  display: flex; gap: var(--s-2); flex-wrap: wrap;
+  padding: var(--s-3) var(--s-5);
+  border-bottom: var(--hairline-soft);
+  background: var(--ink-1);
+}
+.context-chip {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: var(--s-2);
+  padding: 6px 10px;
+  border-radius: var(--r-sm);
+  border: var(--hairline-soft);
+  background: var(--ink-2);
+  font-size: var(--t-xs);
+  letter-spacing: 0.04em;
+}
+.context-chip-label { color: var(--ink-6); text-transform: uppercase; }
+.context-chip-value { color: var(--ink-9); font-size: var(--t-sm); }
+.context-chip-delta { color: var(--ink-6); }
+.context-chip-flare .context-chip-delta { color: var(--flare); }
+.context-chip-warn .context-chip-delta { color: var(--warn); }
+.context-chip-pulse .context-chip-delta { color: var(--brand-soft); }
+
+/* Messages */
+.coach-messages {
+  padding: var(--s-5);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  min-height: 0;
+}
+.msg {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: var(--s-3);
+  max-width: 80%;
+}
+.msg-user {
+  grid-template-columns: 1fr 32px;
+  margin-left: auto;
+}
+.msg-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--ink-3);
+  border: var(--hairline-soft);
+  display: grid; place-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.msg-avatar img { width: 22px; height: 22px; object-fit: contain; }
+.msg-user .msg-avatar {
+  background: linear-gradient(135deg, var(--brand-royal), var(--brand-deep));
+  border-color: var(--brand-deep);
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.msg-body {
+  display: flex; flex-direction: column; gap: 4px;
+  min-width: 0;
+}
+.msg-meta {
+  font-size: var(--t-xs);
+  color: var(--ink-6);
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.msg-text {
+  font-size: var(--t-sm);
+  line-height: 1.55;
+  color: var(--ink-8);
+  white-space: pre-wrap;
+  text-wrap: pretty;
+}
+.msg-user .msg-text {
+  background: var(--brand-deep);
+  color: white;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  border-top-right-radius: 4px;
+}
+.msg-assistant .msg-text {
+  background: var(--ink-1);
+  border: var(--hairline-soft);
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border-top-left-radius: 4px;
+}
+
+/* Typing dots */
+.typing {
+  display: inline-flex;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--ink-1);
+  border: var(--hairline-soft);
+  border-radius: var(--r-md);
+  border-top-left-radius: 4px;
+}
+.typing span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  animation: typing 1.2s ease-in-out infinite;
+}
+.typing span:nth-child(2) { animation-delay: 0.15s; }
+.typing span:nth-child(3) { animation-delay: 0.3s; }
+@keyframes typing {
+  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+  30% { opacity: 1; transform: translateY(-2px); }
+}
+
+/* Suggested prompts */
+.coach-suggested {
+  display: flex; flex-wrap: wrap; gap: var(--s-2);
+  padding: var(--s-3) var(--s-5) 0;
+}
+.suggest-chip {
+  padding: 6px 12px;
+  background: var(--ink-1);
+  border: var(--hairline-soft);
+  border-radius: 999px;
+  color: var(--ink-7);
+  font-size: var(--t-xs);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.suggest-chip:hover:not(:disabled) {
+  background: var(--ink-3);
+  color: var(--ink-9);
+  border-color: var(--ink-5);
+}
+.suggest-chip:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Input */
+.coach-input {
+  padding: var(--s-3) var(--s-5) var(--s-5);
+  border-top: var(--hairline-soft);
+  margin-top: var(--s-3);
+}
+.coach-input textarea {
+  width: 100%;
+  background: var(--ink-1);
+  border: var(--hairline);
+  border-radius: var(--r-md);
+  color: var(--ink-9);
+  font-family: inherit;
+  font-size: var(--t-sm);
+  line-height: 1.5;
+  padding: 12px 14px;
+  resize: none;
+  min-height: 48px;
+  max-height: 160px;
+}
+.coach-input textarea:focus { outline: none; border-color: var(--brand-bright); }
+.coach-input-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: var(--s-2);
+  gap: var(--s-3);
+}
+.coach-input-meta {
+  font-size: var(--t-xs);
+  color: var(--ink-6);
+  letter-spacing: 0.04em;
+  display: inline-flex;
+  align-items: center;
+}

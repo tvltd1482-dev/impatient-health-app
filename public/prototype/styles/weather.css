@@ -1,0 +1,338 @@
+/* ─────────────────────────────────────────────────────────────
+   Weather hero — atmospheric, iOS-Weather-feel
+   ───────────────────────────────────────────────────────────── */
+
+.wx-hero {
+  --wx-pane-min: 360px;
+  --wx-radius: 22px;
+  margin: 0 0 var(--s-5) 0;
+  position: relative;
+}
+
+/* Dual-pane layout */
+.wx-panes {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  align-items: stretch;
+  border-radius: var(--wx-radius);
+  overflow: hidden;
+  border: var(--hairline-soft);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 24px 60px -32px rgba(0,0,0,0.55);
+}
+.wx-hero-single .wx-pane {
+  border-radius: var(--wx-radius);
+  overflow: hidden;
+  border: var(--hairline-soft);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 24px 60px -32px rgba(0,0,0,0.55);
+}
+
+.wx-arrow {
+  display: flex; align-items: center; justify-content: center;
+  width: 56px;
+  background: rgba(0,0,0,0.55);
+  color: rgba(255,255,255,0.55);
+  position: relative;
+}
+.wx-arrow::before, .wx-arrow::after {
+  content: "";
+  position: absolute;
+  top: 24px; bottom: 24px;
+  width: 1px;
+  background: rgba(255,255,255,0.07);
+}
+.wx-arrow::before { left: 0; }
+.wx-arrow::after  { right: 0; }
+
+/* Single pane */
+.wx-pane {
+  position: relative;
+  isolation: isolate;
+  min-height: 280px;
+  overflow: hidden;
+}
+.wx-pane-inner {
+  position: relative;
+  z-index: 2;
+  padding: 26px 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+  min-height: 280px;
+}
+
+.wx-pane-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.wx-role {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: currentColor;
+  opacity: 0.6;
+  margin-bottom: 8px;
+}
+.wx-place {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  color: currentColor;
+}
+.wx-sub {
+  margin-top: 4px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: currentColor;
+  opacity: 0.55;
+}
+.wx-glyph {
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.25));
+}
+
+.wx-temp-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.wx-temp {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: 64px;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: currentColor;
+}
+.wx-unit {
+  font-size: 28px;
+  font-weight: 300;
+  opacity: 0.65;
+  margin-left: 1px;
+}
+.wx-cond {
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: currentColor;
+  opacity: 0.78;
+  padding-bottom: 8px;
+}
+
+/* Pressure block — the medical foreground */
+.wx-pressure {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.18);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.wx-pressure-label {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin-bottom: 4px;
+}
+.wx-pressure-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.wx-pressure-num {
+  font-family: var(--font-display, var(--font-sans));
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.wx-pressure-mb {
+  font-size: 10px;
+  opacity: 0.55;
+}
+.wx-pressure-delta {
+  margin-left: 6px;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+.wx-pressure-delta.wx-delta-warn {
+  background: rgba(220, 90, 70, 0.22);
+  border-color: rgba(220, 90, 70, 0.45);
+  color: #ffd9c8;
+}
+
+.wx-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  opacity: 0.6;
+  margin-top: auto;
+}
+.wx-meta-row i {
+  font-style: normal;
+  opacity: 0.55;
+  margin-right: 4px;
+}
+
+.wx-flight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: -4px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+.wx-flight-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+  opacity: 0.8;
+}
+
+/* ───────── Atmosphere overlays ───────── */
+.wx-atmo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* clear sky — soft haze + faint star points */
+.wx-atmo-clear {
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 25%, rgba(255,235,180,0.18), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 90%, rgba(120,180,240,0.10), transparent 70%);
+}
+.wx-atmo-clear .wx-haze {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 70% 30%, rgba(255,255,255,0.10), transparent 25%);
+  animation: wx-pulse 8s ease-in-out infinite;
+}
+
+/* clouds — drifting blurred ovals */
+.wx-atmo-clouds {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.06), transparent 60%);
+}
+.wx-atmo-clouds .wx-cloud {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255,255,255,0.18), transparent 70%);
+  filter: blur(20px);
+}
+.wx-cloud-1 { width: 60%; height: 50%; top: -10%; left: -10%; animation: wx-drift-1 24s ease-in-out infinite; }
+.wx-cloud-2 { width: 50%; height: 40%; top: 30%; left: 50%; animation: wx-drift-2 28s ease-in-out infinite; opacity: 0.7; }
+.wx-cloud-3 { width: 40%; height: 35%; top: 60%; left: 10%; animation: wx-drift-3 32s ease-in-out infinite; opacity: 0.5; }
+
+@keyframes wx-drift-1 { 0%,100% { transform: translateX(-4%) } 50% { transform: translateX(8%) } }
+@keyframes wx-drift-2 { 0%,100% { transform: translateX(0%) } 50% { transform: translateX(-10%) } }
+@keyframes wx-drift-3 { 0%,100% { transform: translateX(2%) } 50% { transform: translateX(-6%) } }
+@keyframes wx-pulse  { 0%,100% { opacity: 0.5 } 50% { opacity: 1 } }
+
+/* rain streaks */
+.wx-atmo-rain {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(120,140,180,0.18), transparent 60%);
+}
+.wx-atmo-rain span {
+  position: absolute;
+  top: -10%;
+  width: 1px;
+  height: 18px;
+  background: linear-gradient(180deg, transparent 0%, rgba(200,220,255,0.7) 50%, transparent 100%);
+  transform: rotate(8deg);
+  animation: wx-rain-fall linear infinite;
+}
+@keyframes wx-rain-fall {
+  0%   { transform: translateY(0) rotate(8deg); }
+  100% { transform: translateY(360px) rotate(8deg); }
+}
+
+/* ───────── Contributing-to-today footer ───────── */
+.wx-contributing {
+  margin-top: 14px;
+  padding: 14px 18px;
+  background: var(--ink-1);
+  border: var(--hairline-soft);
+  border-radius: 14px;
+}
+.wx-contributing-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-6);
+  margin-bottom: 12px;
+}
+.wx-contributing-line {
+  flex: 1;
+  height: 1px;
+  background: var(--line-1);
+}
+.wx-contributing-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wx-contrib-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 4px 0;
+}
+.wx-contrib-bullet {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink-5);
+  margin-top: 8px;
+  flex-shrink: 0;
+}
+.wx-contrib-row.is-med .wx-contrib-bullet { background: var(--warn); box-shadow: 0 0 10px rgba(232, 168, 70, 0.5); }
+.wx-contrib-row.is-heavy .wx-contrib-bullet {
+  background: var(--flare);
+  box-shadow: 0 0 12px rgba(220, 90, 70, 0.65);
+  animation: wx-pulse-heavy 2.4s ease-in-out infinite;
+}
+@keyframes wx-pulse-heavy {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50%     { transform: scale(1.2); opacity: 0.75; }
+}
+.wx-contrib-headline {
+  font-size: 13px;
+  color: var(--ink-9);
+  letter-spacing: -0.005em;
+  margin-bottom: 2px;
+}
+.wx-contrib-row.is-heavy .wx-contrib-headline { color: var(--flare); }
+.wx-contrib-note {
+  font-size: 12px;
+  color: var(--ink-6);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+/* responsive: stack panes on narrow screens */
+@media (max-width: 880px) {
+  .wx-panes { grid-template-columns: 1fr; }
+  .wx-arrow { display: none; }
+}

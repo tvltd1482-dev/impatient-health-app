@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>iMpatient — Today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700&display=swap">
+<link rel="stylesheet" href="styles/tokens.css?v=3" />
+<link rel="stylesheet" href="styles/aura.css?v=1" />
+<link rel="stylesheet" href="styles/app.css?v=4" />
+<link rel="stylesheet" href="styles/pages.css?v=7" />
+<link rel="stylesheet" href="styles/coach.css?v=2" />
+<link rel="stylesheet" href="styles/patterns-concierge.css?v=2" />
+<link rel="stylesheet" href="styles/weather.css?v=2" />
+<link rel="stylesheet" href="styles/forms.css?v=1" />
+<link rel="stylesheet" href="styles/integrations.css?v=1" />
+<link rel="stylesheet" href="styles/conditions.css?v=1" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+  // Shim Claude Design's window.claude.complete so Coach works in this host.
+  // Flattens the message list into a single prompt and proxies to /api/generate
+  // (which currently routes to BACKEND_URL or OPENAI_API_KEY — see README).
+  window.claude = window.claude || {
+    complete: async ({ messages }) => {
+      const prompt = (messages || []).map(m => m.content).join("\n\n");
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt }),
+      });
+      if (!res.ok) throw new Error("generate failed: " + res.status);
+      const data = await res.json();
+      return data.text || "";
+    },
+  };
+</script>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="components/aura.jsx"></script>
+<script type="text/babel" src="components/personas.jsx"></script>
+<script type="text/babel" src="components/conditions-db.jsx"></script>
+<script type="text/babel" src="components/conditions.jsx"></script>
+<script type="text/babel" src="components/shell.jsx"></script>
+<script type="text/babel" src="components/cards.jsx"></script>
+<script type="text/babel" src="components/source-logos.jsx"></script>
+<script type="text/babel" src="components/weather-hero.jsx"></script>
+<script type="text/babel" src="components/today.jsx"></script>
+<script type="text/babel" src="components/coach.jsx"></script>
+<script type="text/babel" src="components/patterns-data.jsx"></script>
+<script type="text/babel" src="components/patterns.jsx"></script>
+<script type="text/babel" src="components/concierge-data.jsx"></script>
+<script type="text/babel" src="components/concierge.jsx"></script>
+<script type="text/babel" src="components/profile.jsx"></script>
+<script type="text/babel" src="components/integrations.jsx"></script>
+<script type="text/babel" data-presets="react" data-screen-label="00 App">
+const { useState } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "persona": "renee",
+  "textScale": 1
+}/*EDITMODE-END*/;
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [page, setPage] = useState("today");
+
+  // expose persona so TodayPage reads it
+  window.__activePersona = tweaks.persona;
+
+  // Drive the global type scale via a CSS custom property.
+  // The tokens.css scale multiplies through this — every size in the app
+  // recalculates without us touching individual rules.
+  React.useEffect(() => {
+    document.documentElement.style.setProperty("--text-scale", tweaks.textScale ?? 1);
+  }, [tweaks.textScale]);
+  const labels = {
+    today: "Today",
+    foresight: "Foresight",
+    coach: "Coach",
+    admin: "Admin queue",
+    travel: "Travel Card",
+    cost: "Cost of Care",
+    concierge: "Appointment Concierge",
+    patterns: "Patterns",
+    conditions: "Conditions library",
+    care: "Care directory",
+    integrations: "Integrations",
+    profile: "Profile",
+    settings: "Settings",
+  };
+
+  return (
+    <div className="app">
+      <AuraBackdrop />
+      <Sidebar current={page} onNav={setPage} />
+      <main className="main">
+        <Topbar crumb={labels[page]} />
+        {page === "today" ? <TodayPage key={tweaks.persona} />
+         : page === "coach" ? <CoachPage />
+         : page === "patterns" ? <PatternsPage key={tweaks.persona} />
+         : page === "concierge" ? <ConciergePage key={tweaks.persona} />
+         : page === "profile" ? <ProfilePage key={tweaks.persona} />
+         : page === "integrations" ? <IntegrationsPage key={tweaks.persona} />
+         : <ComingSoon name={labels[page]} />}
+      </main>
+      <TweaksPanel title="Tweaks">
+        <TweakSection title="Persona · same engine, three lives">
+          <div className="persona-pick">
+            {Object.values(window.PERSONAS).map(p => (
+              <button
+                key={p.id}
+                className={"persona-pick-btn" + (tweaks.persona === p.id ? " active" : "")}
+                onClick={() => setTweak('persona', p.id)}
+              >
+                <div className="persona-pick-tier">{p.tier} · {p.archetype}</div>
+                <div className="persona-pick-name">{p.name}, {p.age} · {p.locationStr}</div>
+                <div className="persona-pick-arch">{p.role}</div>
+              </button>
+            ))}
+          </div>
+        </TweakSection>
+        <TweakSection title="Text size · accessibility">
+          <div className="text-scale-pick">
+            {[
+              { v: 0.92, label: "Compact",  hint: "denser overview" },
+              { v: 1.00, label: "Default",  hint: "comfortable" },
+              { v: 1.15, label: "Larger",   hint: "easier on flare days" },
+              { v: 1.30, label: "Largest",  hint: "low-vision friendly" },
+            ].map(opt => (
+              <button
+                key={opt.v}
+                className={"text-scale-btn" + (tweaks.textScale === opt.v ? " active" : "")}
+                onClick={() => setTweak('textScale', opt.v)}
+              >
+                <span className="text-scale-sample" style={{ fontSize: `calc(20px * ${opt.v})` }}>Aa</span>
+                <span className="text-scale-label">{opt.label}</span>
+                <span className="text-scale-hint">{opt.hint}</span>
+              </button>
+            ))}
+          </div>
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+function ComingSoon({ name }) {
+  return (
+    <div className="page">
+      <div className="page-head">
+        <div>
+          <div className="eyebrow">Next up</div>
+          <h1 className="page-title">{name} <em>· in design</em></h1>
+        </div>
+      </div>
+      <div className="card" style={{ padding: 48, textAlign: "center" }}>
+        <div className="eyebrow" style={{ marginBottom: 8 }}>Placeholder</div>
+        <div style={{ color: "var(--ink-7)" }}>This screen is queued. Comment on Today to direct what comes next.</div>
+      </div>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>

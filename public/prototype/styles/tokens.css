@@ -1,0 +1,303 @@
+/* iMpatient design tokens
+   Brand: deep blue (#0A2A6C navy / #123E9C deep / #1A55D1 royal). Type: Gilroy (display) + Inter (body) + Geist Mono (data).
+   Dark surface for data-dense product chrome; brand blues do the work for accent.
+*/
+:root {
+  /* Brand — bright blue meets aura.
+     Surface is a deep navy canvas; the aura halo radiates from a luminous
+     bright-blue core. These scales are tuned for the chosen swatch:
+     #7AB8FF luminous core fading into #1E40AF deep. */
+  --brand-navy: #0A1230;       /* deepest navy surface */
+  --brand-deep: #1E40AF;       /* luminous halo outer ring */
+  --brand-royal: #2D5FE0;      /* mid halo / primary accent */
+  --brand-bright: #5A8FF5;     /* readable accent / hyperlinks */
+  --brand-soft: #7AB8FF;       /* luminous core / pulse / hi-emphasis accent */
+  --brand-glow: #A8D4FF;       /* aura highlight, used for haze + sparkle */
+  --brand-tint: #DEE9FB;       /* light surface accent (legacy / occasional use) */
+
+  /* Aura — for AuraHalo + page backdrop. */
+  --aura-core: #7AB8FF;
+  --aura-mid:  #2D5FE0;
+  --aura-edge: #1E40AF;
+  --aura-bg-0: #060920;        /* night */
+  --aura-bg-1: #0A1230;        /* canvas */
+  --aura-bg-2: #0E1A44;        /* raised */
+
+  /* Neutrals — navy-tinted. The canvas is a deep navy, surfaces are
+     translucent layers above it so the aura halo bleeds through. */
+  --ink-0: oklch(0.10 0.030 262);   /* deepest navy bg */
+  --ink-1: oklch(0.13 0.034 262);   /* canvas */
+  --ink-2: oklch(0.17 0.038 262);   /* surface */
+  --ink-3: oklch(0.22 0.040 262);   /* raised */
+  --ink-4: oklch(0.28 0.040 262);   /* hairline / input */
+  --ink-5: oklch(0.38 0.038 262);   /* subtle border */
+  --ink-6: oklch(0.55 0.034 262);   /* tertiary text */
+  --ink-7: oklch(0.72 0.028 262);   /* secondary text */
+  --ink-8: oklch(0.88 0.018 262);   /* primary text */
+  --ink-9: oklch(0.98 0.010 262);   /* high-emphasis text */
+
+  /* Accents — brand blue is primary; semantic colors at matched chroma */
+  --pulse: var(--brand-soft);                /* signal/live = brand */
+  --pulse-dim: var(--brand-deep);
+  --pulse-bg: oklch(0.22 0.06 264);
+
+  --warn: oklch(0.80 0.13 80);               /* amber */
+  --warn-dim: oklch(0.55 0.10 80);
+  --warn-bg: oklch(0.22 0.04 80);
+
+  --flare: oklch(0.72 0.14 25);              /* rose */
+  --flare-dim: oklch(0.55 0.10 25);
+  --flare-bg: oklch(0.22 0.05 25);
+
+  --calm: oklch(0.78 0.10 160);              /* recovery green */
+  --calm-dim: oklch(0.55 0.08 160);
+  --calm-bg: oklch(0.22 0.04 160);
+
+  /* Type — Gilroy via fontshare; system fallbacks */
+  --font-display: "Gilroy", "Gilroy-Bold", ui-sans-serif, "Helvetica Neue", system-ui, sans-serif;
+  --font-sans: "Gilroy", ui-sans-serif, "Helvetica Neue", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type scale — accessible by default. The whole UI multiplies through
+     --text-scale so users can size up without breaking the layout.
+     1.0 = comfortable default · 1.15 = larger · 1.30 = largest · 0.92 = compact */
+  --text-scale: 1;
+  --t-xs:   calc(11.5px * var(--text-scale));
+  --t-sm:   calc(13.5px * var(--text-scale));
+  --t-base: calc(16px   * var(--text-scale));
+  --t-md:   calc(18px   * var(--text-scale));
+  --t-lg:   calc(24px   * var(--text-scale));
+  --t-xl:   calc(32px   * var(--text-scale));
+  --t-2xl:  calc(44px   * var(--text-scale));
+  --t-3xl:  calc(68px   * var(--text-scale));
+  --t-4xl:  calc(96px   * var(--text-scale));
+
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+
+  --hairline: 1px solid var(--ink-4);
+  --hairline-soft: 1px solid var(--ink-3);
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, rgba(45, 95, 224, 0.18), transparent 60%),
+    radial-gradient(ellipse 60% 40% at 100% 110%, rgba(122, 184, 255, 0.06), transparent 60%),
+    var(--aura-bg-1);
+  background-attachment: fixed;
+  color: var(--ink-8);
+  font-family: var(--font-sans);
+  font-size: var(--t-base);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+
+.mono { font-family: var(--font-mono); font-feature-settings: "tnum", "ss01"; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Utility surfaces */
+.surface { background: var(--ink-2); border: var(--hairline-soft); border-radius: var(--r-lg); }
+.surface-raised { background: var(--ink-3); border: var(--hairline); border-radius: var(--r-lg); }
+
+/* Striped placeholder for imagery */
+.placeholder {
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--ink-2) 0,
+    var(--ink-2) 8px,
+    var(--ink-3) 8px,
+    var(--ink-3) 16px
+  );
+  border: var(--hairline);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  color: var(--ink-6);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Eyebrow label */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-6);
+}
+
+/* Pulse dot */
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--brand-soft);
+  box-shadow: 0 0 0 0 var(--brand-soft);
+  animation: pulse 2.4s ease-out infinite;
+  display: inline-block;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(110, 155, 240, 0.55); }
+  70% { box-shadow: 0 0 0 10px rgba(110, 155, 240, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(110, 155, 240, 0); }
+}
+
+/* Focus */
+:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 2px;
+}
+
+/* Brand text gradient — defined in the AURA section below */
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--ink-4); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-5); }
+
+/* ============================================================
+   AURA — luminous bright-blue halo system.
+   The ethos: knowledge, ease, calm, progress. No weight.
+   ============================================================ */
+
+/* AuraHalo — soft radial halo that sits behind hero content.
+   Use as: <div class="aura-halo" /> absolutely positioned,
+   or pass tone="warm|cool" via data-tone for time-of-day variation. */
+.aura-halo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%,
+      rgba(168, 212, 255, 0.55) 0%,
+      rgba(122, 184, 255, 0.32) 18%,
+      rgba(45, 95, 224, 0.18) 42%,
+      rgba(30, 64, 175, 0.05) 70%,
+      transparent 100%);
+  filter: blur(0.5px);
+  animation: aura-breathe 7s ease-in-out infinite;
+  mix-blend-mode: screen;
+  opacity: 0.95;
+}
+.aura-halo::after {
+  /* secondary highlight — slightly offset, tighter, brighter */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 22% at 52% 32%,
+    rgba(220, 235, 255, 0.45) 0%,
+    rgba(168, 212, 255, 0.22) 30%,
+    transparent 70%);
+  animation: aura-breathe 9s ease-in-out infinite reverse;
+  mix-blend-mode: screen;
+}
+.aura-halo[data-tone="warm"] {
+  /* PM tone — slightly warmer core, retains blue periphery */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%,
+      rgba(255, 220, 200, 0.32) 0%,
+      rgba(180, 180, 255, 0.28) 22%,
+      rgba(45, 95, 224, 0.18) 48%,
+      rgba(30, 64, 175, 0.05) 72%,
+      transparent 100%);
+}
+.aura-halo[data-tone="cool"] {
+  /* AM tone — coldest, most luminous */
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 35%,
+      rgba(200, 230, 255, 0.62) 0%,
+      rgba(122, 184, 255, 0.40) 18%,
+      rgba(45, 95, 224, 0.20) 42%,
+      rgba(30, 64, 175, 0.04) 70%,
+      transparent 100%);
+}
+.aura-halo[data-tone="dusk"] {
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 42%,
+      rgba(220, 180, 255, 0.40) 0%,
+      rgba(140, 120, 255, 0.28) 22%,
+      rgba(45, 70, 200, 0.20) 48%,
+      rgba(20, 30, 80, 0.05) 72%,
+      transparent 100%);
+}
+
+@keyframes aura-breathe {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.95; }
+  50%      { transform: scale(1.04) translateY(-1.5%); opacity: 1; }
+}
+
+/* Compact halo — for inline cards / smaller surfaces */
+.aura-halo-sm {
+  position: absolute;
+  inset: -10%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 40%,
+    rgba(122, 184, 255, 0.30) 0%,
+    rgba(45, 95, 224, 0.14) 35%,
+    transparent 70%);
+  filter: blur(2px);
+  animation: aura-breathe 6s ease-in-out infinite;
+  mix-blend-mode: screen;
+}
+
+/* Aura backdrop — page-level halo, fixed behind everything */
+.aura-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 18% -8%,
+      rgba(122, 184, 255, 0.18) 0%,
+      rgba(45, 95, 224, 0.08) 35%,
+      transparent 65%),
+    radial-gradient(ellipse 50% 40% at 100% 110%,
+      rgba(168, 212, 255, 0.08) 0%,
+      transparent 60%);
+  animation: aura-breathe 12s ease-in-out infinite;
+}
+
+/* Aura hero text on luminous backdrop — boost weight + glow for legibility */
+.aura-on h1, .aura-on .aura-headline {
+  color: var(--ink-9);
+  text-shadow: 0 1px 24px rgba(10, 18, 48, 0.55);
+}
+
+/* Bright accent — for inline bright-blue type accents */
+.bright-accent {
+  color: var(--brand-soft);
+}
+
+/* Brand text gradient — refreshed to use aura tokens */
+.brand-grad {
+  background: linear-gradient(135deg, var(--brand-soft) 0%, var(--brand-royal) 60%, var(--brand-deep) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Reduced motion — calm down the halos */
+@media (prefers-reduced-motion: reduce) {
+  .aura-halo, .aura-halo::after, .aura-halo-sm, .aura-backdrop {
+    animation: none;
+  }
+}

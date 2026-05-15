@@ -1,0 +1,286 @@
+/* ============================================================
+   Conditions — inline term + popover
+   ============================================================
+   Voice: calm, in-line. Not a flashy link. The term reads as
+   text first; the dotted underline + tiny "?" hint that more is
+   available on hover/focus. The popover is a small definition
+   card, not a full article — it lives at the surface of body
+   copy and gets out of the way.
+   ============================================================ */
+
+.condition-term-wrap {
+  position: relative;
+  display: inline;
+  white-space: nowrap;
+}
+
+.condition-term {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: help;
+  /* The dotted underline is the affordance. Keep it subtle: it
+     sits under the baseline like a real footnote, not a link. */
+  border-bottom: 1px dotted color-mix(in oklch, currentColor 45%, transparent);
+  padding-bottom: 1px;
+  transition: color 120ms ease, border-color 120ms ease;
+  text-align: left;
+  line-height: inherit;
+}
+
+.condition-term:hover,
+.condition-term:focus-visible,
+.condition-term.is-open {
+  color: var(--brand-blue, #2A6FB8);
+  border-bottom-color: var(--brand-blue, #2A6FB8);
+  outline: none;
+}
+
+.condition-term-label {
+  display: inline;
+}
+
+.condition-term-glyph {
+  display: inline-block;
+  vertical-align: 1px;
+  flex-shrink: 0;
+  color: color-mix(in oklch, currentColor 60%, transparent);
+  transition: color 120ms ease;
+  margin-left: 1px;
+}
+
+.condition-term:hover .condition-term-glyph,
+.condition-term:focus-visible .condition-term-glyph,
+.condition-term.is-open .condition-term-glyph {
+  color: var(--brand-blue, #2A6FB8);
+}
+
+/* ----------------------------------------------------------------
+   Popover
+   ---------------------------------------------------------------- */
+
+.condition-popover {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  /* Animate in. */
+  animation: conditionPopIn 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* Reset child whitespace; this is a card, not inline copy. */
+  white-space: normal;
+  text-align: left;
+  font-family: var(--font-sans, "Geist", -apple-system, sans-serif);
+  font-weight: 400;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-900, #1c1f22);
+  cursor: default;
+}
+
+@keyframes conditionPopIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.condition-popover-inner {
+  display: block;
+  background: #ffffff;
+  border: 1px solid color-mix(in oklch, var(--ink-900, #1c1f22) 8%, transparent);
+  border-radius: 14px;
+  box-shadow:
+    0 1px 2px rgba(20, 25, 35, 0.04),
+    0 12px 32px -8px rgba(20, 25, 35, 0.18),
+    0 24px 60px -20px rgba(20, 25, 35, 0.14);
+  padding: 16px 18px 14px;
+}
+
+.condition-popover-arrow {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border-right: 1px solid color-mix(in oklch, var(--ink-900, #1c1f22) 8%, transparent);
+  border-bottom: 1px solid color-mix(in oklch, var(--ink-900, #1c1f22) 8%, transparent);
+  border-bottom-right-radius: 2px;
+}
+
+/* Head */
+.condition-popover-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.condition-popover-eyebrow {
+  display: block;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 50%, transparent);
+  margin-bottom: 4px;
+}
+
+.condition-popover-title {
+  display: block;
+  font-family: var(--font-display, "Editorial New", "Times New Roman", serif);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  color: var(--ink-900, #1c1f22);
+  line-height: 1.15;
+}
+
+.condition-popover-full {
+  display: block;
+  font-size: 12px;
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 55%, transparent);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.condition-popover-close {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: color-mix(in oklch, var(--ink-900, #1c1f22) 5%, transparent);
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 55%, transparent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+  margin-top: 2px;
+}
+
+.condition-popover-close:hover {
+  background: color-mix(in oklch, var(--ink-900, #1c1f22) 10%, transparent);
+  color: var(--ink-900, #1c1f22);
+}
+
+/* Body */
+
+.condition-popover-short {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-900, #1c1f22);
+  text-wrap: pretty;
+}
+
+.condition-popover-body {
+  margin: 0 0 8px 0;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 75%, transparent);
+  text-wrap: pretty;
+}
+
+/* Signals block */
+
+.condition-popover-signals {
+  display: block;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid color-mix(in oklch, var(--ink-900, #1c1f22) 7%, transparent);
+}
+
+.condition-popover-signals-eyebrow {
+  display: block;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 50%, transparent);
+  margin-bottom: 6px;
+}
+
+.condition-popover-signals-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.condition-popover-signals-list li {
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 78%, transparent);
+  padding-left: 14px;
+  position: relative;
+}
+
+.condition-popover-signals-list li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  width: 4px;
+  height: 1px;
+  background: color-mix(in oklch, var(--brand-blue, #2A6FB8) 70%, transparent);
+}
+
+/* Prevalence footer-line */
+
+.condition-popover-prevalence {
+  display: block;
+  margin-top: 10px;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: color-mix(in oklch, var(--ink-900, #1c1f22) 50%, transparent);
+}
+
+/* Foot link */
+
+.condition-popover-foot {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in oklch, var(--ink-900, #1c1f22) 7%, transparent);
+}
+
+.condition-popover-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--brand-blue, #2A6FB8);
+  text-decoration: none;
+  transition: gap 120ms ease;
+}
+
+.condition-popover-link:hover {
+  gap: 7px;
+}

@@ -1,33 +1,53 @@
-# iMpatient — Replit to Vercel Demo
+# iMpatient
 
-Upload this ZIP into **Replit** → push to **GitHub** → deploy on **Vercel**.
+A co-doctor for chronic, hard-to-diagnose conditions. The prototype
+designed in Claude Design is now hosted from this Next.js app.
 
-## Steps
+## Layout
 
-1. **New Repl**
-   - Language: Node.js
+```
+pages/                   Next.js routes + API
+  api/generate.js        Backend proxy (BACKEND_URL or OPENAI_API_KEY)
+  healthz.js             Health check
+public/prototype/        The HTML/CSS/JSX prototype, served at /
+  index.html             Entry — wires routes, mounts <App />
+  components/*.jsx       Today, Coach, Patterns, Concierge, Profile, etc.
+  styles/*.css           Aura tokens, forms, pages, surface chrome
+  assets/*               Logos
+design-docs/             BRIEF / CLAUDE / HANDOFF + chat transcripts
+next.config.js           Rewrites / → /prototype/index.html
+```
 
-2. **Upload this ZIP**
-   - Left sidebar → three dots (...) → Upload File → choose this ZIP.
-   - In Replit Shell:
-     ```bash
-     unzip impatient-replit-to-vercel.zip -d impatient-vercel-demo
-     mv impatient-vercel-demo/* .
-     ```
+## Run
 
-3. **GitHub Setup**
-   - Click the Git icon in Replit.
-   - Connect GitHub → create repo (e.g., `impatient-vercel-demo`).
-   - Commit & Push.
+```bash
+npm install
+npm run dev
+```
 
-4. **Deploy to Vercel**
-   - Go to https://vercel.com/new → import your repo.
-   - Set env vars:
-     - `INVITE_CODE` (your secret code)
-     - `BACKEND_URL` (Cloud Run URL) **OR** `OPENAI_API_KEY` (fallback).
-   - Click **Deploy**.
+Then open <http://localhost:3000>. The root rewrites to the prototype.
+
+## Env
+
+- `INVITE_CODE` — your secret code
+- `BACKEND_URL` — Cloud Run / external backend, **or**
+- `OPENAI_API_KEY` — fallback used by `/api/generate`
+
+The Coach surface calls `window.claude.complete({messages})`; a small
+shim in `public/prototype/index.html` flattens that into `{prompt}`
+and POSTs to `/api/generate`.
 
 ## Endpoints
-- `/` → Demo UI
-- `/api/generate` → AI integration
-- `/healthz` → Health check
+
+- `/` — the iMpatient prototype (Today / Coach / Patterns / Concierge /
+  Profile / Integrations, persona-switchable via the Tweaks panel)
+- `/api/generate` — chat/generate proxy
+- `/healthz` — health check
+
+## Next steps
+
+Per `design-docs/HANDOFF.md`, the queued surfaces are Patterns polish,
+Flare Prediction detail, 30-Day Summary, Onboarding, Conditions library,
+Care directory, Settings, Travel Card, Cost of Care, Foresight, Admin
+queue. Pick one and migrate it from the prototype JSX into proper
+Next.js components when production-readiness is needed.

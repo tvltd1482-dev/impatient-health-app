@@ -1,0 +1,412 @@
+/* iMpatient form chrome
+   Inspired by the Withings reference set: mono-caps eyebrow labels above
+   each field, soft 1.5px outlined inputs, segmented selects, no fills.
+   Used on Profile, Settings, Integrations, and any data-entry flow.
+
+   Ethos: forms here are calm. The user is asked for very little, and
+   each field is given dignity. Nothing inside this stylesheet adds
+   weight — it is mono-line, generous-spaced, and quietly opinionated.
+*/
+
+/* ============================================================
+   FORM SHELL
+   ============================================================ */
+
+.form-shell {
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.form-shell-wide {
+  max-width: 880px;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 10px;
+  border-bottom: var(--hairline-soft);
+}
+.form-section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brand-glow);
+}
+.form-section-title {
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--ink-9);
+  margin: 0;
+}
+.form-section-sub {
+  font-size: 13px;
+  color: var(--ink-7);
+  line-height: 1.55;
+  margin: 4px 0 0;
+  text-wrap: pretty;
+}
+
+/* ============================================================
+   FIELD — eyebrow label + input
+   ============================================================ */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-7);
+  font-weight: 500;
+}
+.field-help {
+  font-size: 11px;
+  color: var(--ink-6);
+  line-height: 1.5;
+  margin-top: 2px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.field-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+/* ============================================================
+   INPUT — soft outlined, no fill
+   ============================================================ */
+
+.input,
+.input-select,
+.input-textarea {
+  appearance: none;
+  background: rgba(10, 18, 48, 0.35);
+  border: 1.5px solid var(--ink-4);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--ink-9);
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  width: 100%;
+}
+.input::placeholder,
+.input-textarea::placeholder {
+  color: var(--ink-5);
+}
+.input:hover,
+.input-select:hover,
+.input-textarea:hover {
+  border-color: var(--ink-5);
+}
+.input:focus,
+.input-select:focus,
+.input-textarea:focus {
+  outline: none;
+  border-color: var(--brand-soft);
+  background: rgba(122, 184, 255, 0.05);
+  box-shadow: 0 0 0 3px rgba(122, 184, 255, 0.18);
+}
+.input-textarea {
+  resize: vertical;
+  min-height: 96px;
+  line-height: 1.55;
+}
+
+/* Input with adornment (e.g. ft/in unit) */
+.input-with-unit {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-with-unit .input {
+  padding-right: 56px;
+}
+.input-unit {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border: 1px solid var(--ink-4);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-7);
+  background: rgba(10, 18, 48, 0.5);
+  pointer-events: none;
+}
+
+/* Select chevron */
+.input-select {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 7' xmlns='http://www.w3.org/2000/svg' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A8B7D8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px 7px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+.input-select option {
+  background: var(--aura-bg-1);
+  color: var(--ink-9);
+}
+
+/* ============================================================
+   SEGMENTED — for short option groups (e.g. units)
+   ============================================================ */
+
+.segmented {
+  display: inline-flex;
+  background: rgba(10, 18, 48, 0.45);
+  border: 1.5px solid var(--ink-4);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 0;
+}
+.segmented-btn {
+  background: transparent;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 16px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-7);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease;
+  letter-spacing: 0.01em;
+}
+.segmented-btn:hover { color: var(--ink-9); }
+.segmented-btn.active {
+  background: rgba(122, 184, 255, 0.14);
+  color: var(--ink-9);
+  box-shadow: inset 0 0 0 1px rgba(122, 184, 255, 0.32);
+}
+
+/* ============================================================
+   TOGGLE — iOS-style switch
+   ============================================================ */
+
+.toggle {
+  position: relative;
+  width: 44px;
+  height: 26px;
+  background: var(--ink-3);
+  border: 1.5px solid var(--ink-4);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease;
+  flex-shrink: 0;
+}
+.toggle::after {
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 18px; height: 18px;
+  background: var(--ink-7);
+  border-radius: 50%;
+  transition: transform 200ms ease, background 200ms ease;
+}
+.toggle.on {
+  background: rgba(45, 95, 224, 0.4);
+  border-color: var(--brand-soft);
+}
+.toggle.on::after {
+  transform: translateX(18px);
+  background: var(--brand-soft);
+  box-shadow: 0 0 8px rgba(122, 184, 255, 0.5);
+}
+
+.toggle-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: var(--hairline-soft);
+}
+.toggle-row:last-child { border-bottom: none; }
+.toggle-row-label {
+  font-size: 14px;
+  color: var(--ink-9);
+  margin: 0 0 2px;
+}
+.toggle-row-help {
+  font-size: 12px;
+  color: var(--ink-6);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ============================================================
+   FORM ACTIONS — sticky save bar
+   ============================================================ */
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-top: 8px;
+}
+.form-actions-spacer { flex: 1; }
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: var(--ink-9);
+  color: var(--aura-bg-1);
+  border: none;
+  border-radius: 999px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 140ms ease, transform 80ms ease;
+}
+.btn-pill:hover { background: var(--ink-8); }
+.btn-pill:active { transform: scale(0.98); }
+.btn-pill-primary {
+  background: linear-gradient(135deg, var(--brand-soft) 0%, var(--brand-royal) 100%);
+  color: var(--aura-bg-0);
+  box-shadow: 0 4px 24px rgba(122, 184, 255, 0.32);
+}
+.btn-pill-primary:hover {
+  background: linear-gradient(135deg, var(--brand-glow) 0%, var(--brand-soft) 100%);
+}
+.btn-pill-ghost {
+  background: transparent;
+  color: var(--ink-7);
+  border: 1.5px solid var(--ink-4);
+}
+.btn-pill-ghost:hover {
+  color: var(--ink-9);
+  border-color: var(--ink-5);
+  background: rgba(10, 18, 48, 0.35);
+}
+
+/* ============================================================
+   FORM ROW — for non-input rows like avatar pickers, list rows
+   ============================================================ */
+
+.list-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  background: rgba(10, 18, 48, 0.32);
+  border: 1.5px solid var(--ink-4);
+  border-radius: 12px;
+  transition: border-color 140ms ease, background 140ms ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+.list-row:hover {
+  border-color: rgba(122, 184, 255, 0.32);
+  background: rgba(122, 184, 255, 0.05);
+}
+.list-row-icon {
+  width: 36px; height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(122, 184, 255, 0.12);
+  color: var(--brand-soft);
+  flex-shrink: 0;
+}
+.list-row-icon svg { width: 18px; height: 18px; }
+.list-row-body { min-width: 0; }
+.list-row-title {
+  font-size: 14px;
+  color: var(--ink-9);
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+.list-row-sub {
+  font-size: 12px;
+  color: var(--ink-6);
+  margin: 2px 0 0;
+  line-height: 1.5;
+}
+.list-row-trail {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink-6);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.list-row-chevron {
+  color: var(--ink-5);
+  transition: transform 140ms ease, color 140ms ease;
+}
+.list-row:hover .list-row-chevron {
+  color: var(--brand-soft);
+  transform: translateX(2px);
+}
+
+/* Avatar block */
+.avatar-block {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0 4px;
+}
+.avatar {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-soft) 0%, var(--brand-royal) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--aura-bg-0);
+  box-shadow: 0 4px 24px rgba(122, 184, 255, 0.28), inset 0 -2px 8px rgba(30, 64, 175, 0.4);
+  flex-shrink: 0;
+}
+.avatar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.avatar-name {
+  font-size: 18px;
+  color: var(--ink-9);
+  letter-spacing: -0.005em;
+}
+.avatar-sub {
+  font-size: 12px;
+  color: var(--ink-6);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
