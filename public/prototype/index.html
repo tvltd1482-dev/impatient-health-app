@@ -21,12 +21,42 @@
 <link rel="stylesheet" href="styles/breathing.css?v=1" />
 <link rel="stylesheet" href="styles/onboarding.css?v=1" />
 
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><div style="position:fixed;inset:0;display:flex;align-items:center;justify-content:center;color:#A8D4FF;font:13px/1.4 ui-monospace,'SF Mono',Menlo,monospace;letter-spacing:0.06em;text-transform:uppercase;background:#060920;" id="__boot">loading prototype<span id="__boot-step" style="display:block;margin-top:6px;opacity:0.55;font-size:11px"></span></div></div>
+
+<script>
+  // Surface any unhandled JS error or rejection visibly in the page,
+  // so a blank prototype tells us *why* instead of leaving us guessing.
+  // Also expose __mark so each component script can log its progress —
+  // last-mark-before-blank tells us which script broke.
+  (function () {
+    function showError(label, e) {
+      var pre = document.getElementById('__err') || (function () {
+        var p = document.createElement('pre');
+        p.id = '__err';
+        p.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:99999;margin:0;padding:14px 16px;background:#3b0a0a;color:#fff;font:12px/1.5 ui-monospace,monospace;white-space:pre-wrap;max-height:60vh;overflow:auto;border-bottom:2px solid #ff6e6e;';
+        (document.body || document.documentElement).appendChild(p);
+        return p;
+      })();
+      pre.textContent += '[' + label + '] ' + (e && (e.stack || e.message || (e.error && (e.error.stack || e.error.message)) || JSON.stringify(e)) || String(e)) + '\n\n';
+    }
+    window.addEventListener('error', function (e) {
+      showError('error @ ' + (e.filename || '?') + ':' + (e.lineno || '?') + ':' + (e.colno || '?'), e.error || e.message);
+    });
+    window.addEventListener('unhandledrejection', function (e) {
+      showError('unhandledrejection', e.reason);
+    });
+    window.__mark = function (label) {
+      var step = document.getElementById('__boot-step');
+      if (step) step.textContent = label;
+      try { console.log('[mark] ' + label); } catch (_) {}
+    };
+  })();
+</script>
 
 <script>
   // Shim Claude Design's window.claude.complete so Coach works in this host.
@@ -243,23 +273,36 @@ function App() {
 /* OnboardingPreviewPage — renders the handoff flow inside a phone-shaped
    bezel so designers can review against the source canvas. The flow type
    and tonal pitch come from Tweaks. In production the user lands here
-   once on first install; FirstReadScreen.onFinish routes back to /today. */
+   once on first install; FirstReadScreen.onFinish routes back to /today.
+   Captures the flow component into a local React var so the JSX uses an
+   uppercase identifier (avoids the JSX member-expression edge case). */
 function OnboardingPreviewPage({ flow, tone, onExit }) {
-  const Flow = flow === "lean" ? window.LeanFlow : window.DeepFlow;
   const entry =
     flow === "deep-clinician" ? "clinician" :
     flow === "deep-community" ? "community" :
     "cold";
+  const Flow = flow === "lean" ? window.LeanFlow : window.DeepFlow;
+  if (!Flow) {
+    return (
+      <div className="page">
+        <div className="card" style={{ padding: 32 }}>
+          <div className="eyebrow" style={{ marginBottom: 8 }}>Bundle not loaded</div>
+          <div style={{ color: "var(--ink-7)" }}>
+            The onboarding flow components didn't register on window. Check the script load order in index.html.
+          </div>
+        </div>
+      </div>
+    );
+  }
   // Remount when flow/tone/entry changes — FlowShell holds idx in local
   // state, and we want a fresh sequence when the previewer picks a new
   // variant. The composite key forces React to discard the prior tree.
-  const key = `${flow}:${tone}:${entry}`;
+  const key = flow + ":" + tone + ":" + entry;
+  const props = flow === "lean" ? { tone } : { tone, entry };
   return (
     <div className="ob-preview-page">
       <div className="ob-preview-bezel">
-        {flow === "lean"
-          ? <window.LeanFlow key={key} tone={tone} />
-          : <window.DeepFlow key={key} tone={tone} entry={entry} />}
+        <Flow key={key} {...props} />
       </div>
     </div>
   );

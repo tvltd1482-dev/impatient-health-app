@@ -22,7 +22,12 @@ html = html.replace(
   /<script type="text\/babel" src="([^"]+\.jsx)"><\/script>/g,
   (_m, src) => {
     const code = fs.readFileSync(path.join(ROOT, src), "utf8");
-    return `<script type="text/babel" data-from="${src}">\n${code}\n</script>`;
+    // Wrap each component script so we can see in the boot indicator
+    // which one was last to run before a blank failure. window.__mark
+    // is defined in the bootstrap script at the top of index.html.
+    const safe = src.replace(/'/g, "\\'");
+    const wrapped = `window.__mark && window.__mark('${safe}');\n${code}\nwindow.__mark && window.__mark('${safe} OK');`;
+    return `<script type="text/babel" data-from="${src}">\n${wrapped}\n</script>`;
   }
 );
 
