@@ -28,13 +28,16 @@
 
 <script>
   // Shim Claude Design's window.claude.complete so Coach works in this host.
-  // /api/generate proxies to the Anthropic SDK (claude-haiku-4-5).
+  // /api/generate maps the active persona's tier to a Claude model:
+  //   kezia (Free) → haiku-4-5
+  //   simone (Essential) → sonnet-4-6 + adaptive thinking
+  //   renee (Pro) → opus-4-7 + adaptive thinking + effort=high
   window.claude = window.claude || {
     complete: async ({ messages }) => {
       const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages }),
+        body: JSON.stringify({ messages, persona: window.__activePersona }),
       });
       if (!res.ok) throw new Error("generate failed: " + res.status);
       const data = await res.json();
