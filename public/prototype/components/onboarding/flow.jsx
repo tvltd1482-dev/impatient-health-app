@@ -27,7 +27,7 @@
    Both flows expose `entryKind` so we can use the same flow component
    from the canvas to render the clinician-entry deep variant. */
 
-function FlowShell({ children, screens, label }) {
+function FlowShell({ children, screens, label, onComplete }) {
   const [idx, setIdx] = React.useState(0);
   const clamped = Math.min(Math.max(idx, 0), screens.length - 1);
   const next = () => setIdx((i) => Math.min(i + 1, screens.length - 1));
@@ -38,7 +38,7 @@ function FlowShell({ children, screens, label }) {
   const Screen = screens[clamped];
   return (
     <>
-      <Screen idx={clamped} onNext={next} onBack={back} onReset={reset} stepper={stepper} />
+      <Screen idx={clamped} onNext={next} onBack={back} onReset={reset} onComplete={onComplete} stepper={stepper} />
       {/* prev / restart overlay — tap targets in the bezel area below the phone */}
       <div style={{
         position: 'absolute', left: 0, right: 0, bottom: -34, height: 28,
@@ -84,17 +84,20 @@ function FlowShell({ children, screens, label }) {
    LEAN FLOW — 5 screens
    ============================================================ */
 
-function LeanFlow({ tone = 'literary' }) {
+function LeanFlow({ tone = 'literary', onComplete }) {
   const screens = [
     ({ onNext }) => <OpenerScreen tone={tone} onNext={onNext} />,
     ({ onNext, stepper }) => <NameScreen onNext={onNext} stepper={stepper} />,
     ({ onNext, stepper }) => <WearableScreen onNext={onNext} stepper={stepper} />,
     ({ onNext, stepper }) => <CalendarScreen onNext={onNext} stepper={stepper} />,
-    ({ onReset, stepper }) => <FirstReadScreen onFinish={onReset} stepper={stepper} />,
+    // Take me into Today: if the host supplied onComplete (production
+    // hand-off to the dashboard) use it; otherwise fall back to onReset
+    // so the design canvas can replay the flow.
+    ({ onComplete, onReset, stepper }) => <FirstReadScreen onFinish={onComplete || onReset} stepper={stepper} />,
   ];
   return (
     <FlowProvider>
-      <FlowShell screens={screens} label={`Lean · ${tone}`} />
+      <FlowShell screens={screens} label={`Lean · ${tone}`} onComplete={onComplete} />
     </FlowProvider>
   );
 }
@@ -103,7 +106,7 @@ function LeanFlow({ tone = 'literary' }) {
    DEEP FLOW — 12 screens
    ============================================================ */
 
-function DeepFlow({ entry = 'cold', tone = 'literary' }) {
+function DeepFlow({ entry = 'cold', tone = 'literary', onComplete }) {
   const EntryScreen =
     entry === 'clinician' ? EntryClinicianScreen :
     entry === 'community' ? EntryCommunityScreen :
@@ -121,12 +124,12 @@ function DeepFlow({ entry = 'cold', tone = 'literary' }) {
     ({ onNext, stepper }) => <CommsScreen onNext={onNext} stepper={stepper} />,
     ({ onNext, stepper }) => <CadenceScreen onNext={onNext} stepper={stepper} />,
     ({ onNext, stepper }) => <LoadingScreen onNext={onNext} stepper={stepper} />,
-    ({ onReset, stepper }) => <FirstReadScreen onFinish={onReset} stepper={stepper} />,
+    ({ onComplete, onReset, stepper }) => <FirstReadScreen onFinish={onComplete || onReset} stepper={stepper} />,
   ];
   const label = entry === 'clinician' ? 'Deep · Clinician' : entry === 'community' ? 'Deep · Community' : 'Deep · Cold';
   return (
     <FlowProvider>
-      <FlowShell screens={screens} label={label} />
+      <FlowShell screens={screens} label={label} onComplete={onComplete} />
     </FlowProvider>
   );
 }

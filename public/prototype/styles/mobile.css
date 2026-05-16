@@ -1,0 +1,397 @@
+/* mobile.css — narrow-viewport adaptations for the prototype shell.
+   Loaded LAST so its overrides win without us editing the desktop
+   stylesheets (which the dev team consumes as the canonical spec).
+
+   Strategy: keep the desktop layout intact above 768px. Below that:
+   - The sidebar becomes a slide-in drawer with a tap-scrim.
+   - The topbar shows a hamburger and drops the verbose actions.
+   - Page card grids reflow to one column.
+   - Coach drops the thread sidebar (use the existing breakpoint).
+   - The Onboarding preview bezel adapts to fit the viewport.
+   - The Tweaks panel becomes a bottom sheet.
+*/
+
+/* The hamburger button is hidden on desktop and shown on mobile. */
+.menu-btn {
+  display: none;
+  align-items: center; justify-content: center;
+  width: 36px; height: 36px;
+  background: transparent;
+  border: 1px solid var(--ink-4);
+  border-radius: var(--r-sm);
+  color: var(--ink-8);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+}
+.menu-btn:active { background: var(--ink-3); }
+
+/* The mobile scrim is permanently in the DOM but invisible/unhittable
+   above 768px. Below, .open fades it in. */
+.sidebar-scrim {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+  z-index: 9;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease;
+}
+
+@media (max-width: 768px) {
+  /* App becomes a single column. Sidebar floats above as a drawer. */
+  .app {
+    grid-template-columns: 1fr;
+  }
+
+  /* Hamburger visible. */
+  .menu-btn {
+    display: inline-flex;
+  }
+
+  /* Sidebar: fixed overlay, off-canvas by default, slides in when open. */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 86%;
+    max-width: 320px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 10;
+    transform: translateX(-100%);
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    overflow-y: auto;
+    box-shadow: 12px 0 32px rgba(0, 0, 0, 0.45);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Scrim active when drawer is open. */
+  .sidebar-scrim {
+    display: block;
+  }
+  .sidebar-scrim.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Topbar — tighten padding, drop verbose actions, keep tier pill. */
+  .topbar {
+    padding: var(--s-3) var(--s-4);
+  }
+  .topbar-left {
+    gap: var(--s-3);
+    min-width: 0;
+    flex: 1;
+  }
+  .crumbs {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .topbar-right {
+    gap: var(--s-2);
+  }
+  /* The verbose "Last sync" + "Export" don't earn their pixels on mobile. */
+  .topbar-action {
+    display: none;
+  }
+  .topbar-right .pill {
+    padding: 2px 7px;
+    font-size: 10px;
+  }
+
+  /* Main content — tighter side padding. */
+  .page {
+    padding: var(--s-4) !important;
+    max-width: 100%;
+  }
+  .page-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+  .page-title {
+    font-size: var(--t-xl);
+    line-height: 1.1;
+  }
+
+  /* Card grids reflow to one column. */
+  .grid-2, .grid-3, .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Coach — drop the thread sidebar on mobile, conversation full width. */
+  .coach-shell {
+    grid-template-columns: 1fr !important;
+  }
+  .coach-threads {
+    display: none;
+  }
+  .coach-conv-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-2);
+  }
+  .coach-conv-actions {
+    flex-wrap: wrap;
+  }
+  .coach-context-strip {
+    overflow-x: auto;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  .coach-context-strip > * {
+    flex-shrink: 0;
+  }
+
+  /* Profile / Integrations forms — single column. */
+  .field-row, .field-row-3 {
+    grid-template-columns: 1fr !important;
+  }
+  .form-shell, .form-shell-wide {
+    padding: 0;
+  }
+
+  /* Integrations: kill the auto-fill grid, single column. */
+  .ix-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Onboarding preview — the design canvas had a 393x852 bezel for desk
+     review. On a real phone, drop the bezel and let the flow fill the
+     viewport like it would in production. */
+  .ob-preview-page {
+    padding: 0;
+    margin-bottom: 0;
+  }
+  .ob-preview-bezel {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 0;
+  }
+  .ob-preview-bezel > .ob-screen {
+    border-radius: 0;
+  }
+  /* Hide the canvas-only back/restart bar on real phones. */
+  .ob-preview-bezel > div[style*="bottom: -34"] {
+    display: none !important;
+  }
+
+  /* Tweaks panel — convert from floating side panel to bottom sheet.
+     The panel's exact class names depend on the tweaks-panel.jsx
+     internals; we override the most common shell. */
+  .twk-panel {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    top: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 70vh !important;
+    border-radius: 16px 16px 0 0 !important;
+    transform: translateY(100%) !important;
+    transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1) !important;
+  }
+  .twk-panel.open {
+    transform: translateY(0) !important;
+  }
+
+  /* Persona-pick + onboarding-tweak buttons stack on narrow screens. */
+  .persona-pick, .text-scale-pick, .ob-tweak-pick {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Today page reflow ────────────────────────────────────────── */
+  /* Persona banner — three columns (avatar | name | blurb) → stack. */
+  .persona-banner {
+    grid-template-columns: 1fr !important;
+    gap: var(--s-3) !important;
+    padding: 12px 0 16px !important;
+  }
+  .persona-banner-right .persona-blurb {
+    text-align: left;
+    max-width: 100%;
+  }
+
+  /* Prediction hero — two columns (title | window time) → stack. */
+  .prediction-head {
+    grid-template-columns: 1fr !important;
+    gap: var(--s-3) !important;
+  }
+  .prediction-window {
+    text-align: left;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: var(--s-3);
+  }
+  .prediction-title {
+    font-size: var(--t-xl) !important;
+    max-width: 100%;
+  }
+  .prediction-foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-3);
+  }
+  .prediction-foot-left,
+  .prediction-foot-right {
+    flex-wrap: wrap;
+  }
+
+  /* Signal rows — 4 cols don't fit. Stack the value/weight under. */
+  .signal-row {
+    grid-template-columns: 1fr auto !important;
+    grid-template-rows: auto auto;
+    gap: var(--s-2) var(--s-3) !important;
+  }
+  .signal-row > :nth-child(1) { grid-row: 1; grid-column: 1; }
+  .signal-row > :nth-child(2) { grid-row: 1 / 3; grid-column: 1; align-self: center; }
+  .signal-row > :nth-child(3) { grid-row: 1; grid-column: 2; }
+  .signal-row > :nth-child(4) { grid-row: 1; grid-column: 2; text-align: right; }
+  .signal-weight {
+    width: auto !important;
+  }
+
+  /* Today grids — flatten to one column. */
+  .today-grid,
+  .today-split {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Schedule events — keep 3-col but shrink time column. */
+  .schedule-event {
+    grid-template-columns: 64px 1fr auto !important;
+    gap: var(--s-3) !important;
+  }
+
+  /* Location card — keep the icon-plus-content shape, just tighten. */
+  .location-card {
+    padding: var(--s-3) !important;
+  }
+
+  /* Correlation rows — preserve layout but wrap the note across full width. */
+  .corr-note {
+    grid-column: 1 / -1;
+  }
+
+  /* Long unbroken text in mono blocks — allow wrapping on mobile so
+     ID strings, hashes etc don't push the layout off-canvas. */
+  .mono, .crumbs, .signal-detail {
+    word-break: break-word;
+  }
+
+  /* Lock body scroll while the sidebar drawer is open. Applied as a class
+     on <html> by App via React effect — but as a fallback we make the
+     scrim itself non-scrollable so taps land. */
+  body { overflow-x: hidden; }
+
+  /* ── Mobile accordion ─────────────────────────────────────────
+     A whole prototype page is too dense for a phone. Each .card
+     becomes a tap-to-expand block. The card-head acts as the
+     toggle. Cards marked .no-collapse-mobile (the hero prediction)
+     stay open. The App attaches a click delegate to toggle
+     `.expanded` on tap. */
+  .card:not(.no-collapse-mobile):not(.prediction) .card-head {
+    cursor: pointer;
+    position: relative;
+    padding-right: 32px;
+    user-select: none;
+  }
+  .card:not(.no-collapse-mobile):not(.prediction) .card-head::after {
+    content: '+';
+    position: absolute;
+    right: 4px; top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    line-height: 1;
+    color: var(--ink-6);
+    transition: color 220ms ease;
+    pointer-events: none;
+  }
+  .card.expanded:not(.no-collapse-mobile):not(.prediction) .card-head::after {
+    content: '−';
+    color: var(--brand-soft);
+  }
+  /* Hide everything after the head when collapsed. */
+  .card:not(.no-collapse-mobile):not(.prediction):not(.expanded) > *:not(.card-head) {
+    display: none !important;
+  }
+  .card:not(.no-collapse-mobile):not(.prediction):not(.expanded) {
+    padding-bottom: var(--s-3);
+  }
+
+  /* Persona banner — drop the verbose blurb on phone, compact the rest. */
+  .persona-banner {
+    padding: 8px 0 12px !important;
+    margin-bottom: var(--s-2) !important;
+    border-bottom: 1px solid var(--ink-3);
+  }
+  .persona-banner .persona-blurb {
+    display: none;
+  }
+  .persona-role {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Conditions row in the persona-banner gets compact too. */
+  .persona-banner [class*="conditions"] {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  /* Long persona-role line: allow it to wrap on mobile instead of
+     bleeding off the edge. */
+  .persona-role {
+    white-space: normal !important;
+    overflow: visible !important;
+    line-height: 1.45;
+    font-size: 10px !important;
+  }
+
+  /* Biometric stats — render as 2x2 grid on mobile instead of 4 stacked. */
+  .stat-grid,
+  .biometric-grid,
+  [class*="stat-grid"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  /* The 4-up `.today-grid` from pages.css L347 → 2-up on mobile,
+     not 1-up — keeps biometrics scannable. */
+  .today-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Weather card on mobile — keep but compress. */
+  .wx-card, .wx-now {
+    padding: var(--s-3) !important;
+  }
+
+  /* TierLocked pane — tighter padding, smaller hero. */
+  .tier-locked-pane {
+    padding: var(--s-4) !important;
+  }
+  .tier-locked-title {
+    font-size: var(--t-xl) !important;
+  }
+}
+
+/* Very narrow phones — extra tightening. */
+@media (max-width: 380px) {
+  .topbar { padding: var(--s-3) var(--s-3); }
+  .page { padding: var(--s-3) !important; }
+  .page-title { font-size: var(--t-lg); }
+  /* Hide the live pill at the smallest sizes; the tier pill is enough. */
+  .topbar-right .pill.pulse { display: none; }
+}

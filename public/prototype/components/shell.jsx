@@ -34,7 +34,7 @@ const Brand = () => (
 );
 
 // Sidebar
-const Sidebar = ({ current, onNav, persona }) => {
+const Sidebar = ({ current, onNav, persona, open, onClose }) => {
   const tier = persona?.tier || "Free";
   const items = [
     { section: "Now" },
@@ -57,52 +57,68 @@ const Sidebar = ({ current, onNav, persona }) => {
     { section: "Preview" },
     { id: "onboarding", label: "Onboarding", icon: "pulse" },
   ];
+  const handleNav = (id) => {
+    onNav?.(id);
+    // Close the mobile drawer after a route change so the user lands
+    // on the new page instead of staring at the menu they just used.
+    onClose?.();
+  };
   return (
-    <aside className="sidebar">
-      <Brand />
-      <nav className="nav">
-        {items.map((it, i) => {
-          if (it.section) return <div key={i} className="nav-section">{it.section}</div>;
-          const locked = window.isLockedAtTier && window.isLockedAtTier(it.id, tier);
-          const requiredTier = locked && window.ROUTE_TIER ? window.ROUTE_TIER[it.id] : null;
-          return (
-            <div
-              key={it.id}
-              className={"nav-item" + (current === it.id ? " active" : "") + (locked ? " locked" : "")}
-              onClick={() => onNav?.(it.id)}
-            >
-              <span className="nav-item-icon"><Icon name={it.icon} /></span>
-              <span>{it.label}</span>
-              {locked ? (
-                <span className="nav-item-tier mono">{requiredTier}</span>
-              ) : it.badge ? (
-                <span className={"nav-item-badge" + (it.badge.kind === "alert" ? " alert" : "")}>
-                  {it.badge.text}
-                </span>
-              ) : null}
-            </div>
-          );
-        })}
-      </nav>
-      <div className="sidebar-foot">
-        <div className="user-card">
-          <div className="user-avatar">{persona?.name ? persona.name.slice(0, 2).toUpperCase() : "AA"}</div>
-          <div>
-            <div className="user-name">{persona?.name || "Azure A."}</div>
-            <div className="user-status mono">
-              {(persona?.locationStr?.split(",")[0] || "NY")} · {tier.toLowerCase()} tier
+    <>
+      {/* Mobile-only scrim. Tapping it closes the drawer. */}
+      <div className={"sidebar-scrim" + (open ? " open" : "")} onClick={onClose} aria-hidden="true" />
+      <aside className={"sidebar" + (open ? " open" : "")}>
+        <Brand />
+        <nav className="nav">
+          {items.map((it, i) => {
+            if (it.section) return <div key={i} className="nav-section">{it.section}</div>;
+            const locked = window.isLockedAtTier && window.isLockedAtTier(it.id, tier);
+            const requiredTier = locked && window.ROUTE_TIER ? window.ROUTE_TIER[it.id] : null;
+            return (
+              <div
+                key={it.id}
+                className={"nav-item" + (current === it.id ? " active" : "") + (locked ? " locked" : "")}
+                onClick={() => handleNav(it.id)}
+              >
+                <span className="nav-item-icon"><Icon name={it.icon} /></span>
+                <span>{it.label}</span>
+                {locked ? (
+                  <span className="nav-item-tier mono">{requiredTier}</span>
+                ) : it.badge ? (
+                  <span className={"nav-item-badge" + (it.badge.kind === "alert" ? " alert" : "")}>
+                    {it.badge.text}
+                  </span>
+                ) : null}
+              </div>
+            );
+          })}
+        </nav>
+        <div className="sidebar-foot">
+          <div className="user-card">
+            <div className="user-avatar">{persona?.name ? persona.name.slice(0, 2).toUpperCase() : "AA"}</div>
+            <div>
+              <div className="user-name">{persona?.name || "Azure A."}</div>
+              <div className="user-status mono">
+                {(persona?.locationStr?.split(",")[0] || "NY")} · {tier.toLowerCase()} tier
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 };
 
 // Topbar
-const Topbar = ({ crumb, persona }) => (
+const Topbar = ({ crumb, persona, onMenuToggle }) => (
   <header className="topbar">
     <div className="topbar-left">
+      {/* Hamburger — visible only on mobile via CSS. */}
+      <button className="menu-btn" onClick={onMenuToggle} aria-label="Open menu">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
+          <path d="M3 5h12M3 9h12M3 13h12" />
+        </svg>
+      </button>
       <div className="crumbs">
         <span>iMpatient</span> / <strong>{crumb}</strong>
       </div>
@@ -110,8 +126,8 @@ const Topbar = ({ crumb, persona }) => (
     <div className="topbar-right">
       {persona?.tier && <span className="pill tier-pill mono">{persona.tier}</span>}
       <span className="pill pulse"><span className="dot" /> live</span>
-      <button className="btn btn-ghost">Last sync · 2m</button>
-      <button className="btn">Export</button>
+      <button className="btn btn-ghost topbar-action">Last sync · 2m</button>
+      <button className="btn topbar-action">Export</button>
     </div>
   </header>
 );
