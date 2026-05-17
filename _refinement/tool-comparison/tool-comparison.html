@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iMpatient — AI Design Tool Comparison · 2026-05-17</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aura-bg-0:#060920; --aura-bg-1:#0A1230; --aura-bg-2:#0E1740;
+    --brand-glow:#B8D4FF; --brand-soft:#7AB8FF;
+    --ink-0:#E6EEFF; --ink-3:#C9D5F0; --ink-5:#8C9BC4; --ink-7:#5F6E94;
+    --card-bg: rgba(10,18,48,0.32); --card-border: rgba(124,153,220,0.18);
+    --font-display:"Gilroy","Manrope",ui-sans-serif,sans-serif;
+    --font-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--aura-bg-0); color: var(--ink-0); font-family: var(--font-display); -webkit-font-smoothing: antialiased; line-height: 1.55; }
+  body { min-height: 100dvh; background: radial-gradient(ellipse 80% 50% at 50% 25%, rgba(45,95,224,0.18) 0%, rgba(6,9,32,0) 60%), var(--aura-bg-0); }
+  main { max-width: 820px; margin: 0 auto; padding: 64px 32px 96px; }
+  h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em; font-size: 56px; line-height: 1.04; margin: 0 0 12px; }
+  h1 em { font-style: italic; font-weight: 300; color: var(--ink-7); }
+  h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em; font-size: 28px; margin: 56px 0 16px; }
+  h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin: 28px 0 10px; color: var(--ink-0); }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-7); }
+  .eyebrow.glow { color: var(--brand-glow); }
+  .lede { font-size: 19px; color: var(--ink-3); max-width: 680px; margin: 16px 0 32px; }
+  p { color: var(--ink-3); }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--card-border); vertical-align: top; }
+  th { font-family: var(--font-mono); font-weight: 500; color: var(--ink-7); text-transform: uppercase; letter-spacing: 0.12em; font-size: 11px; }
+  td { color: var(--ink-3); }
+  td:first-child { color: var(--ink-0); font-weight: 500; }
+  pre, code { font-family: var(--font-mono); }
+  pre { background: var(--aura-bg-1); padding: 18px; border-radius: 10px; overflow-x: auto; font-size: 12px; line-height: 1.55; border: 1px solid var(--card-border); color: var(--ink-3); white-space: pre-wrap; }
+  code { background: var(--aura-bg-2); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: var(--brand-glow); }
+  blockquote { border-left: 2px solid var(--brand-soft); margin: 16px 0; padding: 8px 18px; background: var(--card-bg); border-radius: 4px; color: var(--ink-3); }
+  .tool { padding: 20px; border: 1.5px solid var(--card-border); border-radius: 14px; margin: 18px 0; background: var(--card-bg); }
+  .tool.recommended { border-color: var(--brand-glow); box-shadow: 0 0 0 4px rgba(184,212,255,0.08); }
+  .tool header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .tool header .rank { font-family: var(--font-mono); font-size: 12px; color: var(--ink-7); }
+  .tool header h3 { margin: 0; }
+  .tool header .badge { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px; background: var(--brand-glow); color: var(--aura-bg-0); }
+  .tool header .badge.ongoing { background: var(--brand-soft); color: var(--aura-bg-0); }
+  .tool p { margin: 8px 0; }
+  footer.page { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--card-border); font-family: var(--font-mono); font-size: 11px; color: var(--ink-7); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+<main>
+  <span class="eyebrow glow">Tool comparison · 2026-05-17</span>
+  <h1>AI design tools, <em>ranked for iMpatient.</em></h1>
+  <p class="lede">Usable within the hour. Output drops directly into the Next.js Pages Router repo. Honors the navy aura aesthetic, Gilroy + Geist Mono, and the voice rules in CLAUDE.md.</p>
+
+  <h2>TL;DR</h2>
+  <p><b style="color: var(--brand-glow);">Right now — v0 by Vercel.</b> Same vendor as the stack. Clean Next.js export. Three to five minutes per surface. Aesthetic ceiling reaches senior with careful prompting.</p>
+  <p><b style="color: var(--brand-soft);">Ongoing post-launch — Subframe.</b> Component-system-aware. Build a Gilroy + aura kit; AI generates against it. Highest design ceiling of any AI-adjacent tool.</p>
+
+  <h2>Criteria</h2>
+  <table>
+    <thead><tr><th>Criterion</th><th>Why it matters here</th></tr></thead>
+    <tbody>
+      <tr><td>Ingests live URL + repo</td><td>dev.impatient.app + this repo are the source of truth</td></tr>
+      <tr><td>Minutes prompt → output</td><td>13 days to launch</td></tr>
+      <tr><td>Design ceiling — senior vs generic-AI</td><td>Aura is premium SaaS; AI slop is unacceptable</td></tr>
+      <tr><td>Longitudinal chart fluency</td><td>Patterns is half the product</td></tr>
+      <tr><td>Aura aesthetic fidelity</td><td>Navy, hairlines, breathing halo, em-clause typography</td></tr>
+      <tr><td>iOS HIG + Material 3</td><td>App Store + Play launch May 30</td></tr>
+      <tr><td>Next.js Pages Router export</td><td>Existing repo + 13 days</td></tr>
+      <tr><td>Zero onboarding friction</td><td>No procurement, no sales call</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Ranked shortlist</h2>
+
+  <div class="tool recommended">
+    <header><span class="rank">01</span><h3>v0 by Vercel</h3><span class="badge">Use right now</span></header>
+    <p>Same vendor as the deployment target. Exports clean React + Tailwind (+ optional shadcn) with framework-aware Next.js scaffolding. Ingests URLs and screenshots. Iterative chat refinement preserves context. Time-to-screen: 3–5 minutes per surface. Design ceiling is genuinely premium when prompts include the aura tokens + voice rules — the model respects them. Zero procurement.</p>
+    <p>Risk: v0 has a default aesthetic (light-mode, shadcn, generic Tailwind) it falls into without strong prompting. <b style="color: var(--brand-glow);">Always paste the aura token block + voice rules into every prompt.</b> The prompts in <code>/_refinement/prompts/</code> do this automatically.</p>
+    <p><b style="color: var(--ink-0);">Best for:</b> the next 13 days. Today / Patterns / Concierge / Integrations / Profile surface ports. Mobile chrome.</p>
+  </div>
+
+  <div class="tool recommended">
+    <header><span class="rank">02</span><h3>Subframe</h3><span class="badge ongoing">Ongoing post-launch</span></header>
+    <p>Highest design ceiling of any AI-adjacent tool in 2026. Component-system-aware: you build a kit, AI generates against it. Exports React + Tailwind that reads like a senior frontend dev wrote it — not "AI-generated" in any obvious tell. Subframe-built components reuse cleanly; v0-built ones tend to re-paint each time.</p>
+    <p>Cost: heavier setup. Port the aura tokens + Withings form chrome + AuraHalo / AuraLoader / IntegrationCard / SourceGlyph into a Subframe library before AI can generate against them. ~2 days upfront, then compounds.</p>
+    <p><b style="color: var(--ink-0);">Best for:</b> post-launch, when the library is ~30+ components and the team is iterating against analytics + user feedback.</p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">03</span><h3>Lovable</h3></header>
+    <p>Full-project agent, GitHub-connected, iterates on whole flows. Heavier than v0; owns the project state. Best for end-to-end features (Onboarding, Travel Card composer, Settings tree). Less surgical for component-level work. Watch for big diffs.</p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">04</span><h3>Magic Patterns</h3></header>
+    <p>Generative UI with strong Tailwind output. Faster than Subframe for first drafts; weaker design ceiling than v0 once context grows. Useful for parallel ideation — three takes in 10 minutes, pick one, refine in v0.</p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">05</span><h3>Galileo AI</h3></header>
+    <p>Figma-mediated. Adds a designer step. Output is uneven. This team is dev-first — Figma adds friction without payoff. <b style="color: var(--ink-7);">Skip.</b></p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">06</span><h3>Google Stitch</h3></header>
+    <p>Solid for Material 3 specifically. iOS HIG fluency weaker. Reserve for Android-side polish post-launch if v0 isn't nailing Material 3.</p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">07</span><h3>Framer AI</h3></header>
+    <p>Locked into Framer's runtime. Export path to Next.js is poor. <b style="color: var(--ink-7);">Skip.</b></p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">08</span><h3>Relume</h3></header>
+    <p>Marketing-site sitemap + wireframe generator. iMpatient is an app, not a marketing site. <b style="color: var(--ink-7);">Skip.</b></p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">09</span><h3>Uizard</h3></header>
+    <p>Lower ceiling than v0 / Subframe. <b style="color: var(--ink-7);">Skip.</b></p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">10</span><h3>Mobbin + AI workflows</h3></header>
+    <p>Reference library, not a generator. Pair with Claude Code for "find a great X pattern, then build it." Useful for Cameron's iOS HIG reference vocabulary, not for output.</p>
+  </div>
+
+  <div class="tool">
+    <header><span class="rank">11</span><h3>Claude + Figma MCP</h3></header>
+    <p>Highest ceiling overall but slowest per screen (30+ min vs v0's 5). Reserve for v2 when the team hires a designer.</p>
+  </div>
+
+  <h2>Why v0 over Subframe right now</h2>
+  <p>The team has 13 days. v0 ships in three to five minutes per surface. Subframe ships in 30 minutes per surface but only after a 2-day port of the aura system into the Subframe library. v0 wins the launch window. Subframe wins everything after.</p>
+  <blockquote>Ship the launch with v0. In week one post-launch, port the live component library into Subframe in parallel. From that point on, iteration runs through Subframe.</blockquote>
+
+  <h2>The exact first three prompts to run in v0</h2>
+
+  <h3>Prompt 1 · System prime</h3>
+  <pre>You are designing a behavioral intelligence app called iMpatient — a
+co-doctor for chronic, hard-to-diagnose conditions (POTS, MS, MCAS,
+ME/CFS, dysautonomia). Aesthetic: navy aura, deep blue surfaces, single
+luminous brand-blue accent.
+
+Tokens — paste verbatim into your output's CSS:
+  --aura-bg-0:#060920; --aura-bg-1:#0A1230;
+  --brand-glow:#B8D4FF; --brand-soft:#7AB8FF;
+  --ink-0:#E6EEFF; --ink-3:#C9D5F0; --ink-5:#8C9BC4; --ink-7:#5F6E94;
+
+Type: Gilroy display (Fontshare) + Geist Mono (Google Fonts). Spacing
+on a 4pt grid.
+
+Voice: literary, calm, specific — "Your watch has been keeping a
+notebook for you." Hard rules — NEVER emoji, NEVER Inter or system
+fonts, NEVER light theme, NEVER AI-marketing tropes. Headlines use
+em-clauses: subject, then a softer italic em-tag clause. Eyebrows are
+mono-caps Geist Mono.
+
+Cards: translucent navy rgba(10,18,48,0.32) with 1.5px hairline
+borders rgba(124,153,220,0.18). Every page hero includes an aura halo
+behind the headline — radial gradient, brand-blue, 8s breathing
+animation, prefers-reduced-motion honored.
+
+All output must be a Next.js Pages Router page or component that imports
+the existing CSS-variable tokens. Confirm you understand. Do not output
+code yet — wait for the surface spec.</pre>
+
+  <h3>Prompt 2 · Today surface (ISSUE-002)</h3>
+  <pre>Build the Today surface for the Pro persona Grayson (47, nonprofit CEO,
+Washington D.C. → Geneva on Tuesday, RRMS + MCAS + ADHD +
+hypothyroidism).
+
+Layout — left sidebar (NOW / LIFE ADMIN / EVIDENCE sections), top
+breadcrumb chrome ("iMpatient / Today · live · Last sync 2m · Export"),
+main column.
+
+Hero — eyebrow "Pro · The Complex Human", headline "Grayson — Sunday
+evening read.", italic em-clause "Thursday is asking for a decision.",
+body "Across the indexed history of your last fourteen comparable
+weeks, Thursday carries an 81% probability of a significant
+neurological event if no change is made now." Right-aligned meta:
+tier + location string.
+
+Sections beneath:
+  · Persona block (identity, condition tags, the founder's narrative
+    line "Has crashed four times in two years. Each time she said: I
+    could see this coming. Now she actually can.")
+  · Weather strip (D.C. → Geneva, pressure delta foregrounded — pressure
+    is the strongest non-self predictor we have)
+  · Biometric strip (4 tiles: HRV / RHR / Sleep / Time on feet, each
+    with a sparkline)
+  · Sources strip (chip strip; warm dots = high signal weight today,
+    cool dots = baseline)
+  · Seven-day pattern preview card with a longitudinal thread
+
+No marketing language. No emoji. Output as pages/index.tsx ready to
+drop into the existing repo.</pre>
+
+  <h3>Prompt 3 · Patterns surface (ISSUE-005 frontend)</h3>
+  <pre>Build the Patterns surface (pages/patterns.tsx).
+
+Aura-hero with eyebrow "Patterns · evidence library", headline "The
+shape your body has been drawing,", italic em-clause "for fourteen
+weeks.", body "Your own data, organised by the relationships the engine
+has found and you have confirmed. This is what you show your doctor.
+This is what wins an insurance appeal."
+
+Below: a stats strip (4 mono numbers — pairs scored / passing
+significance / new this week / driving today's prediction). Then a
+hero pattern card titled "Barometric drop → 48h prodrome, r = 0.74"
+with a longitudinal thread + n-sample annotation.
+
+Then a library grid of 8 cards, each a different correlation pair with
+r-score and confidence. Card chrome: translucent navy
+rgba(10,18,48,0.32) with 1.5px hairline rgba(124,153,220,0.18), hover-lift.
+
+Last section: a locked-tier teaser ("Three more patterns are waiting.
+Open them at Pro.") rendered in dimmed treatment with a single CTA.
+
+Type uses the existing token scale — no hardcoded px.</pre>
+
+  <footer class="page">
+    <span>SymbAIo Inc. · A TELLER Ventures company</span>
+    <span>/_refinement/tool-comparison/tool-comparison.html · 2026-05-17</span>
+  </footer>
+</main>
+</body>
+</html>

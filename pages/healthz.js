@@ -1,0 +1,1 @@
+export default function H(){return <pre>{JSON.stringify({ok:true},null,2)}</pre>}

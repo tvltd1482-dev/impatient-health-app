@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iMpatient — Live + Codebase Assessment · 2026-05-17</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aura-bg-0:#060920; --aura-bg-1:#0A1230; --aura-bg-2:#0E1740;
+    --brand-glow:#B8D4FF; --brand-soft:#7AB8FF; --brand-royal:#2D5FE0;
+    --ink-0:#E6EEFF; --ink-3:#C9D5F0; --ink-5:#8C9BC4; --ink-7:#5F6E94; --ink-9:#1A2752;
+    --card-bg: rgba(10,18,48,0.32); --card-border: rgba(124,153,220,0.18);
+    --font-display:"Gilroy","Manrope",ui-sans-serif,sans-serif;
+    --font-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--aura-bg-0); color: var(--ink-0); font-family: var(--font-display); -webkit-font-smoothing: antialiased; line-height: 1.55; }
+  body { min-height: 100dvh; background: radial-gradient(ellipse 80% 50% at 50% 25%, rgba(45,95,224,0.18) 0%, rgba(6,9,32,0) 60%), var(--aura-bg-0); }
+  main { max-width: 820px; margin: 0 auto; padding: 64px 32px 96px; }
+  h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em; font-size: 56px; line-height: 1.04; margin: 0 0 12px; }
+  h1 em { font-style: italic; font-weight: 300; color: var(--ink-7); }
+  h2 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em; font-size: 28px; margin: 56px 0 16px; }
+  h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; margin: 28px 0 10px; color: var(--ink-0); }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-7); }
+  .eyebrow.glow { color: var(--brand-glow); }
+  .lede { font-size: 19px; color: var(--ink-3); max-width: 680px; margin: 16px 0 32px; line-height: 1.55; }
+  p { color: var(--ink-3); }
+  ul { padding-left: 22px; color: var(--ink-3); }
+  li { margin: 6px 0; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--card-border); vertical-align: top; }
+  th { font-family: var(--font-mono); font-weight: 500; color: var(--ink-7); text-transform: uppercase; letter-spacing: 0.12em; font-size: 11px; }
+  td { color: var(--ink-3); }
+  td:first-child { color: var(--ink-0); font-weight: 500; }
+  pre, code { font-family: var(--font-mono); }
+  pre { background: var(--aura-bg-1); padding: 18px; border-radius: 10px; overflow-x: auto; font-size: 12px; line-height: 1.55; border: 1px solid var(--card-border); color: var(--ink-3); }
+  code { background: var(--aura-bg-2); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: var(--brand-glow); }
+  blockquote { border-left: 2px solid var(--brand-soft); margin: 16px 0; padding: 8px 18px; background: var(--card-bg); border-radius: 4px; color: var(--ink-3); }
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.06em; }
+  .pill.p0 { background: var(--brand-glow); color: var(--aura-bg-0); }
+  .pill.p1 { background: var(--brand-soft); color: var(--aura-bg-0); }
+  .pill.p2 { border: 1px solid var(--ink-7); color: var(--ink-5); }
+  .pill.blocked { background: transparent; border: 1px solid var(--brand-glow); color: var(--brand-glow); margin-left: 6px; }
+  .issue { padding: 18px; border: 1px solid var(--card-border); border-radius: 10px; margin: 14px 0; background: var(--card-bg); }
+  .issue header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+  .issue header .id { font-family: var(--font-mono); font-size: 12px; color: var(--ink-7); }
+  .issue header .title { font-weight: 600; font-size: 17px; color: var(--ink-0); }
+  .issue p { margin: 6px 0; font-size: 14px; }
+  .meta-strip { display: flex; flex-wrap: wrap; gap: 28px; font-family: var(--font-mono); font-size: 11px; color: var(--ink-7); margin-bottom: 24px; letter-spacing: 0.06em; }
+  .meta-strip span b { color: var(--brand-glow); font-weight: 500; letter-spacing: 0.08em; }
+  hr { border: 0; border-top: 1px solid var(--card-border); margin: 40px 0; }
+  footer.page { margin-top: 72px; padding-top: 18px; border-top: 1px solid var(--card-border); font-family: var(--font-mono); font-size: 11px; color: var(--ink-7); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+<main>
+  <span class="eyebrow glow">Assessment · 2026-05-17 · launch 2026-05-30</span>
+  <h1>iMpatient™ — <em>live + codebase assessment.</em></h1>
+  <p class="lede">Grounded in three sources, in order of authority: dev.impatient.app (live), the artifact prototype shared at session start, and the constitution (BRIEF/CLAUDE/HANDOFF held externally).</p>
+
+  <div class="meta-strip">
+    <span>Repo before this pass: <b>6 files · 3,468 B</b></span>
+    <span>Branch: <b>claude/impatient-build-0fXKy</b></span>
+    <span>Live: <b>403 on all probes</b></span>
+    <span>Days to launch: <b>13</b></span>
+  </div>
+
+  <h2>0 · Method</h2>
+  <p>Three sources, in order of authority:</p>
+  <ol style="color: var(--ink-3);">
+    <li><b style="color: var(--ink-0);">dev.impatient.app</b> — single source of brand truth. Visible via screenshots shared at session start. Direct probe returns 403.</li>
+    <li><b style="color: var(--ink-0);">The artifact prototype</b> — index.html, tweaks-panel.jsx, iMpatient__Standalone.source.html. Defines surfaces + aura design system.</li>
+    <li><b style="color: var(--ink-0);">The constitution</b> — BRIEF.md / CLAUDE.md / HANDOFF.md, held externally. Personas (Harlow / Bella / Grayson, sacred). Voice rules. Engineering conventions.</li>
+  </ol>
+
+  <h2>1 · Live build state</h2>
+  <table>
+    <thead><tr><th>Probe</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET dev.impatient.app/</code></td><td>HTTP 403 Forbidden</td></tr>
+      <tr><td><code>GET dev.impatient.app/healthz</code></td><td>HTTP 403 Forbidden</td></tr>
+      <tr><td><code>GET dev.impatient.app/api/generate</code></td><td>HTTP 403 Forbidden</td></tr>
+      <tr><td><code>GET impatient.app/</code></td><td>HTTP 403 Forbidden</td></tr>
+      <tr><td><code>GET www.impatient.app/</code></td><td>HTTP 403 Forbidden</td></tr>
+    </tbody>
+  </table>
+  <blockquote>Live is fully gated. I could not directly probe the rendered UI — but the screenshots establish the brand truth: navy aura, cloud-mark top-left, "IMPATIENT / TODAY · live · Last sync 2m · Export" chrome, persona block, Gilroy display + Geist Mono. Lift the gate on a non-prod preview before v0 / Subframe can ingest the URL.</blockquote>
+
+  <h2>2 · Codebase state — what was actually shipping</h2>
+  <h3>2.1 Repo inventory (before this pass)</h3>
+  <pre>.env.example                         51 B   INVITE_CODE, BACKEND_URL, OPENAI_API_KEY
+README.md                           895 B   Replit-to-Vercel instructions
+package.json                        270 B   next 14.2.3, react 18.2 — no Tailwind
+pages/index.tsx                     957 B   textarea + Generate button, inline styles
+pages/api/generate.js             1,214 B   OpenAI gpt-4o-mini fallback
+pages/healthz.js                     81 B   { ok: true }</pre>
+
+  <h3>2.2 What the deployed code actually does</h3>
+  <p><code>pages/index.tsx</code> renders a textarea + Generate button in inline <code>padding:'2rem',fontFamily:'sans-serif'</code>. <b>It does not resemble the aura prototype on any axis</b> — wrong palette, wrong typography, wrong information architecture, wrong voice.</p>
+  <p><code>pages/api/generate.js</code> calls <code>api.openai.com</code> with <code>gpt-4o-mini</code>. CLAUDE.md is explicit: <i>"Mønk™ is built on Claude (Anthropic) for alignment with these principles."</i> Contradiction. See ISSUE-004.</p>
+
+  <h3>2.3 Gap — Vercel stub vs aura prototype</h3>
+  <table>
+    <thead><tr><th>Surface</th><th>Live aura prototype</th><th>Vercel stub (before pass)</th></tr></thead>
+    <tbody>
+      <tr><td>Palette</td><td>Navy <code>#060920</code> + brand-glow <code>#B8D4FF</code></td><td>None — inline sans-serif</td></tr>
+      <tr><td>Type</td><td>Gilroy + Geist Mono</td><td>System sans</td></tr>
+      <tr><td>Hero</td><td>Persona-driven aura-hero, em-clause headlines</td><td><code>&lt;h1&gt;iMpatient™ Demo&lt;/h1&gt;</code></td></tr>
+      <tr><td>Surfaces</td><td>Today / Coach / Patterns / Concierge / Profile / Integrations + 4 queued</td><td>One textarea</td></tr>
+      <tr><td>Brand mark</td><td>Cloud-mark SVG</td><td>None</td></tr>
+      <tr><td>Personas</td><td>Harlow / Bella / Grayson (sacred)</td><td>None</td></tr>
+      <tr><td>Backend</td><td>Claude (Anthropic)</td><td>OpenAI gpt-4o-mini</td></tr>
+      <tr><td>Mobile</td><td>App Store + Play in 13 days</td><td>No manifest, no icon, no viewport meta</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3 · Issues, ranked</h2>
+  <h3 class="eyebrow glow" style="margin-top: 32px; font-family: var(--font-mono); font-size: 13px;">P0 · ship today</h3>
+
+  <div class="issue"><header><span class="id">ISSUE-001</span><span class="pill p0">P0</span><span class="title">Port aura design tokens</span></header>
+    <p>Mandate Gilroy + Geist Mono. Wire <code>--text-scale</code>. Light theme is a non-do per constitution.</p>
+    <p><b>Owner.</b> Lachlan</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-002</span><span class="pill p0">P0</span><span class="title">Replace textarea with Today as canonical landing</span></header>
+    <p>Persona-driven aura-hero with em-clause headline. Shipped scaffold; v0 expands.</p>
+    <p><b>Owner.</b> Lachlan</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-003</span><span class="pill p0">P0</span><span class="title">Cloud-mark + mønk™ inline wordmark</span></header>
+    <p>Literal stroked ø glyph. AT-announced correctly.</p>
+    <p><b>Owner.</b> Lachlan</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-004</span><span class="pill p0">P0</span><span class="pill blocked">BLOCKED</span><span class="title">Swap /api/generate · OpenAI → Anthropic</span></header>
+    <p><code>claude-sonnet-4-6</code> for interpret/coach, <code>claude-haiku-4-5-20251001</code> for classify. <code>x-invite-code</code> header validation. Full API spec in sprint-board.json.</p>
+    <p><b>Owner.</b> Venkat</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-005</span><span class="pill p0">P0</span><span class="pill blocked">BLOCKED</span><span class="title">GET /api/patterns data contract</span></header>
+    <p>Today + Patterns + Foresight all depend. Frontend stubs render gracefully. Data contract in sprint-board.json.</p>
+    <p><b>Owner.</b> Lachlan + Venkat</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-006</span><span class="pill p0">P0</span><span class="title">Port personas system</span></header>
+    <p>Three personas — sacred. Display: Harlow / Bella / Grayson. Internal IDs (stable keys): kezia / simone / renee.</p>
+    <p><b>Owner.</b> Lachlan</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-007</span><span class="pill p0">P0</span><span class="title">PWA + mobile primitives</span></header>
+    <p>App Store + Play reject without. Manifest <code>#060920</code>, apple-touch-icon, viewport-fit=cover.</p>
+    <p><b>Owner.</b> Cameron</p></div>
+
+  <div class="issue"><header><span class="id">ISSUE-008</span><span class="pill p0">P0</span><span class="title">AuraHalo + AuraLoader</span></header>
+    <p>Every PageHero gets an AuraHalo. AuraLoader is the doctor-brief soul moment.</p>
+    <p><b>Owner.</b> Cameron</p></div>
+
+  <h3 class="eyebrow" style="margin-top: 32px; font-family: var(--font-mono); font-size: 13px; color: var(--brand-soft);">P1 · ship this week</h3>
+
+  <div class="issue"><header><span class="id">ISSUE-009</span><span class="pill p1">P1</span><span class="title">Withings form chrome port</span></header><p><b>Owner.</b> Lachlan</p></div>
+  <div class="issue"><header><span class="id">ISSUE-010</span><span class="pill p1">P1</span><span class="title">Coach surface · Anthropic SDK port</span></header><p><b>Owner.</b> Lachlan + Venkat</p></div>
+  <div class="issue"><header><span class="id">ISSUE-011</span><span class="pill p1">P1</span><span class="title">Patterns surface · hero + library + locked-tier teaser</span></header><p><b>Owner.</b> Lachlan</p></div>
+  <div class="issue"><header><span class="id">ISSUE-012</span><span class="pill p1">P1</span><span class="title">Concierge surface · appointment loop + doctor-side AuraLoader</span></header><p><b>Owner.</b> Lachlan + Cameron</p></div>
+  <div class="issue"><header><span class="id">ISSUE-013</span><span class="pill p1">P1</span><span class="title">Integrations surface · tier-gated card grid</span></header><p><b>Owner.</b> Lachlan</p></div>
+  <div class="issue"><header><span class="id">ISSUE-014</span><span class="pill p1">P1</span><span class="title">Voice + persona-name audit</span></header><p>Live shows legacy "Renee"; per HANDOFF post-rename is Grayson. Live + constitution inconsistent.<br><b>Owner.</b> Lachlan</p></div>
+  <div class="issue"><header><span class="id">ISSUE-015</span><span class="pill p1">P1</span><span class="title">Privacy + Terms · store-submission</span></header><p><b>Owner.</b> Lachlan</p></div>
+  <div class="issue"><header><span class="id">ISSUE-016</span><span class="pill p1">P1</span><span class="title">Accessibility primitives</span></header><p><b>Owner.</b> Cameron</p></div>
+
+  <h3 class="eyebrow" style="margin-top: 32px; font-family: var(--font-mono); font-size: 13px; color: var(--ink-7);">P2 · post-launch backlog</h3>
+  <ul>
+    <li><b style="color: var(--ink-0)">ISSUE-017</b> · Onboarding</li>
+    <li><b style="color: var(--ink-0)">ISSUE-018</b> · Foresight detail (Flare prediction drill-down)</li>
+    <li><b style="color: var(--ink-0)">ISSUE-019</b> · 30-Day Summary</li>
+    <li><b style="color: var(--ink-0)">ISSUE-020</b> · Conditions library (NIH/NHS/Mayo cited)</li>
+    <li><b style="color: var(--ink-0)">ISSUE-021</b> · Admin queue (agentic actions)</li>
+    <li><b style="color: var(--ink-0)">ISSUE-022</b> · Travel Card composer</li>
+    <li><b style="color: var(--ink-0)">ISSUE-023</b> · Cost of Care ledger</li>
+    <li><b style="color: var(--ink-0)">ISSUE-024</b> · Settings</li>
+    <li><b style="color: var(--ink-0)">ISSUE-025</b> · Telemetry (PostHog self-hosted)</li>
+  </ul>
+
+  <h2>4 · What MUST NOT be touched</h2>
+  <table>
+    <thead><tr><th>Surface</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><code>pages/api/generate.js</code> routing shape</td><td>Swap provider only.</td></tr>
+      <tr><td><code>pages/healthz.js</code></td><td>Load-balancer probe.</td></tr>
+      <tr><td><code>INVITE_CODE</code> env name</td><td>Provisioned in Vercel.</td></tr>
+      <tr><td>Pages Router</td><td>No App Router migration before launch.</td></tr>
+      <tr><td><code>next 14.2.3</code> pin</td><td>No upgrade in the 13-day window.</td></tr>
+      <tr><td>Persona internal IDs (kezia / simone / renee)</td><td>Stable keys. Only display names change.</td></tr>
+      <tr><td>The mønk™ ø glyph</td><td>Literal Unicode. Never encoded.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5 · What was scaffolded in this pass</h2>
+  <pre>styles/tokens.css                   new
+styles/globals.css                  new
+pages/_app.js                       new
+pages/_document.js                  new
+pages/index.tsx                     replaced (Today)
+pages/foresight.tsx                 new (stub)
+pages/coach.tsx                     new (stub)
+pages/admin.tsx                     new (stub)
+pages/patterns.tsx                  new
+pages/travel-card.tsx               new (stub)
+pages/cost-of-care.tsx              new (stub)
+pages/integrations.tsx              new
+pages/profile.tsx                   new (stub)
+pages/privacy.tsx                   new
+pages/terms.tsx                     new
+components/AuraHalo.tsx             new
+components/Wordmark.tsx             new
+components/PatternThread.tsx        new
+components/InviteGate.tsx           new
+components/PageShell.tsx            new
+components/PageHero.tsx             new
+components/Sidebar.tsx              new
+components/Topbar.tsx               new
+components/personas.ts              new
+public/manifest.webmanifest         new
+public/icon.svg                     new
+public/icon-maskable.svg            new
+tsconfig.json                       new
+package.json                        updated</pre>
+
+  <h2>6 · Recommended next action (today)</h2>
+  <ol>
+    <li><b style="color: var(--ink-0)">Lachlan</b> · <code>npm install && npm run dev</code> · verify all routes render the aura aesthetic without console errors</li>
+    <li><b style="color: var(--ink-0)">Lachlan</b> · paste <code>prompts/ISSUE-002.md</code> into v0 · expand Today surface to senior fidelity</li>
+    <li><b style="color: var(--ink-0)">Cameron</b> · validate manifest + icons against Apple HIG + Play Console</li>
+    <li><b style="color: var(--ink-0)">Venkat</b> · swap OpenAI → Anthropic in <code>pages/api/generate.js</code> · add <code>ANTHROPIC_API_KEY</code> to Vercel</li>
+    <li><b style="color: var(--ink-0)">Venkat</b> · implement <code>GET /api/patterns</code> per the contract</li>
+    <li>Work the P1 list in sprint-board.html sort order</li>
+  </ol>
+
+  <footer class="page">
+    <span>SymbAIo Inc. · A TELLER Ventures company</span>
+    <span>/_refinement/assessment/live-build-assessment.html · 2026-05-17</span>
+  </footer>
+</main>
+</body>
+</html>

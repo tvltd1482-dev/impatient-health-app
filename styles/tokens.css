@@ -1,0 +1,91 @@
+/*
+  iMpatient — aura design tokens (Next.js port).
+
+  Sourced from the artifact prototype at dev.impatient.app — that build is the
+  single source of brand aesthetic. Constitution: CLAUDE.md → "Aura over light
+  theme. Navy is the brand." → "Never use Inter, Roboto, system fonts. Brand
+  is Gilroy + Geist Mono."
+
+  Never hardcode px in components. Use the scale tokens — they multiply
+  through --text-scale (Tweaks-driven accessibility control).
+*/
+
+:root {
+  /* surface — deepest navy → page surfaces */
+  --aura-bg-0: #060920;
+  --aura-bg-1: #0A1230;
+  --aura-bg-2: #0E1740;
+  --aura-bg-3: #16225A;
+
+  /* brand blue scale */
+  --brand-glow:  #B8D4FF;   /* luminous core · active-right-now emphasis */
+  --brand-soft:  #7AB8FF;   /* primary accent */
+  --brand-royal: #2D5FE0;   /* mid */
+  --brand-deep:  #1E40AF;   /* depth */
+  --brand-shade: #0F1F5C;   /* deepest */
+
+  /* ink — bluer-tinted, NOT neutral grey */
+  --ink-0: #E6EEFF;
+  --ink-3: #C9D5F0;
+  --ink-5: #8C9BC4;
+  --ink-7: #5F6E94;
+  --ink-9: #1A2752;
+
+  /* the only warm exception — reserved for high-signal-weight states */
+  --warm-peach: oklch(0.78 0.13 60);
+
+  /* type — Gilroy display + Geist Mono. NEVER Inter / Roboto / system. */
+  --font-display: "Gilroy", "Manrope", "Helvetica Neue", ui-sans-serif, sans-serif;
+  --font-sans:    "Gilroy", "Manrope", "Helvetica Neue", ui-sans-serif, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* scale base — driven by Tweaks panel via --text-scale on :root */
+  --text-scale: 1;
+  --t-xs:   calc(11px * var(--text-scale));
+  --t-sm:   calc(13px * var(--text-scale));
+  --t-base: calc(15px * var(--text-scale));
+  --t-md:   calc(17px * var(--text-scale));
+  --t-lg:   calc(20px * var(--text-scale));
+  --t-xl:   calc(28px * var(--text-scale));
+  --t-2xl:  calc(40px * var(--text-scale));
+  --t-3xl:  calc(56px * var(--text-scale));
+  --t-4xl:  calc(80px * var(--text-scale));
+
+  --tracking-tight:   -0.025em;
+  --tracking-snug:    -0.012em;
+  --tracking-eyebrow:  0.16em;
+
+  --leading-display: 1.04;
+  --leading-body:    1.55;
+
+  /* spacing — 4pt grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --space-10: 128px;
+
+  /* radii */
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 14px;
+  --radius-4: 20px;
+  --radius-pill: 999px;
+
+  /* motion */
+  --ease-aura:  cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur-fast:   140ms;
+  --dur-med:    240ms;
+  --dur-slow:   380ms;
+  --dur-breath: 8000ms;
+
+  /* card chrome — translucent navy + bluer hairlines, per HANDOFF */
+  --card-bg:     rgba(10, 18, 48, 0.32);
+  --card-border: rgba(124, 153, 220, 0.18);
+  --card-border-strong: rgba(124, 153, 220, 0.32);
+}

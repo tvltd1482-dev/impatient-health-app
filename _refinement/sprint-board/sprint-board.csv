@@ -1,0 +1,26 @@
+id,title,screen,priority,owner,blocked,blocked_reason,tool,repo_paths,prompt_file
+ISSUE-001,Port aura design tokens into the Next.js repo,global,P0,Lachlan,FALSE,,v0 by Vercel,"styles/tokens.css;styles/globals.css;pages/_app.js;pages/_document.js",prompts/ISSUE-001.md
+ISSUE-002,Replace developer textarea with Today as canonical landing,/,P0,Lachlan,FALSE,,v0 by Vercel,"pages/index.tsx;components/PageShell.tsx;components/PageHero.tsx",prompts/ISSUE-002.md
+ISSUE-003,Build iMpatient cloud-mark + mønk™ inline wordmark,global,P0,Lachlan,FALSE,,v0 by Vercel,components/Wordmark.tsx,prompts/ISSUE-003.md
+ISSUE-004,Swap /api/generate from OpenAI to Anthropic,n/a (backend),P0,Venkat,TRUE,"Requires ANTHROPIC_API_KEY + SDK install. Frontend POST shape unchanged.",Claude Code (local) — backend,pages/api/generate.js,prompts/ISSUE-004.md
+ISSUE-005,"Pattern data contract — GET /api/patterns","/,/patterns",P0,Lachlan + Venkat,TRUE,"Awaiting data contract implementation; frontend stubs render gracefully.",Claude Code (backend) + v0 (frontend),"pages/api/patterns.js;pages/index.tsx;pages/patterns.tsx;components/PatternThread.tsx",prompts/ISSUE-005.md
+ISSUE-006,Port personas system into Next.js,global,P0,Lachlan,FALSE,,Claude Code (local),components/personas.ts,prompts/ISSUE-006.md
+ISSUE-007,PWA + mobile primitives for App Store / Play submission,global,P0,Cameron,FALSE,,Claude Code (local) + v0,"public/manifest.webmanifest;public/icon.svg;public/icon-maskable.svg;pages/_document.js",prompts/ISSUE-007.md
+ISSUE-008,AuraHalo backdrop + AuraLoader,global,P0,Cameron,FALSE,,v0 by Vercel,"components/AuraHalo.tsx;components/AuraLoader.tsx",prompts/ISSUE-008.md
+ISSUE-009,Port Withings form chrome,"/profile, /integrations, /settings, /onboarding",P1,Lachlan,FALSE,,v0 by Vercel,"styles/forms.css;components/FormField.tsx;components/Segmented.tsx;components/Toggle.tsx;components/ListRow.tsx",prompts/ISSUE-009.md
+ISSUE-010,Port Coach — Anthropic SDK (not window.claude.complete),/coach,P1,Lachlan + Venkat,FALSE,"Soft dep on ISSUE-004 endpoint swap.",v0 by Vercel + Claude Code,"pages/coach.tsx;pages/api/coach.js;components/CoachShell.tsx;components/CoachThread.tsx",prompts/ISSUE-010.md
+ISSUE-011,Patterns surface — hero card + library grid + locked-tier hint,/patterns,P1,Lachlan,FALSE,"Soft dep on ISSUE-005 correlations payload.",v0 by Vercel,"pages/patterns.tsx;components/PatternCard.tsx;components/PatternLibrary.tsx",prompts/ISSUE-011.md
+ISSUE-012,Concierge surface — appointment loop + doctor-side soul moment,/concierge,P1,Lachlan + Cameron,FALSE,,v0 by Vercel,"pages/concierge.tsx;components/AuraLoader.tsx;components/ConciergePhases.tsx",prompts/ISSUE-012.md
+ISSUE-013,Integrations surface — tier-gated card grid with mono-glyphs,/integrations,P1,Lachlan,FALSE,,v0 by Vercel,"pages/integrations.tsx;components/IntegrationCard.tsx;components/SourceGlyph.tsx",prompts/ISSUE-013.md
+ISSUE-014,Voice + persona-name consistency audit,global,P1,Lachlan,FALSE,,Claude Code (local),"pages/**;components/**",prompts/ISSUE-014.md
+ISSUE-015,Privacy + Terms pages for App Store / Play submission,"/privacy, /terms",P1,Lachlan,FALSE,Counsel review for final copy.,Claude Code (local) + counsel,"pages/privacy.tsx;pages/terms.tsx",prompts/ISSUE-015.md
+ISSUE-016,Accessibility primitives,global,P1,Cameron,FALSE,,Claude Code (local) + v0,"pages/_app.js;components/**;pages/**",prompts/ISSUE-016.md
+ISSUE-017,"Onboarding flow — calm, not interrogated",/onboarding,P2,Lachlan,FALSE,,v0 by Vercel,"pages/onboarding/intro.tsx;pages/onboarding/privacy.tsx;pages/onboarding/connect.tsx;pages/onboarding/baseline.tsx",prompts/ISSUE-017.md
+ISSUE-018,Foresight detail — flare prediction drill-down,/foresight/[id],P2,Lachlan,FALSE,,v0 by Vercel,pages/foresight/[id].tsx,prompts/ISSUE-018.md
+ISSUE-019,"30-Day Summary — narrative-first, not chart-first",/patterns/30-day,P2,Lachlan,FALSE,,v0 by Vercel,pages/patterns/30-day.tsx,prompts/ISSUE-019.md
+ISSUE-020,Conditions library — citable global database,/conditions/[slug],P2,Lachlan,FALSE,,v0 by Vercel + Claude Code,"pages/conditions/[slug].tsx;data/conditions.json",prompts/ISSUE-020.md
+ISSUE-021,Admin queue — agentic actions,/admin/queue,P2,Lachlan + Venkat,FALSE,Soft dep on agentic-action backend.,v0 by Vercel,"pages/admin/queue.tsx;components/AgentAction.tsx",prompts/ISSUE-021.md
+ISSUE-022,Travel Card composer,/travel-card,P2,Lachlan,FALSE,Soft dep on PDF + QR backend.,v0 by Vercel,"pages/travel-card.tsx;components/TravelCardComposer.tsx",prompts/ISSUE-022.md
+ISSUE-023,Cost of Care ledger,/cost-of-care,P2,Lachlan,FALSE,,v0 by Vercel,"pages/cost-of-care.tsx;components/SpendLedger.tsx",prompts/ISSUE-023.md
+ISSUE-024,"Settings — account, billing, data export, danger zone",/settings,P2,Lachlan,FALSE,,v0 by Vercel,pages/settings.tsx,prompts/ISSUE-024.md
+ISSUE-025,Telemetry instrumentation (PostHog self-hosted),global,P2,Venkat,FALSE,,Claude Code (local),"lib/analytics.ts;lib/useTrack.ts",prompts/ISSUE-025.md

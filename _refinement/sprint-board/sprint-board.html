@@ -1,0 +1,729 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iMpatient Sprint Board · 2026-05-17</title>
+<link rel="preconnect" href="https://api.fontshare.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --aura-bg-0:#060920; --aura-bg-1:#0A1230; --aura-bg-2:#0E1740; --aura-bg-3:#16225A;
+    --brand-glow:#B8D4FF; --brand-soft:#7AB8FF; --brand-royal:#2D5FE0; --brand-deep:#1E40AF;
+    --ink-0:#E6EEFF; --ink-3:#C9D5F0; --ink-5:#8C9BC4; --ink-7:#5F6E94; --ink-9:#1A2752;
+    --card-bg: rgba(10, 18, 48, 0.32); --card-border: rgba(124, 153, 220, 0.18);
+    --p0:#B8D4FF; --p1:#7AB8FF; --p2:#5F6E94;
+    --font-display:"Gilroy","Manrope",ui-sans-serif,system-ui,sans-serif;
+    --font-mono:"Geist Mono",ui-monospace,Menlo,monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--aura-bg-0); color: var(--ink-0); font-family: var(--font-display); -webkit-font-smoothing: antialiased; }
+  body {
+    min-height: 100dvh;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 25%, rgba(45,95,224,0.20) 0%, rgba(6,9,32,0) 60%),
+      var(--aura-bg-0);
+  }
+  main { max-width: 1280px; margin: 0 auto; padding: 48px 32px 96px; }
+  h1 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.025em; font-size: 40px; margin: 0 0 4px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-7); }
+  .eyebrow.glow { color: var(--brand-glow); }
+  header.page { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; gap: 24px; flex-wrap: wrap; }
+  .meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 16px; margin-bottom: 32px; padding: 24px; border: 1.5px solid var(--card-border); border-radius: 14px; background: var(--card-bg); }
+  .meta div { display: flex; flex-direction: column; gap: 6px; }
+  .meta div b { font-size: 17px; font-weight: 600; color: var(--ink-0); }
+  .meta small { font-size: 12px; color: var(--ink-7); }
+  .controls { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; align-items: center; padding: 12px 16px; border: 1px solid var(--card-border); border-radius: 8px; background: rgba(10,18,48,0.4); }
+  .controls label { display: inline-flex; flex-direction: column; gap: 4px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-7); }
+  .controls select, .controls input { font-family: var(--font-display); font-size: 14px; padding: 6px 10px; background: var(--aura-bg-1); color: var(--ink-0); border: 1px solid var(--card-border); border-radius: 6px; min-width: 120px; }
+  .controls select:focus, .controls input:focus { outline: 2px solid var(--brand-soft); outline-offset: 1px; }
+  .controls .count { margin-left: auto; font-family: var(--font-mono); font-size: 12px; color: var(--ink-5); align-self: flex-end; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 14px 12px; border-bottom: 1px solid var(--card-border); vertical-align: top; }
+  th { font-family: var(--font-mono); font-weight: 500; cursor: pointer; user-select: none; color: var(--ink-7); text-transform: uppercase; letter-spacing: 0.12em; font-size: 11px; white-space: nowrap; }
+  th:hover { color: var(--ink-0); }
+  th.sort-asc::after  { content: ' ↑'; color: var(--brand-glow); }
+  th.sort-desc::after { content: ' ↓'; color: var(--brand-glow); }
+  td.id { font-family: var(--font-mono); font-size: 12px; white-space: nowrap; color: var(--ink-5); }
+  td.title { font-weight: 600; max-width: 360px; color: var(--ink-0); }
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.06em; }
+  .pill.p0 { background: var(--brand-glow); color: var(--aura-bg-0); }
+  .pill.p1 { background: var(--brand-soft); color: var(--aura-bg-0); }
+  .pill.p2 { border: 1px solid var(--ink-7); color: var(--ink-5); }
+  .pill.blocked { background: transparent; border: 1px solid var(--brand-glow); color: var(--brand-glow); margin-left: 6px; }
+  tr.blocked td.title::before { content: ''; }
+  tr.blocked { background: rgba(184,212,255,0.04); }
+  details { margin-top: 6px; }
+  details summary { font-family: var(--font-mono); font-size: 11px; color: var(--brand-soft); cursor: pointer; letter-spacing: 0.08em; text-transform: uppercase; }
+  details summary:hover { color: var(--brand-glow); }
+  details > div { margin-top: 12px; padding: 16px; background: var(--aura-bg-1); border: 1px solid var(--card-border); border-radius: 8px; font-size: 13px; color: var(--ink-3); }
+  details > div > p { margin: 6px 0; }
+  details > div > p > b { color: var(--ink-0); font-weight: 600; }
+  code { font-family: var(--font-mono); font-size: 12px; background: var(--aura-bg-2); padding: 2px 6px; border-radius: 4px; color: var(--brand-glow); }
+  footer.page { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--card-border); font-family: var(--font-mono); font-size: 11px; color: var(--ink-7); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; letter-spacing: 0.06em; }
+  .countdown { font-family: var(--font-mono); font-size: 12px; color: var(--brand-glow); letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<main>
+  <header class="page">
+    <div>
+      <span class="eyebrow glow">Sprint Board · 2026-05-17</span>
+      <h1>iMpatient UX Refinement</h1>
+      <span class="eyebrow">25 issues · ranked by impact against the May 30 launch</span>
+    </div>
+    <div class="countdown" id="launch-countdown"></div>
+  </header>
+
+  <section class="meta">
+    <div><span class="eyebrow">Live URL</span><b>dev.impatient.app</b><small>HTTP 403 on all probes · gated</small></div>
+    <div><span class="eyebrow">Brand source of truth</span><b>dev.impatient.app</b><small>aura · navy · Gilroy + Geist Mono</small></div>
+    <div><span class="eyebrow">Recommended · now</span><b>v0 by Vercel</b><small>same vendor, paste-and-ship</small></div>
+    <div><span class="eyebrow">Recommended · ongoing</span><b>Subframe</b><small>highest design ceiling</small></div>
+  </section>
+
+  <div class="controls">
+    <label>Priority
+      <select id="f-priority">
+        <option value="">All</option>
+        <option value="P0">P0</option>
+        <option value="P1">P1</option>
+        <option value="P2">P2</option>
+      </select>
+    </label>
+    <label>Owner
+      <select id="f-owner">
+        <option value="">All</option>
+      </select>
+    </label>
+    <label>Blocked
+      <select id="f-blocked">
+        <option value="">All</option>
+        <option value="true">Blocked only</option>
+        <option value="false">Unblocked only</option>
+      </select>
+    </label>
+    <label style="flex: 1 1 200px;">Search
+      <input type="text" id="f-search" placeholder="title · found · fix · prompt">
+    </label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <table id="board">
+    <thead>
+      <tr>
+        <th data-sort="id">ID</th>
+        <th data-sort="priority">Priority</th>
+        <th data-sort="title">Title</th>
+        <th data-sort="screen">Screen</th>
+        <th data-sort="owner">Owner</th>
+        <th data-sort="tool">Tool</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <footer class="page">
+    <span>SymbAIo Inc. · A TELLER Ventures company · /_refinement/sprint-board/sprint-board.html</span>
+    <span id="footer-generated"></span>
+  </footer>
+</main>
+
+<script id="board-data" type="application/json">{
+  "package": "2026-05-17_iMpatient_UX_Refinement_Package",
+  "generated_at": "2026-05-17",
+  "launch_target": "2026-05-30",
+  "days_to_launch": 13,
+  "live_url": "https://dev.impatient.app",
+  "live_url_state_observed_2026_05_17": "HTTP 403 on /, /healthz, /api/generate, impatient.app, www.impatient.app — fully gated at the edge. Could not directly inspect the rendered UI; brand truth grounded in screenshots + the artifact prototype shared at session start (index.html, tweaks-panel.jsx, iMpatient__Standalone.source.html).",
+  "repo_state_observed_2026_05_17_before_pass": "6-file Replit→Vercel starter (3,468 bytes total). Next.js 14.2.3 Pages Router. pages/index.tsx was a textarea + Generate button. pages/api/generate.js proxies OpenAI gpt-4o-mini (contradicts the Claude-API stack stated in CLAUDE.md).",
+  "brand_source_of_truth": "dev.impatient.app — single source of brand aesthetic. Aura design system: navy #060920 surfaces, luminous brand-blue #B8D4FF halo, breathing animation, time-of-day hue shift. Gilroy + Geist Mono. Never light theme. Never Inter/Roboto/system fonts. Never emoji.",
+  "owners": {
+    "Lachlan": "frontend",
+    "Venkat":  "data layer / backend",
+    "Cameron": "motion / interaction / platform"
+  },
+  "recommended_tool_now": "v0 by Vercel",
+  "recommended_tool_ongoing": "Subframe",
+  "do_not_touch": [
+    "pages/api/generate.js routing shape — POST { prompt } → { text }. Swap provider only (OpenAI → Anthropic). Do not restructure.",
+    "pages/healthz.js — load-balancer health probe.",
+    "INVITE_CODE env var name — provisioned in Vercel.",
+    "impatient-replit-to-vercel.zip — historical shipping artifact, leave in repo for audit.",
+    "Next.js Pages Router — no App Router migration before launch.",
+    "next 14.2.3 pin — no upgrade in the 13-day window.",
+    "Persona internal IDs (kezia, simone, renee) — they are stable keys across the codebase. Only the DISPLAY names change to Harlow/Bella/Grayson per CLAUDE.md."
+  ],
+  "issues": [
+    {
+      "id": "ISSUE-001",
+      "title": "Port aura design tokens into the Next.js repo",
+      "screen": "global",
+      "element": "styles/tokens.css + styles/globals.css + pages/_document.js",
+      "found": "Repo had no design tokens. Every style in the deployed pages/index.tsx was inline, system sans-serif, no palette. CLAUDE.md mandates: Gilroy + Geist Mono (NEVER Inter/Roboto/system), navy aura surfaces, --text-scale custom property driven by Tweaks panel, no light theme.",
+      "fix": "Shipped: styles/tokens.css with full aura palette (--aura-bg-0 #060920 … --brand-glow #B8D4FF), Gilroy + Geist Mono font tokens, --text-scale-driven type scale (--t-xs through --t-4xl), --ease-aura motion. styles/globals.css imports Fontshare Gilroy + Google Geist Mono, applies the navy backdrop, sets focus rings to brand-soft, honors prefers-reduced-motion. _document.js declares theme-color #060920 and apple-mobile-web-app metas.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-001.md",
+      "acceptance": "All future generations are constrained to these tokens — paste the token list into every v0 prompt. No Inter/Roboto anywhere in the codebase (grep returns zero). Toggling --text-scale (0.92 / 1.00 / 1.15 / 1.30) rescales every type element on every page without per-component edits.",
+      "owner": "Lachlan",
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["styles/tokens.css", "styles/globals.css", "pages/_app.js", "pages/_document.js"]
+    },
+    {
+      "id": "ISSUE-002",
+      "title": "Replace developer textarea with Today as canonical landing",
+      "screen": "/",
+      "element": "pages/index.tsx",
+      "found": "pages/index.tsx was a textarea + Generate button with inline 2rem padding and system sans-serif. Reads as a backend dev's debug page. 13 days before App Store launch.",
+      "fix": "Shipped: pages/index.tsx replaced with the Today surface — PageShell (Sidebar + Topbar), PageHero with persona-driven eyebrow/headline/em-clause, persona block, weather strip (pressure delta foregrounded per HANDOFF), biometric tiles, sources strip (warm = high signal, cool = baseline per CLAUDE.md), seven-day pattern preview. Defaults to the Grayson persona (renee internal ID).",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-002.md",
+      "acceptance": "Visit / and see: cloud-mark top-left, breadcrumb 'iMpatient / Today · live · Last sync 2m · Export', persona block 'Pro · The Complex Human · Grayson, 47 · Washington D.C. → Geneva (Tuesday)', headline 'Grayson — Sunday evening read. <em>Thursday is asking for a decision.</em>', four biometric tiles with sparklines, sources strip with warm/cool weight dots, 7-day pattern card. No console errors at npm run dev.",
+      "owner": "Lachlan",
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/index.tsx", "components/PageShell.tsx", "components/PageHero.tsx"]
+    },
+    {
+      "id": "ISSUE-003",
+      "title": "Build iMpatient cloud-mark + mønk™ inline wordmark",
+      "screen": "global",
+      "element": "components/Wordmark.tsx",
+      "found": "No wordmark in the repo. The live build's chrome uses a small cloud silhouette top-left, not a typographic logo. The mønk engine name was nowhere in the repo despite being the patent-pending product surface.",
+      "fix": "Shipped: components/Wordmark.tsx. mark='impatient' renders the cloud silhouette SVG with optional 'iMpatient' text alongside. mark='monk' renders the engine name with the literal stroked ø (never encoded — the glyph carries patent identity). Both are AT-announced correctly.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-003.md",
+      "acceptance": "Top-left chrome of every page renders the cloud-mark only (no text). Hero / footer / inline copy uses <Wordmark mark='monk' /> to render the engine name. mønk glyph is the literal ø character (copy-paste verifies). Screen reader announces 'monk, spelled m-o-n-k with a stroked o, pronounced monk' for the mark.",
+      "owner": "Lachlan",
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["components/Wordmark.tsx"]
+    },
+    {
+      "id": "ISSUE-004",
+      "title": "Swap /api/generate from OpenAI to Anthropic",
+      "screen": "n/a (backend)",
+      "element": "pages/api/generate.js",
+      "found": "Endpoint calls https://api.openai.com/v1/chat/completions with model gpt-4o-mini (fallback path). Contradicts CLAUDE.md: 'Mønk™ is built on Claude (Anthropic) for alignment with these principles.' INVITE_CODE is in .env.example but never validated server-side.",
+      "fix": "BLOCKED for frontend. Venkat: replace the OpenAI block with @anthropic-ai/sdk. Use claude-sonnet-4-6 for product-facing pattern interpretation (Today/Patterns/Coach). Use claude-haiku-4-5-20251001 for fast classifications and source-weight scoring. Add x-invite-code header validation. Persist conversation thread_id for Coach. See API SPEC below.",
+      "api_spec": {
+        "endpoint": "POST /api/generate",
+        "headers_required": ["Content-Type: application/json", "x-invite-code: <INVITE_CODE>"],
+        "request_body": {
+          "prompt": "string",
+          "thread_id": "string (optional, Coach only)",
+          "mode": "'interpret' | 'classify' | 'coach' (default 'interpret')",
+          "persona_id": "'kezia' | 'simone' | 'renee' (required for coach mode, optional otherwise)"
+        },
+        "response_200": {
+          "text": "string",
+          "provider": "'anthropic'",
+          "model": "string",
+          "thread_id": "string"
+        },
+        "response_401": { "error": "invite_code_invalid" },
+        "response_400": { "error": "missing_prompt" | "missing_persona" },
+        "model_routing": {
+          "interpret": "claude-sonnet-4-6",
+          "coach":     "claude-sonnet-4-6",
+          "classify":  "claude-haiku-4-5-20251001"
+        },
+        "env_required": ["ANTHROPIC_API_KEY", "INVITE_CODE"],
+        "system_prompt_source": "load from components/personas.ts when mode === 'coach'"
+      },
+      "tool": "Claude Code (local) — backend, not v0",
+      "prompt_file": "prompts/ISSUE-004.md",
+      "acceptance": "curl -X POST https://dev.impatient.app/api/generate -H 'x-invite-code: <code>' -H 'content-type: application/json' -d '{\"prompt\":\"hello\",\"mode\":\"interpret\"}' returns 200 with provider='anthropic' and model='claude-sonnet-4-6'. Missing/invalid code returns 401. No OPENAI_API_KEY remains in Vercel env. Coach mode loads persona-specific system prompts.",
+      "owner": "Venkat",
+      "priority": "P0",
+      "blocked": true,
+      "blocked_reason": "Requires ANTHROPIC_API_KEY in Vercel + SDK install + provider migration. Frontend POST shape unchanged — no frontend stub needed.",
+      "repo_paths": ["pages/api/generate.js"]
+    },
+    {
+      "id": "ISSUE-005",
+      "title": "Pattern data contract — GET /api/patterns",
+      "screen": "/, /patterns",
+      "element": "pages/api/patterns.js (new) + frontend SWR fetch on Today and Patterns",
+      "found": "Six core surfaces all need longitudinal pattern data. No endpoint exists. Today, Patterns, Foresight all render placeholder series.",
+      "fix": "BLOCKED on backend. Venkat: implement GET /api/patterns per the contract below. Lachlan: once contract lands, swap placeholder series in pages/index.tsx (SevenDay, BiometricsStrip) and pages/patterns.tsx for SWR-fetched data. Cameron: ThreadReveal motion on first paint.",
+      "data_contract": {
+        "endpoint": "GET /api/patterns",
+        "headers_required": ["x-invite-code: <INVITE_CODE>"],
+        "query": {
+          "window":  "'7d' | '28d' | '90d' | '12mo'",
+          "metrics": "comma-separated, e.g. 'sleep,hrv,rhr,time_on_feet,mood,focus,barometric'",
+          "persona_id": "'kezia' | 'simone' | 'renee'"
+        },
+        "response_200": {
+          "window": "string",
+          "generated_at": "ISO8601",
+          "patterns": [
+            {
+              "metric": "sleep",
+              "unit": "score 0..1",
+              "weight": "'high' | 'mid' | 'baseline'",
+              "points": [{ "t": "ISO8601", "v": 0.72, "confidence": 0.91 }]
+            }
+          ],
+          "correlations": [
+            { "a": "barometric_drop", "b": "flare_72h", "r": 0.74, "n": 14 }
+          ]
+        },
+        "response_204": "no patterns yet — frontend renders 'Awaiting signal' empty state",
+        "response_401": { "error": "invite_code_invalid" }
+      },
+      "tool": "Claude Code (local) for backend, v0 for chart polish",
+      "prompt_file": "prompts/ISSUE-005.md",
+      "acceptance": "GET /api/patterns?window=7d&metrics=hrv,rhr,sleep&persona_id=renee returns the documented shape. Today and Patterns surfaces fetch via SWR, render skeleton during load, render empty state on 204, render error state on 5xx. No raw JSON ever rendered to the user.",
+      "owner": "Lachlan + Venkat",
+      "priority": "P0",
+      "blocked": true,
+      "blocked_reason": "Awaiting data contract implementation. Frontend stubs render gracefully with placeholder series + BLOCKED badge.",
+      "repo_paths": ["pages/api/patterns.js", "pages/index.tsx", "pages/patterns.tsx", "components/PatternThread.tsx"]
+    },
+    {
+      "id": "ISSUE-006",
+      "title": "Port personas system into Next.js",
+      "screen": "global",
+      "element": "components/personas.ts",
+      "found": "CLAUDE.md is explicit: three personas are sacred. Display names final: Harlow / Bella / Grayson. Internal IDs (stable keys): kezia / simone / renee. Repo had no personas module.",
+      "fix": "Shipped: components/personas.ts with the three Persona objects, tier metadata, ledeEyebrow + ledeHero + ledeEm + ledeBody for hero copy on every surface. Single source of truth for every page that needs persona context. Wire window.__activePersona equivalent via React Context once Tweaks panel is ported.",
+      "tool": "Claude Code (local)",
+      "prompt_file": "prompts/ISSUE-006.md",
+      "acceptance": "import { PERSONAS, DEFAULT_PERSONA } from '../components/personas' works on every page. Switching DEFAULT_PERSONA from 'renee' → 'simone' → 'kezia' causes every page to re-render with that persona's lede, conditions, systems. NEVER rename the internal IDs.",
+      "owner": "Lachlan",
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["components/personas.ts"]
+    },
+    {
+      "id": "ISSUE-007",
+      "title": "PWA + mobile primitives for App Store / Play submission",
+      "screen": "global",
+      "element": "public/manifest.webmanifest + public/icon.svg + public/icon-maskable.svg + pages/_document.js",
+      "found": "App Store and Google Play submissions land in 13 days. Repo had no manifest, no icon at any size, no theme-color, no apple-mobile-web-app-* metas, no viewport-fit. Store reviewers will fail this.",
+      "fix": "Shipped: manifest.webmanifest (theme #060920, standalone, portrait, health/medical/productivity categories). icon.svg (cloud-mark on navy aura disc). icon-maskable.svg (cloud-mark with safe-zone padding). _document.js declares theme-color #060920, apple-mobile-web-app-status-bar-style black-translucent, apple-touch-icon. Cameron: validate against Apple HIG checklist + Play Console pre-submission.",
+      "tool": "Claude Code (local) for manifest + v0 for any in-app status-bar treatments",
+      "prompt_file": "prompts/ISSUE-007.md",
+      "acceptance": "Lighthouse PWA audit ≥ 90. iOS Safari 'Add to Home Screen' uses the cloud-mark icon and opens standalone with black-translucent status bar. Android Chrome 'Install app' prompt fires. theme-color matches the navy aura surface.",
+      "owner": "Cameron",
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["public/manifest.webmanifest", "public/icon.svg", "public/icon-maskable.svg", "pages/_document.js"]
+    },
+    {
+      "id": "ISSUE-008",
+      "title": "AuraHalo backdrop + AuraLoader",
+      "screen": "global",
+      "element": "components/AuraHalo.tsx + components/AuraLoader.tsx (new)",
+      "found": "CLAUDE.md: 'Every page hero gets an aura-hero zone with <AuraHalo /> behind the headline. This is the brand's first impression on every screen.' Also: AuraLoader is the doctor-brief generation moment — 'the product's soul moment, made to feel earned.' Repo had neither.",
+      "fix": "Shipped AuraHalo (two-layer radial gradient, breathing animation, time-of-day hue shift). AuraLoader pending — needs port: fullscreen 2.6s 'Composing the brief for Dr. Marsh' moment, plays when Concierge phase switches to 'Doctor's side'.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-008.md",
+      "acceptance": "Every PageHero renders an AuraHalo behind the headline. Halo breathes at 8s ease-in-out. Hue shifts at the top of every hour. prefers-reduced-motion fully disables the animation. AuraLoader plays exactly once when transitioning into the doctor-side panel.",
+      "owner": "Cameron",
+      "priority": "P0",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["components/AuraHalo.tsx", "components/AuraLoader.tsx"]
+    },
+    {
+      "id": "ISSUE-009",
+      "title": "Port Withings form chrome",
+      "screen": "/profile, /integrations, /settings, /onboarding",
+      "element": "styles/forms.css (new) + components/FormField + Segmented + Toggle + ListRow",
+      "found": "CLAUDE.md: 'Withings-inspired form chrome for any data-entry surface. Do not invent new form chrome.' Repo had none.",
+      "fix": "Port styles/forms.css from the artifact prototype. Build FormField (mono-caps eyebrow + 1.5px outlined input on translucent navy, brand-soft focus + 3px glow), Segmented (units/theme), Toggle (iOS-style), ListRow (non-input rows). Use across Profile / Integrations / Settings / Onboarding.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-009.md",
+      "acceptance": "Every form field uses mono-caps eyebrow + 1.5px outlined input on translucent navy. Focus glows brand-soft. Segmented controls have sliding thumb. Toggles have iOS-style switch animation. No 'native' browser select/input anywhere.",
+      "owner": "Lachlan",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["styles/forms.css", "components/FormField.tsx", "components/Segmented.tsx", "components/Toggle.tsx", "components/ListRow.tsx"]
+    },
+    {
+      "id": "ISSUE-010",
+      "title": "Port Coach — Anthropic SDK (not window.claude.complete)",
+      "screen": "/coach",
+      "element": "pages/coach.tsx + pages/api/coach.js (new) + components/CoachShell + CoachThread",
+      "found": "The artifact prototype's Coach uses window.claude.complete — that API is ONLY available inside claude.ai artifacts. In the shipped Next.js app on Vercel, that call will fail. The real path is the backend endpoint via @anthropic-ai/sdk.",
+      "fix": "Build pages/api/coach.js (extends ISSUE-004 backend swap) with thread persistence and persona-specific system prompts (read from components/personas.ts). Frontend CoachShell renders the threaded conversation, context strip (HRV, RHR, sleep, flight, predictions), suggested-prompt chips, typing indicator, brand-blue user bubbles. 'Share with Dr. Chen' header action is UI-only for v1.",
+      "tool": "v0 by Vercel (frontend) + Claude Code (backend)",
+      "prompt_file": "prompts/ISSUE-010.md",
+      "acceptance": "POST /api/coach with persona_id and prompt returns a stream from claude-sonnet-4-6 with the persona's system prompt loaded. Conversations persist by thread_id. Typing indicator + bubble reveal at 240ms ease-aura.",
+      "owner": "Lachlan + Venkat",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": "Soft dep on ISSUE-004 endpoint swap.",
+      "repo_paths": ["pages/coach.tsx", "pages/api/coach.js", "components/CoachShell.tsx", "components/CoachThread.tsx"]
+    },
+    {
+      "id": "ISSUE-011",
+      "title": "Patterns surface — hero card + library grid + locked-tier hint",
+      "screen": "/patterns",
+      "element": "pages/patterns.tsx + components/PatternCard + components/PatternLibrary",
+      "found": "Patterns is one of the six core surfaces from BRIEF. The repo had no surface. Even the artifact prototype's patterns.jsx is partial per HANDOFF ('styling is partial').",
+      "fix": "Shipped pages/patterns.tsx stub with the hero pattern card ('Barometric drop → 48h prodrome, r = 0.74'). Build PatternLibrary grid (same card treatment as Integrations) + locked-tier teaser ('Three more patterns unlocked at Pro — upgrade').",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-011.md",
+      "acceptance": "/patterns renders: hero card with PatternThread + r-value + n-sample, library grid (8-12 cards), locked teaser with upgrade-prompt voice ('Three more patterns are waiting. Open them at Pro.'). Cards translucent-navy with hover lift.",
+      "owner": "Lachlan",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": "Soft dep on ISSUE-005 (correlations payload).",
+      "repo_paths": ["pages/patterns.tsx", "components/PatternCard.tsx", "components/PatternLibrary.tsx"]
+    },
+    {
+      "id": "ISSUE-012",
+      "title": "Concierge surface — appointment loop + doctor-side soul moment",
+      "screen": "/concierge",
+      "element": "pages/concierge.tsx (new) + 4-phase tabs + AuraLoader",
+      "found": "HANDOFF: 'Concierge — the product's unique move. Before · 36h / During / After / Doctor's side. AuraLoader plays for 2.6s when switching to Doctor's side — the product's soul moment, made to feel earned.' Repo had no concierge surface.",
+      "fix": "Build pages/concierge.tsx with 4 phase tabs. Bloodwork end-to-end as the showcase library entry. Doctor-side panel renders the recipient-framed brief in 4 lines (no chart-dump). AuraLoader plays exactly when transitioning into doctor-side, never on initial load.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-012.md",
+      "acceptance": "Switching to 'Doctor's side' triggers the AuraLoader for 2.6s with the copy 'Composing the brief for Dr. Marsh.' Doctor's view shows 4 lines, in clinician voice, no marketing language. Emergency mode toggle switches the protocol palette to a single deeper-red accent.",
+      "owner": "Lachlan + Cameron",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/concierge.tsx", "components/AuraLoader.tsx", "components/ConciergePhases.tsx"]
+    },
+    {
+      "id": "ISSUE-013",
+      "title": "Integrations surface — tier-gated card grid with mono-glyphs",
+      "screen": "/integrations",
+      "element": "pages/integrations.tsx + components/IntegrationCard + components/SourceGlyph",
+      "found": "Integrations is the trust surface. HANDOFF: 6 grouped sections (Wearables · Health records · Calendars · Communication · Travel & environment · Medical), custom 24×24 mono-line glyphs for each, tier-locked states, voice copy on every card. Repo had no surface; my pass shipped a thin stub.",
+      "fix": "Expand the stub: SourceGlyph library (watch, ring, cuff, heart, moon, doc, cal, stethoscope, msg, envelope, chat, plane, cloud, leaf, vial, pill, scan). IntegrationCard with 3 states (Connected luminous-pulse / Available / Tier-locked dimmed). Group into 6 sections. Voice on every card: 'Volume only. Tells us when the world is asking a lot of you.'",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-013.md",
+      "acceptance": "/integrations shows 6 grouped sections. Harlow persona sees most cards locked. Grayson sees almost all unlocked. Every card has a single voice line, mono-line glyph, state-pill. Toggle off persists locally; toast confirms.",
+      "owner": "Lachlan",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/integrations.tsx", "components/IntegrationCard.tsx", "components/SourceGlyph.tsx"]
+    },
+    {
+      "id": "ISSUE-014",
+      "title": "Voice + persona-name consistency audit",
+      "screen": "global",
+      "element": "every string in the codebase",
+      "found": "The dev.impatient.app screenshot dated 2026-05-17 still shows the LEGACY display name 'Renee' in the Today persona block. Per HANDOFF.md, the rename to Harlow/Bella/Grayson is final — Renee/Kezia/Simone are internal IDs only. Live build is inconsistent with the constitution.",
+      "fix": "Lachlan: grep for every literal occurrence of 'Renee', 'Kezia', 'Simone' in user-facing strings. Replace with the display names from components/personas.ts via PERSONAS[id].name. Run a voice audit per CLAUDE.md: no 'wellness journey', no emoji, no AI-marketing tropes, no 'AI-powered insights', no 'optimal health'.",
+      "tool": "Claude Code (local)",
+      "prompt_file": "prompts/ISSUE-014.md",
+      "acceptance": "Zero occurrences of 'Renee' / 'Kezia' / 'Simone' as user-facing display names. Every persona reference reads from PERSONAS[id].name. Zero emoji. Zero AI-slop tropes. Voice cadence (em-clause headlines) preserved.",
+      "owner": "Lachlan",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/**", "components/**"]
+    },
+    {
+      "id": "ISSUE-015",
+      "title": "Privacy + Terms pages for App Store / Play submission",
+      "screen": "/privacy, /terms",
+      "element": "pages/privacy.tsx + pages/terms.tsx",
+      "found": "Both stores reject submissions without a published privacy policy URL. CLAUDE.md is explicit: 'Privacy is voice, not legalese.'",
+      "fix": "Shipped: /privacy and /terms with the aura-hero pattern, STUB banner, four sections each. Voice example: 'The user owns every byte. Always. Forever.' Counsel finalises copy. URLs are submittable now to App Store Connect and Play Console with stub copy; final copy redeploys later.",
+      "tool": "Claude Code (local) + counsel for content",
+      "prompt_file": "prompts/ISSUE-015.md",
+      "acceptance": "/privacy and /terms render aura-hero + 4 sections each. STUB banner visible at top. Both linked from any footer + from App Store Connect privacy disclosures. Counsel sign-off recorded before May 30.",
+      "owner": "Lachlan",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": "Counsel review for final copy.",
+      "repo_paths": ["pages/privacy.tsx", "pages/terms.tsx"]
+    },
+    {
+      "id": "ISSUE-016",
+      "title": "Accessibility primitives",
+      "screen": "global",
+      "element": "focus rings, --text-scale plumbing, axe-core audit, skip-link",
+      "found": "Repo had zero a11y treatment. App Store + Play accessibility checks are required for approval.",
+      "fix": "Focus rings (brand-soft 2px outline + 2px offset) shipped in globals.css. --text-scale plumbed via tokens.css. Cameron: add skip-to-content link, audit every interactive element for aria-label, run axe-core in CI.",
+      "tool": "Claude Code (local) for audit + v0 for surface fixes",
+      "prompt_file": "prompts/ISSUE-016.md",
+      "acceptance": "axe-core run produces zero serious/critical issues. Lighthouse Accessibility ≥ 95. Keyboard-only navigation works on every public surface. Skip-to-content link appears on first Tab. --text-scale 0.92/1.00/1.15/1.30 visibly resizes every type element.",
+      "owner": "Cameron",
+      "priority": "P1",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/_app.js", "components/**", "pages/**"]
+    },
+    {
+      "id": "ISSUE-017",
+      "title": "Onboarding flow — calm, not interrogated",
+      "screen": "/onboarding",
+      "element": "pages/onboarding/{intro,privacy,connect,baseline}.tsx",
+      "found": "HANDOFF queued #4. CLAUDE.md: 'The user should feel calm by the end of it, not interrogated. Privacy promise should be the second screen, not the last.'",
+      "fix": "Build 4-step flow with Withings chrome (ISSUE-009): Intro → Privacy promise → Connect first source → Baseline calibration. Each step is one hero line + one input. No emoji. No progress bar — use a discreet dot strip.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-017.md",
+      "acceptance": "New users complete the flow in <3 minutes. Privacy is screen 2 of 4. Final screen lands on / with at least one source connected. Skippable on every step.",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/onboarding/intro.tsx", "pages/onboarding/privacy.tsx", "pages/onboarding/connect.tsx", "pages/onboarding/baseline.tsx"]
+    },
+    {
+      "id": "ISSUE-018",
+      "title": "Foresight detail — flare prediction drill-down",
+      "screen": "/foresight/[id]",
+      "element": "pages/foresight/[id].tsx",
+      "found": "HANDOFF queued #2. Pro-tier only.",
+      "fix": "Drill-down from the 72h flare-window prediction on Today. Compound r-value + top 3 contributing patterns + timeline visualisation + suggested protocols + agentic actions queue.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-018.md",
+      "acceptance": "Surface renders for Grayson persona only. Three contributing patterns visible. Agentic actions section shows 'I've held Friday's board meeting…' line with Approve / Modify / Dismiss buttons.",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/foresight/[id].tsx"]
+    },
+    {
+      "id": "ISSUE-019",
+      "title": "30-Day Summary — narrative-first, not chart-first",
+      "screen": "/patterns/30-day",
+      "element": "pages/patterns/30-day.tsx",
+      "found": "HANDOFF queued #3.",
+      "fix": "Monthly read framed as a story arc. 'This month your body asked you to slow down on Sundays. Here's what we noticed about that.' Pull from Patterns engine but render as paragraphs, not dashboards.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-019.md",
+      "acceptance": "Surface reads top-to-bottom as a 3-paragraph essay. One PatternThread per body paragraph. No raw stats tables. Exportable as PDF.",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/patterns/30-day.tsx"]
+    },
+    {
+      "id": "ISSUE-020",
+      "title": "Conditions library — citable global database",
+      "screen": "/conditions/[slug]",
+      "element": "pages/conditions/[slug].tsx + data/conditions.json",
+      "found": "BRIEF: 'Every condition, term, and definition Coach uses is grounded in a citable public source: NIH, NHS, Mayo, MedlinePlus, peer-reviewed sources. Not WebMD. Not Wikipedia.'",
+      "fix": "Per-condition pages framed as 'what we know about how your body experiences this' — not Wikipedia. Cite NIH/NHS/Mayo at every claim. Pull from the user's own data when applicable.",
+      "tool": "v0 by Vercel + Claude Code for content scaffolds",
+      "prompt_file": "prompts/ISSUE-020.md",
+      "acceptance": "Each condition page renders the lived-experience read + cited claims with footnote-style references. POTS, ME/CFS, MS, MCAS, autoimmune overlap are the launch set.",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/conditions/[slug].tsx", "data/conditions.json"]
+    },
+    {
+      "id": "ISSUE-021",
+      "title": "Admin queue — agentic actions",
+      "screen": "/admin/queue",
+      "element": "pages/admin/queue.tsx + components/AgentAction",
+      "found": "HANDOFF queued #11. The Pro tier surface where the product becomes verb, not noun.",
+      "fix": "Build the queue where agentic actions stack up. 'I rescheduled X. I drafted Y. I queued Z.' Approve / dismiss / modify each. Pro only.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-021.md",
+      "acceptance": "Queue shows 5-10 agentic actions for Grayson. Each has Approve / Modify / Dismiss + a written rationale referencing the pattern that triggered it. Empty state copy: 'Coach is quiet today.'",
+      "owner": "Lachlan + Venkat",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": "Soft dep on agentic-action backend.",
+      "repo_paths": ["pages/admin/queue.tsx", "components/AgentAction.tsx"]
+    },
+    {
+      "id": "ISSUE-022",
+      "title": "Travel Card composer",
+      "screen": "/travel-card",
+      "element": "pages/travel-card.tsx + components/TravelCardComposer",
+      "found": "BRIEF surface #4. Encrypted, agent-fronted credential. ER-intake-ready.",
+      "fix": "Composer surface that assembles conditions, meds, allergies, infusion schedule, MCAS triggers, emergency contacts. Outputs one-page PDF + QR code.",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-022.md",
+      "acceptance": "Composer generates a one-page PDF in <2s. QR encodes a time-bound, agent-fronted URL. User holds the key.",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": "Soft dep on PDF generation + QR signing backend.",
+      "repo_paths": ["pages/travel-card.tsx", "components/TravelCardComposer.tsx"]
+    },
+    {
+      "id": "ISSUE-023",
+      "title": "Cost of Care ledger",
+      "screen": "/cost-of-care",
+      "element": "pages/cost-of-care.tsx + components/SpendLedger",
+      "found": "BRIEF surface #6.",
+      "fix": "Out-of-pocket spend by condition, by month, by trip. Show alongside flare incidence (correlate cost with body-state).",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-023.md",
+      "acceptance": "Ledger renders 12-month spend bar with flare overlay. Total, by-condition breakdown, FSA/HSA usage section.",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/cost-of-care.tsx", "components/SpendLedger.tsx"]
+    },
+    {
+      "id": "ISSUE-024",
+      "title": "Settings — account, billing, data export, danger zone",
+      "screen": "/settings",
+      "element": "pages/settings.tsx + form sections",
+      "found": "HANDOFF queued #7.",
+      "fix": "Account, billing, data export, notifications, accessibility, danger zone (delete account, export everything as raw JSON).",
+      "tool": "v0 by Vercel",
+      "prompt_file": "prompts/ISSUE-024.md",
+      "acceptance": "Export button generates a downloadable .zip of all user data within 30s. Delete account is a 2-step confirmation with the literal phrase 'I understand this is permanent.'",
+      "owner": "Lachlan",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["pages/settings.tsx"]
+    },
+    {
+      "id": "ISSUE-025",
+      "title": "Telemetry instrumentation",
+      "screen": "global",
+      "element": "lib/analytics.ts + useTrack hook",
+      "found": "iMpatient cannot read its own behavior at launch. HIPAA-adjacency means PostHog self-hosted is the recommended provider (NOT Segment, NOT GA).",
+      "fix": "Wire PostHog self-hosted. Five core events: pattern_viewed, thread_revealed, invite_validated, monk_interpretation_requested, doctor_brief_generated. PII redaction at the source.",
+      "tool": "Claude Code (local)",
+      "prompt_file": "prompts/ISSUE-025.md",
+      "acceptance": "PostHog dashboard shows ≥ 1 event per visit. No PII leaves the boundary. Redaction rules audited.",
+      "owner": "Venkat",
+      "priority": "P2",
+      "blocked": false,
+      "blocked_reason": null,
+      "repo_paths": ["lib/analytics.ts", "lib/useTrack.ts"]
+    }
+  ]
+}
+</script>
+<script>
+(function() {
+  const raw = document.getElementById('board-data').textContent;
+  const data = JSON.parse(raw);
+  const issues = data.issues;
+
+  const launch = new Date(data.launch_target + 'T00:00:00Z');
+  const today  = new Date(data.generated_at + 'T00:00:00Z');
+  const days = Math.round((launch - today) / 86400000);
+  document.getElementById('launch-countdown').textContent = `${days} days to launch · ${data.launch_target}`;
+  document.getElementById('footer-generated').textContent = `generated ${data.generated_at}`;
+
+  const ownerSel = document.getElementById('f-owner');
+  const owners = [...new Set(issues.map(i => i.owner))].sort();
+  for (const o of owners) {
+    const opt = document.createElement('option');
+    opt.value = o; opt.textContent = o;
+    ownerSel.appendChild(opt);
+  }
+
+  const tbody = document.querySelector('#board tbody');
+  let sortKey = 'priority';
+  let sortDir = 'asc';
+
+  function priorityRank(p) { return { P0: 0, P1: 1, P2: 2 }[p] ?? 99; }
+
+  function render() {
+    const fp = document.getElementById('f-priority').value;
+    const fo = document.getElementById('f-owner').value;
+    const fb = document.getElementById('f-blocked').value;
+    const fs = document.getElementById('f-search').value.toLowerCase();
+
+    let rows = issues.filter(i => {
+      if (fp && i.priority !== fp) return false;
+      if (fo && i.owner !== fo) return false;
+      if (fb === 'true'  && !i.blocked) return false;
+      if (fb === 'false' &&  i.blocked) return false;
+      if (fs) {
+        const hay = (i.title + ' ' + i.found + ' ' + i.fix + ' ' + i.id + ' ' + i.tool).toLowerCase();
+        if (!hay.includes(fs)) return false;
+      }
+      return true;
+    });
+
+    rows.sort((a, b) => {
+      let av = a[sortKey], bv = b[sortKey];
+      if (sortKey === 'priority') { av = priorityRank(av); bv = priorityRank(bv); }
+      if (typeof av === 'string') av = av.toLowerCase();
+      if (typeof bv === 'string') bv = bv.toLowerCase();
+      const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+      return sortDir === 'asc' ? cmp : -cmp;
+    });
+
+    document.getElementById('count').textContent = `${rows.length} of ${issues.length}`;
+
+    tbody.innerHTML = '';
+    for (const i of rows) {
+      const tr = document.createElement('tr');
+      if (i.blocked) tr.classList.add('blocked');
+      const pcls = 'pill ' + i.priority.toLowerCase();
+      const blockedPill = i.blocked ? '<span class="pill blocked">BLOCKED</span>' : '';
+      tr.innerHTML = `
+        <td class="id">${i.id}</td>
+        <td><span class="${pcls}">${i.priority}</span>${blockedPill}</td>
+        <td class="title">${escapeHtml(i.title)}</td>
+        <td>${escapeHtml(i.screen)}</td>
+        <td>${escapeHtml(i.owner)}</td>
+        <td>${escapeHtml(i.tool)}</td>
+        <td>
+          <details>
+            <summary>open</summary>
+            <div>
+              <p><b>Found —</b> ${escapeHtml(i.found)}</p>
+              <p><b>Fix —</b> ${escapeHtml(i.fix)}</p>
+              <p><b>Acceptance —</b> ${escapeHtml(i.acceptance)}</p>
+              ${i.blocked_reason ? `<p><b>Blocked —</b> ${escapeHtml(i.blocked_reason)}</p>` : ''}
+              <p><b>Repo paths —</b> ${(i.repo_paths || []).map(p => `<code>${escapeHtml(p)}</code>`).join(' · ')}</p>
+              <p><b>Prompt —</b> <code>${escapeHtml(i.prompt_file)}</code></p>
+            </div>
+          </details>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    document.querySelectorAll('th').forEach(th => {
+      th.classList.remove('sort-asc', 'sort-desc');
+      if (th.dataset.sort === sortKey) th.classList.add('sort-' + sortDir);
+    });
+  }
+
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  document.querySelectorAll('th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.sort;
+      if (sortKey === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+      else { sortKey = k; sortDir = 'asc'; }
+      render();
+    });
+  });
+
+  ['f-priority', 'f-owner', 'f-blocked', 'f-search'].forEach(id => {
+    document.getElementById(id).addEventListener('input', render);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
