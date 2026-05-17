@@ -2,10 +2,9 @@ import * as React from 'react';
 import AuraHalo from './AuraHalo';
 
 /*
-  PageHero — the aura-hero zone. Every page on iMpatient gets one.
-  Eyebrow + headline (with optional <em> italic clause) + body lede, plus a
-  right-aligned meta slot for tier/persona context.
-  Constitution: HANDOFF "Every page hero gets aura-hero + AuraHalo".
+  PageHero — aura-hero zone. Meta lives on its own row above the headline so it
+  never overlaps the em-clause when the title runs long.
+  Constitution: HANDOFF — "Every page hero gets aura-hero + AuraHalo".
 */
 
 export default function PageHero({
@@ -24,46 +23,33 @@ export default function PageHero({
   return (
     <section className="aura-hero">
       <AuraHalo />
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr) auto',
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--gap-component)' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
           gap: 'var(--space-6)',
-          alignItems: 'end',
-        }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
+          flexWrap: 'wrap',
+        }}>
           <span className="eyebrow">{eyebrow}</span>
-          <h1
-            style={{
-              fontSize: 'var(--t-3xl)',
-              lineHeight: 'var(--leading-display)',
-              fontWeight: 600,
-              maxWidth: 720,
-            }}
-          >
-            {title}
-            {emClause && (
-              <>
-                {' '}
-                <em>{emClause}</em>
-              </>
-            )}
-          </h1>
-          {body && (
-            <p
-              style={{
-                fontSize: 'var(--t-md)',
-                color: 'var(--ink-3)',
-                maxWidth: 640,
-                lineHeight: 1.55,
-              }}
-            >
-              {body}
-            </p>
-          )}
+          {meta && <div style={{ textAlign: 'right' }}>{meta}</div>}
         </div>
-        {meta && <div style={{ alignSelf: 'end', textAlign: 'right' }}>{meta}</div>}
+
+        <h1 className="h1" style={{ maxWidth: 880 }}>
+          {title}
+          {emClause && (
+            <>
+              {' '}
+              <em>{emClause}</em>
+            </>
+          )}
+        </h1>
+
+        {body && (
+          <p className="lede" style={{ marginTop: 'var(--space-2)' }}>
+            {body}
+          </p>
+        )}
       </div>
     </section>
   );

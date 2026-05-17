@@ -5,15 +5,10 @@ import PatternThread from '../components/PatternThread';
 import { PERSONAS, DEFAULT_PERSONA } from '../components/personas';
 
 /*
-  Today — the canonical first surface.
-  Reads the active persona (defaults to renee/Grayson — Pro · The Complex Human)
-  and renders the aura-hero, weather/location strip, biometric tiles, sources
-  strip, and the seven-day pattern preview.
-
-  This is a Next.js scaffold that mirrors the artifact prototype's
-  components/today.jsx structure. Real-time data wiring is BLOCKED on
-  Venkat's data endpoints (see /_refinement/sprint-board for ISSUE-005,
-  ISSUE-011, ISSUE-013).
+  Today — the canonical first surface for Grayson (Pro · The Complex Human).
+  Composed of containerized cards. No long text blocks; every section earns
+  its space.
+  Data wiring is BLOCKED on Venkat's /api/patterns endpoint (ISSUE-005).
 */
 
 export default function Today() {
@@ -31,175 +26,243 @@ export default function Today() {
           eyebrow={p.ledeEyebrow}
           title={p.ledeHero}
           emClause={p.ledeEm}
-          body={p.ledeBody}
-          meta={
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 'var(--space-1)' }}>
-              <div className="eyebrow glow">Pro · all three domains</div>
-              <div style={{ fontFamily: 'var(--font-mono)', color: 'var(--ink-7)', fontSize: 'var(--t-xs)' }}>
-                {p.locationStr}
-              </div>
-            </div>
-          }
         />
 
-        <PersonaBlock />
-        <WeatherStrip />
-        <BiometricsStrip />
-        <SourcesStrip />
-        <SevenDay />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--gap-stack)' }}>
+          <StatRibbon />
+          <FounderNarrative />
+          <AtmosphereCard />
+          <BiometricGrid />
+          <DrivingPattern />
+          <SourcesCard />
+        </div>
       </PageShell>
     </>
   );
 }
 
-function PersonaBlock() {
-  const p = PERSONAS[DEFAULT_PERSONA];
-  return (
-    <section
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--space-2)',
-        padding: 'var(--space-5) 0 var(--space-6)',
-        borderBottom: '1px solid var(--card-border)',
-      }}
-    >
-      <span className="eyebrow">{p.ledeEyebrow}</span>
-      <div style={{ fontSize: 'var(--t-md)', color: 'var(--ink-0)' }}>
-        {p.name}, {p.age} · {p.locationStr}
-      </div>
-      <div style={{ fontSize: 'var(--t-sm)', color: 'var(--ink-3)' }}>
-        {p.role} · {p.conditions.join(' · ')}
-      </div>
-      <div style={{ fontSize: 'var(--t-sm)', color: 'var(--ink-3)' }}>
-        Has crashed four times in two years. Each time she said: <em style={{ color: 'var(--ink-5)' }}>I could see this coming</em>. Now she actually can.
-      </div>
-    </section>
-  );
-}
-
-function WeatherStrip() {
-  return (
-    <section
-      style={{
-        padding: 'var(--space-5) 0',
-        borderBottom: '1px solid var(--card-border)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 'var(--space-2)',
-      }}
-      aria-label="Weather and location"
-    >
-      <div className="eyebrow">Atmosphere</div>
-      <div style={{ fontSize: 'var(--t-md)', color: 'var(--ink-0)' }}>
-        Washington D.C. · <span style={{ color: 'var(--ink-5)' }}>home</span> → Geneva (Tue 06:30)
-      </div>
-      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--t-sm)', color: 'var(--ink-5)' }}>
-        1014mb · 52°F · clear &nbsp; · &nbsp; Geneva forecast: <span style={{ color: 'var(--brand-glow)' }}>996mb</span> · 41°F · rain
-      </div>
-      <div style={{ fontSize: 'var(--t-xs)', color: 'var(--ink-7)', fontStyle: 'italic' }}>
-        Pressure drops 18mb across the flight — the strongest non-self predictor we have.
-      </div>
-    </section>
-  );
-}
-
-function BiometricsStrip() {
-  const tiles = [
-    { label: 'HRV',         value: '38',     unit: 'ms',  trend: 'down', signal: 'high' },
-    { label: 'RHR',         value: '64',     unit: 'bpm', trend: 'up',   signal: 'high' },
-    { label: 'Sleep',       value: '6h 12m', unit: '',    trend: 'flat', signal: 'mid' },
-    { label: 'Time on feet',value: '4h',     unit: '',    trend: 'down', signal: 'baseline' },
+function StatRibbon() {
+  const stats = [
+    { eyebrow: 'Tier',     value: 'Pro',          context: 'The Complex Human' },
+    { eyebrow: 'Window',   value: '72 h',         context: 'next decision · Thursday' },
+    { eyebrow: 'Sources',  value: '14 of 14',     context: '4 high-signal today' },
   ];
   return (
-    <section style={{ padding: 'var(--space-5) 0', display: 'grid', gap: 'var(--space-3)' }} aria-label="Biometric strip">
-      <div className="eyebrow">Yesterday · biometric</div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--space-3)' }}>
-        {tiles.map((t) => (
-          <div key={t.label} className="card" style={{ padding: 'var(--space-4)' }}>
-            <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>{t.label}</div>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
-              <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-xl)', fontWeight: 600 }}>{t.value}</span>
-              {t.unit && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--t-xs)', color: 'var(--ink-7)' }}>{t.unit}</span>}
-            </div>
-            <PatternThread height={32} emphasis={false} data={miniSeries(t.label.length)} ariaLabel={`${t.label} 7-day trend`} />
+    <section style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'var(--gap-component)' }} aria-label="Status ribbon">
+      {stats.map((s) => (
+        <div key={s.eyebrow} className="card">
+          <div className="eyebrow subordinate" style={{ marginBottom: 'var(--space-2)' }}>{s.eyebrow}</div>
+          <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 'var(--t-xl)', color: 'var(--text-display)', letterSpacing: 'var(--ls-h3)' }}>
+            {s.value}
           </div>
-        ))}
-      </div>
+          <div style={{ marginTop: 'var(--space-1)', fontSize: 'var(--t-sm)', color: 'var(--text-body)' }}>
+            {s.context}
+          </div>
+        </div>
+      ))}
     </section>
   );
 }
 
-function miniSeries(seed: number) {
-  return Array.from({ length: 12 }, (_, i) => 0.5 + Math.sin(i / 2 + seed) * 0.2);
-}
-
-function SourcesStrip() {
-  const sources = [
-    { name: 'Oura Ring',                weight: 'high' },
-    { name: 'Apple Watch Ultra',        weight: 'high' },
-    { name: 'Withings BP + Body+',      weight: 'mid' },
-    { name: 'Apple Health',             weight: 'baseline' },
-    { name: 'Outlook (work)',           weight: 'high' },
-    { name: 'Google Calendar (board)',  weight: 'mid' },
-    { name: 'iCloud (family)',          weight: 'baseline' },
-    { name: 'Care-team calendar',       weight: 'mid' },
-    { name: 'Gmail + Outlook',          weight: 'baseline' },
-    { name: 'TripIt + United + Lufthansa + UA Club', weight: 'high' },
-    { name: 'Climate + barometric (Tomorrow.io)',    weight: 'high' },
-    { name: 'iMessage / SMS volume',    weight: 'mid' },
-    { name: 'Specialist EHR (×6)',      weight: 'mid' },
-    { name: 'Service dog vet portal',   weight: 'baseline' },
-  ];
+function FounderNarrative() {
   return (
-    <section style={{ padding: 'var(--space-5) 0', display: 'grid', gap: 'var(--space-3)' }} aria-label="Sources">
-      <div className="eyebrow">Reading from</div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
-        {sources.map((s) => (
-          <span
-            key={s.name}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 6,
-              padding: '4px 10px',
-              borderRadius: 'var(--radius-pill)',
-              border: '1px solid var(--card-border)',
-              background: 'rgba(10, 18, 48, 0.4)',
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--t-xs)',
-              color: s.weight === 'high' ? 'var(--brand-glow)' : 'var(--ink-3)',
-            }}
-          >
-            <span
-              aria-hidden
-              style={{
-                width: 6, height: 6, borderRadius: '50%',
-                background: s.weight === 'high' ? 'var(--brand-glow)' : s.weight === 'mid' ? 'var(--brand-soft)' : 'var(--ink-7)',
-              }}
-            />
-            {s.name}
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function SevenDay() {
-  return (
-    <section style={{ padding: 'var(--space-5) 0 var(--space-9)', display: 'grid', gap: 'var(--space-3)' }} aria-label="Last seven days">
-      <div className="eyebrow">Your last seven days · what your body did</div>
-      <div className="card">
-        <PatternThread height={120} />
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 'var(--t-xs)', color: 'var(--ink-7)' }}>
-        <span>May 10</span>
-        <span>May 17</span>
-      </div>
-      <p style={{ fontSize: 'var(--t-xs)', color: 'var(--ink-7)' }}>
-        status: <code style={{ fontFamily: 'var(--font-mono)' }}>BLOCKED_ON_DATA_CONTRACT</code> · placeholder series. See /_refinement/sprint-board for ISSUE-011.
+    <section className="card" style={{ padding: 'var(--space-8)' }}>
+      <div className="eyebrow" style={{ marginBottom: 'var(--space-3)' }}>Founder's note</div>
+      <p style={{
+        fontFamily: 'var(--font-display)',
+        fontSize: 'var(--t-lg)',
+        fontStyle: 'italic',
+        fontWeight: 300,
+        color: 'var(--text-display)',
+        lineHeight: 1.35,
+        maxWidth: '64ch',
+      }}>
+        Has crashed four times in two years. Each time she said:{' '}
+        <em style={{ color: 'var(--brand-glow)', fontStyle: 'italic' }}>
+          I could see this coming.
+        </em>{' '}
+        Now she actually can.
       </p>
     </section>
+  );
+}
+
+function AtmosphereCard() {
+  return (
+    <section className="card" aria-label="Atmosphere — D.C. to Geneva">
+      <div className="eyebrow" style={{ marginBottom: 'var(--space-5)' }}>Atmosphere · pressure delta is the signal</div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center', gap: 'var(--space-6)' }}>
+        <Leg label="Origin · home" city="Washington D.C." pressure="1014 mb" temp="52°F" sky="clear" />
+        <Delta />
+        <Leg label="Destination · Tue 06:30" city="Geneva" pressure="996 mb" temp="41°F" sky="rain" highlight />
+      </div>
+    </section>
+  );
+}
+
+function Leg({ label, city, pressure, temp, sky, highlight = false }: { label: string; city: string; pressure: string; temp: string; sky: string; highlight?: boolean }) {
+  return (
+    <div>
+      <div className="eyebrow subordinate" style={{ marginBottom: 'var(--space-2)' }}>{label}</div>
+      <div style={{
+        fontFamily: 'var(--font-display)',
+        fontSize: 'var(--t-lg)',
+        fontWeight: 600,
+        color: 'var(--text-display)',
+      }}>
+        {city}
+      </div>
+      <div style={{ marginTop: 'var(--space-2)', display: 'flex', gap: 'var(--space-3)', flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 'var(--t-sm)' }}>
+        <span style={{ color: highlight ? 'var(--brand-glow)' : 'var(--text-primary)' }}>{pressure}</span>
+        <span style={{ color: 'var(--text-secondary)' }}>·</span>
+        <span style={{ color: 'var(--text-primary)' }}>{temp}</span>
+        <span style={{ color: 'var(--text-secondary)' }}>·</span>
+        <span style={{ color: 'var(--text-body)' }}>{sky}</span>
+      </div>
+    </div>
+  );
+}
+
+function Delta() {
+  return (
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 'var(--space-1)',
+      padding: 'var(--space-4) var(--space-5)',
+      borderRadius: 'var(--radius-md)',
+      background: 'var(--bg-elevated)',
+      border: '1px solid var(--brand-soft)',
+    }}>
+      <span className="eyebrow" style={{ fontSize: '10px', letterSpacing: 'var(--ls-label)' }}>Δ pressure</span>
+      <span style={{
+        fontFamily: 'var(--font-display)',
+        fontSize: 'var(--t-xl)',
+        fontWeight: 700,
+        color: 'var(--brand-glow)',
+        letterSpacing: 'var(--ls-h3)',
+      }}>
+        −18 mb
+      </span>
+      <span style={{ fontSize: 'var(--t-xs)', color: 'var(--text-body)', textAlign: 'center', maxWidth: '14ch' }}>
+        strongest non-self predictor
+      </span>
+    </div>
+  );
+}
+
+function BiometricGrid() {
+  const tiles = [
+    { label: 'HRV',          value: '38',     unit: 'ms',  series: [0.6, 0.62, 0.58, 0.55, 0.5, 0.48, 0.42],   trend: 'down', signal: 'high' },
+    { label: 'RHR',          value: '64',     unit: 'bpm', series: [0.45, 0.5, 0.55, 0.6, 0.58, 0.62, 0.68],   trend: 'up',   signal: 'high' },
+    { label: 'Sleep',        value: '6h 12m', unit: '',    series: [0.7, 0.65, 0.6, 0.55, 0.58, 0.5, 0.48],     trend: 'down', signal: 'mid'  },
+    { label: 'Time on feet', value: '4h',     unit: '',    series: [0.55, 0.62, 0.5, 0.45, 0.4, 0.45, 0.38],    trend: 'down', signal: 'baseline' },
+  ];
+  return (
+    <section style={{ display: 'grid', gap: 'var(--gap-component)' }} aria-label="Biometric strip">
+      <div className="eyebrow">Yesterday · biometric</div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 'var(--gap-component)' }}>
+        {tiles.map((t) => {
+          const signalColor =
+            t.signal === 'high' ? 'var(--brand-glow)' :
+            t.signal === 'mid'  ? 'var(--brand-soft)' :
+                                   'var(--text-secondary)';
+          return (
+            <div key={t.label} className="card" style={{ padding: 'var(--space-5)' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-2)' }}>
+                <div className="eyebrow subordinate">{t.label}</div>
+                <span aria-hidden style={{ width: 6, height: 6, borderRadius: '50%', background: signalColor }} />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 'var(--space-3)' }}>
+                <span style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-2xl)', fontWeight: 700, color: 'var(--text-display)', letterSpacing: 'var(--ls-h2)' }}>
+                  {t.value}
+                </span>
+                {t.unit && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--t-xs)', color: 'var(--text-secondary)' }}>{t.unit}</span>}
+              </div>
+              <PatternThread height={32} emphasis={false} data={t.series} ariaLabel={`${t.label} 7-day trend`} />
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function DrivingPattern() {
+  return (
+    <section className="card" style={{ padding: 'var(--space-7)' }} aria-label="Pattern driving today's prediction">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 'var(--space-3)', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
+        <div className="eyebrow">Pattern · driving today's prediction</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--t-sm)', color: 'var(--brand-soft)' }}>
+          r = 0.74 · n = 14
+        </div>
+      </div>
+      <h3 className="h3" style={{ marginBottom: 'var(--space-4)' }}>
+        Barometric drop <em>→ 48h prodrome.</em>
+      </h3>
+      <PatternThread height={120} />
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 'var(--space-3)', fontFamily: 'var(--font-mono)', fontSize: 'var(--t-xs)', color: 'var(--text-secondary)' }}>
+        <span>14 weeks ago</span>
+        <span>today</span>
+      </div>
+    </section>
+  );
+}
+
+function SourcesCard() {
+  const sources = [
+    { name: 'Oura Ring',                  weight: 'high' },
+    { name: 'Apple Watch Ultra',          weight: 'high' },
+    { name: 'Tomorrow.io · barometric',   weight: 'high' },
+    { name: 'TripIt · Lufthansa',         weight: 'high' },
+    { name: 'Outlook (work)',             weight: 'mid' },
+    { name: 'Google Calendar (board)',    weight: 'mid' },
+    { name: 'Withings BP + Body+',        weight: 'mid' },
+    { name: 'Care-team calendar',         weight: 'mid' },
+    { name: 'iMessage · SMS volume',      weight: 'mid' },
+    { name: 'Specialist EHR (×6)',        weight: 'mid' },
+    { name: 'Apple Health',               weight: 'baseline' },
+    { name: 'iCloud (family)',            weight: 'baseline' },
+    { name: 'Gmail + Outlook',            weight: 'baseline' },
+    { name: 'Service dog vet portal',     weight: 'baseline' },
+  ];
+  return (
+    <section className="card" aria-label="Sources">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 'var(--space-4)', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+        <div className="eyebrow">Reading from · 14 sources</div>
+        <a href="/integrations" style={{ fontSize: 'var(--t-sm)', borderBottom: 0 }}>Manage →</a>
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-2)' }}>
+        {sources.map((s) => (
+          <Chip key={s.name} weight={s.weight} label={s.name} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Chip({ label, weight }: { label: string; weight: string }) {
+  const color =
+    weight === 'high' ? 'var(--brand-glow)' :
+    weight === 'mid'  ? 'var(--brand-soft)' :
+                         'var(--text-secondary)';
+  return (
+    <span style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 'var(--space-2)',
+      padding: '4px 10px',
+      borderRadius: 'var(--radius-pill)',
+      border: '1px solid var(--border-default)',
+      background: 'var(--bg-elevated)',
+      fontFamily: 'var(--font-mono)',
+      fontSize: 'var(--t-xs)',
+      color: weight === 'high' ? 'var(--brand-glow)' : 'var(--text-body)',
+    }}>
+      <span aria-hidden style={{ width: 5, height: 5, borderRadius: '50%', background: color }} />
+      {label}
+    </span>
   );
 }

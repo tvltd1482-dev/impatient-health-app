@@ -2,12 +2,6 @@ import * as React from 'react';
 import Link from 'next/link';
 import Wordmark from './Wordmark';
 
-/*
-  Sidebar — chrome from dev.impatient.app: cloud-mark top-left, then three
-  eyebrow sections (NOW / LIFE ADMIN / EVIDENCE) with route rows beneath.
-  Badges on rows are time-anchored ("Tue", "Thu", "7") — not decoration.
-*/
-
 type Row = { label: string; href: string; badge?: string };
 type Section = { eyebrow: string; rows: Row[] };
 
@@ -50,20 +44,19 @@ export default function Sidebar({ current = '/' }: { current?: string }) {
         alignSelf: 'start',
         width: 240,
         minHeight: '100dvh',
-        padding: 'var(--space-5) var(--space-4)',
-        borderRight: '1px solid var(--card-border)',
-        background: 'rgba(6, 9, 32, 0.6)',
-        backdropFilter: 'blur(12px)',
+        padding: 'var(--space-6) var(--space-5)',
+        borderRight: '1px solid var(--border-default)',
+        background: 'var(--bg-surface)',
       }}
     >
       <Link href="/" style={{ borderBottom: 0, display: 'inline-flex', padding: 'var(--space-2)' }} aria-label="iMpatient · Today">
-        <Wordmark size={28} />
+        <Wordmark variant="mark" size={32} tone="light" />
       </Link>
 
-      <nav style={{ marginTop: 'var(--space-7)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+      <nav style={{ marginTop: 'var(--space-10)', display: 'flex', flexDirection: 'column', gap: 'var(--gap-stack)' }}>
         {SECTIONS.map((section) => (
           <div key={section.eyebrow}>
-            <div className="eyebrow" style={{ marginBottom: 'var(--space-3)', paddingLeft: 'var(--space-2)' }}>
+            <div className="eyebrow subordinate" style={{ marginBottom: 'var(--space-3)', paddingLeft: 'var(--space-2)' }}>
               {section.eyebrow}
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -78,12 +71,11 @@ export default function Sidebar({ current = '/' }: { current?: string }) {
                         justifyContent: 'space-between',
                         alignItems: 'center',
                         padding: 'var(--space-2) var(--space-3)',
-                        borderRadius: 'var(--radius-2)',
-                        background: isActive ? 'var(--card-bg)' : 'transparent',
-                        border: isActive ? '1px solid var(--card-border)' : '1px solid transparent',
-                        color: isActive ? 'var(--ink-0)' : 'var(--ink-5)',
+                        borderRadius: 'var(--radius-md)',
+                        background: isActive ? 'var(--bg-elevated)' : 'transparent',
+                        color: isActive ? 'var(--text-display)' : 'var(--text-body)',
                         fontSize: 'var(--t-sm)',
-                        borderBottom: isActive ? '1px solid var(--card-border)' : '1px solid transparent',
+                        borderBottom: 0,
                       }}
                     >
                       <span>{row.label}</span>
@@ -92,10 +84,10 @@ export default function Sidebar({ current = '/' }: { current?: string }) {
                           style={{
                             fontFamily: 'var(--font-mono)',
                             fontSize: 'var(--t-xs)',
-                            color: 'var(--ink-7)',
-                            background: 'var(--aura-bg-2)',
-                            padding: '1px 6px',
-                            borderRadius: 'var(--radius-1)',
+                            color: 'var(--text-secondary)',
+                            background: 'var(--bg-elevated)',
+                            padding: '2px 8px',
+                            borderRadius: 'var(--radius-sm)',
                           }}
                         >
                           {row.badge}

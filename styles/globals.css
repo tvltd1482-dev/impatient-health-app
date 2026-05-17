@@ -1,72 +1,179 @@
 @import "./tokens.css";
 
-@import url('https://api.fontshare.com/v2/css?f[]=gilroy@400,500,600,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap');
+/* Font cascade — Manrope from Google (Gilroy is self-hosted licensed; cascade handles fallback) */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 
 html {
-  background: var(--aura-bg-0);
-  color: var(--ink-0);
+  background: var(--bg-page);
+  color: var(--text-body);
   font-family: var(--font-sans);
   font-size: var(--t-base);
-  line-height: var(--leading-body);
+  line-height: var(--lh-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: "ss01", "tnum";
+  font-feature-settings: "ss01", "cv11";
 }
 
-body {
-  min-height: 100dvh;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 35%, rgba(45, 95, 224, 0.22) 0%, rgba(6, 9, 32, 0) 60%),
-    var(--aura-bg-0);
-}
+body { min-height: 100dvh; }
 
-::selection { background: var(--brand-glow); color: var(--aura-bg-0); }
+::selection { background: var(--brand-soft); color: var(--bg-page); }
 
 a {
-  color: var(--brand-soft);
+  color: var(--text-link);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color var(--dur-fast) var(--ease-aura), color var(--dur-fast) var(--ease-aura);
 }
-a:hover { border-bottom-color: var(--brand-soft); color: var(--brand-glow); }
+a:hover { color: var(--brand-glow); border-bottom-color: var(--brand-soft); }
 
 button { font: inherit; cursor: pointer; }
 
-h1, h2, h3, h4 {
+/* §11 · Role classes — drop-in type compositions */
+
+h1, h2, h3, h4, .display, .h1, .h2, .h3 {
   font-family: var(--font-display);
-  letter-spacing: var(--tracking-tight);
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--text-display);
   margin: 0;
-  color: var(--ink-0);
 }
-h1 em, h2 em, h3 em {
-  font-family: var(--font-display);
+
+.display      { font-size: var(--t-4xl); letter-spacing: var(--ls-display); line-height: var(--lh-display); font-weight: 800; }
+.h1           { font-size: var(--t-3xl); letter-spacing: var(--ls-h1);      line-height: var(--lh-h1);      font-weight: 800; }
+.h2           { font-size: var(--t-2xl); letter-spacing: var(--ls-h2);      line-height: var(--lh-h2);      font-weight: 700; }
+.h3           { font-size: var(--t-xl);  letter-spacing: var(--ls-h3);      line-height: var(--lh-h3);      font-weight: 700; }
+
+h1 em, h2 em, h3 em, .h1 em, .h2 em, .h3 em {
   font-style: italic;
   font-weight: 300;
-  color: var(--ink-7);
+  color: var(--text-body);
+}
+
+.lede {
+  font-family: var(--font-sans);
+  font-size: var(--t-md);
+  font-weight: 300;
+  line-height: var(--lh-lede);
+  color: var(--text-primary);
+  max-width: 74ch;
+}
+.lede strong { color: var(--text-display); font-weight: 500; }
+
+.body {
+  font-family: var(--font-body);
+  font-size: var(--t-base);
+  line-height: var(--lh-body);
+  color: var(--text-body);
+}
+
+.body-sm {
+  font-family: var(--font-body);
+  font-size: var(--t-sm);
+  line-height: var(--lh-body-sm);
+  color: var(--text-body);
+}
+
+.caption {
+  font-family: var(--font-body);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+  color: var(--text-secondary);
+  letter-spacing: var(--ls-caption);
 }
 
 .eyebrow {
   font-family: var(--font-mono);
   font-size: var(--t-xs);
-  letter-spacing: var(--tracking-eyebrow);
+  font-weight: 500;
+  letter-spacing: var(--ls-eyebrow);
   text-transform: uppercase;
-  color: var(--ink-7);
+  color: var(--brand-soft);
+}
+.eyebrow.subordinate { color: var(--text-secondary); }
+
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-secondary);
 }
 
-.eyebrow.glow { color: var(--brand-glow); }
+.stat-grad {
+  font-family: var(--font-display);
+  font-weight: 800;
+  background: var(--aura-grad);
+  -webkit-background-clip: text;
+          background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-.hairline { border: 0; border-top: 1px solid var(--card-border); margin: 0; }
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--gap-tight);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: var(--t-sm);
+  line-height: 1;
+  letter-spacing: var(--ls-button);
+  padding: 14px 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-aura), color var(--dur-fast) var(--ease-aura), border-color var(--dur-fast) var(--ease-aura);
+}
+.btn-primary {
+  color: var(--text-display);
+  background: var(--aura-grad);
+  border: none;
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-secondary {
+  color: var(--brand-soft);
+  background: transparent;
+  border-color: var(--brand-soft);
+  padding: 13px 27px;
+}
+.btn-secondary:hover { color: var(--brand-glow); border-color: var(--brand-glow); }
+
+/* §12 · Containers */
+.container-xs { max-width: var(--container-xs); margin: 0 auto; padding: 0 var(--space-6); }
+.container-sm { max-width: var(--container-sm); margin: 0 auto; padding: 0 var(--space-6); }
+.container-md { max-width: var(--container-md); margin: 0 auto; padding: 0 var(--space-6); }
+.container-lg { max-width: var(--container-lg); margin: 0 auto; padding: 0 var(--space-8); }
+.container-xl { max-width: var(--container-xl); margin: 0 auto; padding: 0 var(--space-8); }
+
+.section { padding-block: var(--gap-section); }
+
+/* Cards — translucent surface + bordered hairline, default app chrome */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  transition: border-color var(--dur-med) var(--ease-aura);
+}
+.card:hover { border-color: var(--border-hover); }
+
+.card-elevated {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+/* Hairline */
+.hairline { border: 0; border-top: 1px solid var(--border-default); margin: 0; }
 
 :focus-visible {
   outline: 2px solid var(--brand-soft);
   outline-offset: 2px;
-  border-radius: var(--radius-1);
+  border-radius: var(--radius-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -76,20 +183,11 @@ h1 em, h2 em, h3 em {
   }
 }
 
-/* shared chrome — every page hero gets the aura zone */
+/* Aura hero zone — every page-hero wraps in this */
 .aura-hero {
   position: relative;
   overflow: visible;
-  padding: var(--space-9) 0 var(--space-7);
-  z-index: 0;
+  padding: var(--space-12) 0 var(--space-10);
+  z-index: var(--z-base);
 }
 .aura-hero > * { position: relative; z-index: 1; }
-
-.card {
-  background: var(--card-bg);
-  border: 1.5px solid var(--card-border);
-  border-radius: var(--radius-3);
-  padding: var(--space-5);
-  transition: border-color var(--dur-med) var(--ease-aura), transform var(--dur-med) var(--ease-aura);
-}
-.card:hover { border-color: var(--card-border-strong); }

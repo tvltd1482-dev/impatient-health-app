@@ -16,13 +16,10 @@ export default function Profile() {
           body="Identity, preferences, connected sources. Each field gets room. You are asked for very little."
         />
 
-        <section style={{ padding: 'var(--space-7) 0' }}>
-          <div className="card" style={{ padding: 'var(--space-7)' }}>
-            <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>Queued</div>
-            <div style={{ color: 'var(--ink-3)' }}>
-              Withings-inspired form chrome port — see /_refinement/sprint-board for ISSUE-009.
-            </div>
-          </div>
+        <section className="card" style={{ padding: 'var(--space-10)', textAlign: 'center', marginTop: 'var(--gap-stack)' }}>
+          <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>Queued</div>
+          <div className="body">Withings-inspired form chrome port</div>
+          <div className="caption" style={{ marginTop: 'var(--space-2)' }}>see /_refinement/sprint-board for ISSUE-009</div>
         </section>
       </PageShell>
     </>

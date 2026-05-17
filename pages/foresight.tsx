@@ -11,9 +11,9 @@ export default function Foresight() {
           eyebrow="Foresight · Pro"
           title="Seventy-two hours,"
           emClause="held in advance."
-          body="Flare windows projected from your indexed history. The trip, the appointment, the launch week, the school holiday — long-range pattern projection, not horoscope."
+          body="Flare windows projected from your indexed history. The trip, the appointment, the launch week — long-range pattern projection, not horoscope."
         />
-        <Queued issue="ISSUE-020" surface="Foresight detail (flare window drill-down)" />
+        <Queued issue="ISSUE-020" surface="Foresight detail · flare window drill-down" />
       </PageShell>
     </>
   );
@@ -21,11 +21,10 @@ export default function Foresight() {
 
 function Queued({ issue, surface }: { issue: string; surface: string }) {
   return (
-    <section style={{ padding: 'var(--space-7) 0', display: 'grid', gap: 'var(--space-3)' }}>
-      <div className="card" style={{ padding: 'var(--space-7)', textAlign: 'center' }}>
-        <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>Queued</div>
-        <div style={{ color: 'var(--ink-3)' }}>{surface} — see /_refinement/sprint-board for {issue}.</div>
-      </div>
+    <section className="card" style={{ padding: 'var(--space-12)', textAlign: 'center', marginTop: 'var(--gap-stack)' }}>
+      <div className="eyebrow" style={{ marginBottom: 'var(--space-2)' }}>Queued</div>
+      <div className="body" style={{ color: 'var(--text-body)' }}>{surface}</div>
+      <div className="caption" style={{ marginTop: 'var(--space-2)' }}>see /_refinement/sprint-board for {issue}</div>
     </section>
   );
 }

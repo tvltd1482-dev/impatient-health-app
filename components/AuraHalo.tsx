@@ -2,11 +2,10 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 /*
-  AuraHalo — the brand's first impression on every page hero.
-  Two layered radial gradients with offset breathing. Hue shifts gently by time
-  of day (dawn warmer, evening cooler). Honors prefers-reduced-motion via the
-  global stylesheet token.
-  Constitution: CLAUDE.md "The aura design system — luminous bright-blue aura on deep navy."
+  AuraHalo — luminous brand-blue halo behind every page hero.
+  Single subtle disc tuned for chrome behind body content (not the demo bible's
+  full-bleed treatment). Time-of-day hue shift (dawn warmer, evening cooler).
+  Honors prefers-reduced-motion via globals.css.
 */
 
 function useAuraTone() {
@@ -14,8 +13,7 @@ function useAuraTone() {
   useEffect(() => {
     const compute = () => {
       const h = new Date().getHours();
-      const t = h < 6 ? 215 : h < 12 ? 222 : h < 18 ? 218 : 232;
-      setHue(t);
+      setHue(h < 6 ? 215 : h < 12 ? 222 : h < 18 ? 218 : 232);
     };
     compute();
     const id = setInterval(compute, 60_000);
@@ -24,7 +22,7 @@ function useAuraTone() {
   return hue;
 }
 
-export default function AuraHalo({ intensity = 0.95 }: { intensity?: number }) {
+export default function AuraHalo({ intensity = 0.55 }: { intensity?: number }) {
   const hue = useAuraTone();
   return (
     <div
@@ -38,27 +36,25 @@ export default function AuraHalo({ intensity = 0.95 }: { intensity?: number }) {
       }}
     >
       <div
-        className="aura-halo-disc"
         style={{
           position: 'absolute',
-          left: '50%',
-          top: '45%',
-          width: '120%',
-          aspectRatio: '1.6 / 1',
-          transform: 'translate(-50%, -50%)',
+          left: '20%',
+          top: '20%',
+          width: '70%',
+          aspectRatio: '1.4 / 1',
           background: `radial-gradient(ellipse at center,
-            hsla(${hue},92%,86%,${intensity}) 0%,
-            hsla(${hue},80%,72%,${intensity * 0.55}) 25%,
-            hsla(${hue + 12},70%,52%,${intensity * 0.18}) 55%,
-            hsla(${hue + 18},60%,16%,0) 75%)`,
-          filter: 'blur(20px)',
+            hsla(${hue},92%,82%,${intensity}) 0%,
+            hsla(${hue},80%,68%,${intensity * 0.4}) 30%,
+            hsla(${hue + 12},70%,48%,${intensity * 0.12}) 60%,
+            hsla(${hue + 18},60%,16%,0) 80%)`,
+          filter: 'blur(40px)',
           animation: 'aura-breath var(--dur-breath) ease-in-out infinite',
         }}
       />
       <style>{`
         @keyframes aura-breath {
-          0%, 100% { transform: translate(-50%, -50%) scale(1);    opacity: ${intensity}; }
-          50%      { transform: translate(-50%, -50%) scale(1.04); opacity: ${intensity * 0.88}; }
+          0%, 100% { transform: scale(1);    opacity: ${intensity}; }
+          50%      { transform: scale(1.04); opacity: ${intensity * 0.88}; }
         }
       `}</style>
     </div>

@@ -2,11 +2,6 @@ import * as React from 'react';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 
-/*
-  PageShell — common chrome for every surface in the product (sidebar + topbar
-  + main column). Mirrors the layout of the artifact prototype's index.html.
-*/
-
 export default function PageShell({
   current,
   crumb,
@@ -27,7 +22,15 @@ export default function PageShell({
       <Sidebar current={current} />
       <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         <Topbar crumb={crumb} />
-        <main style={{ flex: 1, padding: 'var(--space-6) var(--space-7)', maxWidth: 1080, width: '100%' }}>
+        <main
+          id="main"
+          style={{
+            flex: 1,
+            padding: 'var(--space-8) var(--space-10)',
+            maxWidth: 'var(--container-lg)',
+            width: '100%',
+          }}
+        >
           {children}
         </main>
       </div>

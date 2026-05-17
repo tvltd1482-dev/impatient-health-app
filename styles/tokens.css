@@ -1,91 +1,169 @@
 /*
-  iMpatient — aura design tokens (Next.js port).
-
-  Sourced from the artifact prototype at dev.impatient.app — that build is the
-  single source of brand aesthetic. Constitution: CLAUDE.md → "Aura over light
-  theme. Navy is the brand." → "Never use Inter, Roboto, system fonts. Brand
-  is Gilroy + Geist Mono."
-
-  Never hardcode px in components. Use the scale tokens — they multiply
-  through --text-scale (Tweaks-driven accessibility control).
+  iMpatient Design System · v2.3 — tokens
+  Sourced verbatim from /docs/2026-05-15-iMpatient-color-bible (Azure A. I. Robinson, 2026-05-15).
+  Single source of truth. Components use semantic tokens (--bg-page, --text-body, --gap-component);
+  raw tokens are for one-off compositions only.
 */
 
 :root {
-  /* surface — deepest navy → page surfaces */
-  --aura-bg-0: #060920;
-  --aura-bg-1: #0A1230;
-  --aura-bg-2: #0E1740;
-  --aura-bg-3: #16225A;
+  /* §03 · Logo palette — trademark only, do not use in UI surfaces */
+  --logo-bright:   #1A55D1;
+  --logo-mid:      #123E9C;
+  --logo-deep:     #0A2A6C;
+  --logo-grad:     linear-gradient(135deg, #1A55D1 0%, #123E9C 55%, #0A2A6C 100%);
 
-  /* brand blue scale */
-  --brand-glow:  #B8D4FF;   /* luminous core · active-right-now emphasis */
-  --brand-soft:  #7AB8FF;   /* primary accent */
-  --brand-royal: #2D5FE0;   /* mid */
-  --brand-deep:  #1E40AF;   /* depth */
-  --brand-shade: #0F1F5C;   /* deepest */
+  /* §02 · Brand spectrum — UI surfaces */
+  --brand-navy:    #0A1230;
+  --brand-deep:    #1E40AF;
+  --brand-royal:   #2D5FE0;
+  --brand-bright:  #5A8FF5;
+  --brand-soft:    #7AB8FF;  /* ★ singular UI brand */
+  --brand-glow:    #A8D4FF;
+  --brand-tint:    #DEE9FB;
 
-  /* ink — bluer-tinted, NOT neutral grey */
-  --ink-0: #E6EEFF;
-  --ink-3: #C9D5F0;
-  --ink-5: #8C9BC4;
-  --ink-7: #5F6E94;
-  --ink-9: #1A2752;
+  /* §04 · Aura gradient — hero stats, CTAs, signal moments */
+  --aura-core:     #7AB8FF;
+  --aura-mid:      #2D5FE0;
+  --aura-edge:     #1E40AF;
+  --aura-grad:     linear-gradient(135deg, var(--aura-core) 0%, var(--aura-mid) 50%, var(--aura-edge) 100%);
 
-  /* the only warm exception — reserved for high-signal-weight states */
-  --warm-peach: oklch(0.78 0.13 60);
+  /* §05 · Background surfaces — never #000 */
+  --aura-bg-0:     #060920;  /* page canvas */
+  --aura-bg-1:     #0A1230;  /* cards, modals */
+  --aura-bg-2:     #0E1A44;  /* elevated */
 
-  /* type — Gilroy display + Geist Mono. NEVER Inter / Roboto / system. */
-  --font-display: "Gilroy", "Manrope", "Helvetica Neue", ui-sans-serif, sans-serif;
-  --font-sans:    "Gilroy", "Manrope", "Helvetica Neue", ui-sans-serif, sans-serif;
-  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* §06 · Ink scale — OKLCH neutrals at hue 262, perceptually uniform */
+  --ink-0: oklch(0.10 0.030 262);
+  --ink-1: oklch(0.13 0.034 262);
+  --ink-2: oklch(0.17 0.038 262);
+  --ink-3: oklch(0.22 0.040 262);  /* borders */
+  --ink-4: oklch(0.28 0.040 262);
+  --ink-5: oklch(0.38 0.038 262);
+  --ink-6: oklch(0.55 0.034 262);  /* labels */
+  --ink-7: oklch(0.72 0.028 262);  /* body */
+  --ink-8: oklch(0.88 0.018 262);  /* primary text */
+  --ink-9: oklch(0.98 0.010 262);  /* display */
 
-  /* scale base — driven by Tweaks panel via --text-scale on :root */
-  --text-scale: 1;
-  --t-xs:   calc(11px * var(--text-scale));
-  --t-sm:   calc(13px * var(--text-scale));
-  --t-base: calc(15px * var(--text-scale));
-  --t-md:   calc(17px * var(--text-scale));
-  --t-lg:   calc(20px * var(--text-scale));
-  --t-xl:   calc(28px * var(--text-scale));
-  --t-2xl:  calc(40px * var(--text-scale));
-  --t-3xl:  calc(56px * var(--text-scale));
-  --t-4xl:  calc(80px * var(--text-scale));
+  /* §07 · Functional state contracts — bound semantics */
+  --pulse:        var(--brand-soft);
+  --pulse-dim:    var(--brand-deep);
+  --pulse-bg:     oklch(0.22 0.06 264);
+  --warn:         oklch(0.80 0.13 80);
+  --warn-dim:     oklch(0.55 0.10 80);
+  --warn-bg:      oklch(0.22 0.04 80);
+  --flare:        oklch(0.72 0.14 25);
+  --flare-dim:    oklch(0.55 0.10 25);
+  --flare-bg:     oklch(0.22 0.05 25);
+  --calm:         oklch(0.78 0.10 160);
+  --calm-dim:     oklch(0.55 0.08 160);
+  --calm-bg:      oklch(0.22 0.04 160);
 
-  --tracking-tight:   -0.025em;
-  --tracking-snug:    -0.012em;
-  --tracking-eyebrow:  0.16em;
+  /* §10 · Typography families — Gilroy display (self-hosted), Manrope cascade fallback */
+  --font-display:  "Gilroy", "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans:     "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-body:     "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono:     "Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  --leading-display: 1.04;
-  --leading-body:    1.55;
+  /* §11 · Type scale — × --text-scale */
+  --text-scale: 1.0;
+  --t-xs:   calc(11.5px * var(--text-scale));
+  --t-sm:   calc(13.5px * var(--text-scale));
+  --t-base: calc(16px   * var(--text-scale));
+  --t-md:   calc(18px   * var(--text-scale));
+  --t-lg:   calc(24px   * var(--text-scale));
+  --t-xl:   calc(32px   * var(--text-scale));
+  --t-2xl:  calc(44px   * var(--text-scale));
+  --t-3xl:  calc(68px   * var(--text-scale));
+  --t-4xl:  calc(96px   * var(--text-scale));
 
-  /* spacing — 4pt grid */
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 24px;
-  --space-6: 32px;
-  --space-7: 48px;
-  --space-8: 64px;
-  --space-9: 96px;
-  --space-10: 128px;
+  --ls-display:  -0.04em;
+  --ls-h1:       -0.03em;
+  --ls-h2:       -0.025em;
+  --ls-h3:       -0.02em;
+  --ls-body:      0;
+  --ls-caption:   0.02em;
+  --ls-label:     0.18em;
+  --ls-eyebrow:   0.22em;
+  --ls-button:    0.01em;
 
-  /* radii */
-  --radius-1: 4px;
-  --radius-2: 8px;
-  --radius-3: 14px;
-  --radius-4: 20px;
+  --lh-display:  1.0;
+  --lh-h1:       1.1;
+  --lh-h2:       1.15;
+  --lh-h3:       1.25;
+  --lh-lede:     1.55;
+  --lh-body:     1.55;
+  --lh-body-sm:  1.5;
+  --lh-tight:    1.04;
+
+  /* §12 · Layout */
+  --container-xs:  480px;
+  --container-sm:  640px;
+  --container-md:  880px;
+  --container-lg:  1200px;
+  --container-xl:  1440px;
+  --container-2xl: 1680px;
+
+  --bp-sm: 640px; --bp-md: 768px; --bp-lg: 1024px; --bp-xl: 1280px; --bp-2xl: 1536px;
+
+  --z-base: 0;       --z-elevated: 10;   --z-sticky: 100;
+  --z-dropdown: 200; --z-overlay: 500;   --z-modal: 600;
+  --z-toast: 800;    --z-tooltip: 900;
+
+  /* §13 · Spacing — 8px base */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  --gap-tight:     var(--space-2);   /* 8 — label/icon pair */
+  --gap-component: var(--space-4);   /* 16 — within a card */
+  --gap-paragraph: var(--space-6);   /* 24 — between paragraphs */
+  --gap-stack:     var(--space-8);   /* 32 — between components */
+  --gap-section:   var(--space-24);  /* 96 — between major sections */
+
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   22px;
   --radius-pill: 999px;
 
-  /* motion */
+  /* Semantic surface roles — components prefer these */
+  --bg-page:        var(--aura-bg-0);
+  --bg-surface:     var(--aura-bg-1);
+  --bg-elevated:    var(--aura-bg-2);
+  --border-default: var(--ink-3);
+  --border-hover:   var(--ink-4);
+
+  /* Semantic text roles */
+  --text-display:   var(--ink-9);
+  --text-primary:   var(--ink-8);
+  --text-body:      var(--ink-7);
+  --text-secondary: var(--ink-6);
+  --text-disabled:  var(--ink-5);
+  --text-brand:     var(--brand-soft);
+  --text-link:      var(--brand-soft);
+
+  /* Motion */
   --ease-aura:  cubic-bezier(0.22, 0.61, 0.36, 1);
   --dur-fast:   140ms;
   --dur-med:    240ms;
   --dur-slow:   380ms;
   --dur-breath: 8000ms;
+}
 
-  /* card chrome — translucent navy + bluer hairlines, per HANDOFF */
-  --card-bg:     rgba(10, 18, 48, 0.32);
-  --card-border: rgba(124, 153, 220, 0.18);
-  --card-border-strong: rgba(124, 153, 220, 0.32);
+@media (max-width: 640px) {
+  :root { --text-scale: 0.85; }
+}
+@media print {
+  :root { --text-scale: 0.78; }
 }
