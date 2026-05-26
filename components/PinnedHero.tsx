@@ -53,33 +53,27 @@ export default function PinnedHero({
     offset: ["start start", "end start"],
   });
 
-  const eyebrowOpacity = band(scrollYProgress, [0, 0.04, 0.92, 1], [0, 1, 1, 0.5]);
-  const eyebrowY = band(scrollYProgress, [0, 0.04], [12, 0]);
+  /* Same approach as ScrollHero — first scene fully visible at load.
+     Only the accent line + halo are scroll-driven. */
 
-  const lineAOpacity = band(scrollYProgress, [0.08, 0.22, 0.95], [0, 1, 1]);
-  const lineAY = band(scrollYProgress, [0.08, 0.22], [60, 0]);
-
-  const lineBOpacity = band(scrollYProgress, [0.28, 0.46, 0.95], [0, 1, 1]);
-  const lineBY = band(scrollYProgress, [0.28, 0.46], [60, 0]);
-  const lineBBlur = band(scrollYProgress, [0.28, 0.46], [8, 0]);
+  const lineBOpacity = band(scrollYProgress, [0.04, 0.28], [0, 1]);
+  const lineBY = band(scrollYProgress, [0.04, 0.28], [60, 0]);
+  const lineBBlur = band(scrollYProgress, [0.04, 0.28], [10, 0]);
   const lineBFilter = useTransform(lineBBlur, (b) => `blur(${b}px)`);
 
-  const bodyOpacity = band(scrollYProgress, [0.5, 0.7, 0.95], [0, 1, 1]);
-  const bodyY = band(scrollYProgress, [0.5, 0.7], [24, 0]);
+  const haloOpacity = band(scrollYProgress, [0, 0.28, 0.95], [0.25, 0.55, 0.6]);
+  const haloScale = band(scrollYProgress, [0, 0.95], [0.9, 1.15]);
 
-  const capOpacity = band(scrollYProgress, [0.82, 0.95], [0, 1]);
-
-  const haloOpacity = band(scrollYProgress, [0.18, 0.46, 0.9], [0, 0.5, 0.6]);
-  const haloScale = band(scrollYProgress, [0.18, 0.9], [0.8, 1.15]);
+  const eyebrowOpacity = band(scrollYProgress, [0, 0.9, 1], [1, 1, 0.55]);
 
   return (
-    <section ref={ref} className="relative" style={{ height: "280vh" }}>
+    <section ref={ref} className="relative" style={{ height: "240vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden aura">
         <motion.div
           aria-hidden
           style={
             reduce
-              ? { opacity: 0.35 }
+              ? { opacity: 0.45 }
               : { opacity: haloOpacity, scale: haloScale }
           }
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[80vh] pointer-events-none"
@@ -106,11 +100,7 @@ export default function PinnedHero({
 
         <div className="relative h-full flex flex-col items-center justify-center px-6 md:px-10 text-center">
           <motion.p
-            style={
-              reduce
-                ? { opacity: 1, y: 0 }
-                : { opacity: eyebrowOpacity, y: eyebrowY }
-            }
+            style={reduce ? { opacity: 1 } : { opacity: eyebrowOpacity }}
             className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.32em] text-soft"
           >
             {eyebrow.map((e, i) => (
@@ -121,17 +111,8 @@ export default function PinnedHero({
             ))}
           </motion.p>
 
-          <h1 className="mt-12 md:mt-16 font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.025em] text-[52px] md:text-[96px] lg:text-[124px]">
-            <motion.span
-              style={
-                reduce
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: lineAOpacity, y: lineAY }
-              }
-              className="block"
-            >
-              {primary}
-            </motion.span>
+          <h1 className="mt-12 md:mt-16 font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.025em] text-[48px] md:text-[88px] lg:text-[112px]">
+            <span className="block">{primary}</span>
             <motion.span
               style={
                 reduce
@@ -143,37 +124,26 @@ export default function PinnedHero({
                     }
               }
               className="block"
-              // eslint-disable-next-line react/forbid-dom-props
             >
               <span style={{ color }}>{accent}</span>
             </motion.span>
           </h1>
 
           {body && (
-            <motion.p
-              style={
-                reduce
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: bodyOpacity, y: bodyY }
-              }
-              className="mt-12 md:mt-14 max-w-[58ch] text-ink-secondary text-[17px] md:text-[20px] leading-[1.6]"
-            >
+            <p className="mt-10 md:mt-12 max-w-[58ch] text-ink-secondary text-[17px] md:text-[20px] leading-[1.6]">
               {body}
-            </motion.p>
+            </p>
           )}
 
           {cap && (
-            <motion.p
-              style={reduce ? { opacity: 1 } : { opacity: capOpacity }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.32em] text-ink-tertiary"
-            >
+            <p className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.32em] text-ink-tertiary">
               {cap.split(" · ").map((seg, i) => (
                 <span key={seg}>
                   {i > 0 && <span className="mx-3 opacity-50">·</span>}
                   {seg}
                 </span>
               ))}
-            </motion.p>
+            </p>
           )}
         </div>
       </div>

@@ -27,43 +27,31 @@ export default function ScrollHero() {
     offset: ["start start", "end start"],
   });
 
-  /* All reveals are scroll-progress driven, not time-driven.
-     The pinned panel holds for the full scroll of the 300vh container. */
-  const eyebrowOpacity = band(scrollYProgress, [0, 0.04, 0.92, 1], [0, 1, 1, 0.5]);
-  const eyebrowY = band(scrollYProgress, [0, 0.04], [12, 0]);
+  /* First scene is FULLY VISIBLE from page load. The only scroll-driven
+     reveal is the amber "Designed for everyone." line + filament halo
+     intensification. Eyebrow, primary H1, body, CTAs render normally. */
 
-  const lineAOpacity = band(scrollYProgress, [0.08, 0.22, 0.95], [0, 1, 1]);
-  const lineAY = band(scrollYProgress, [0.08, 0.22], [60, 0]);
-
-  const lineBOpacity = band(scrollYProgress, [0.28, 0.46, 0.95], [0, 1, 1]);
-  const lineBY = band(scrollYProgress, [0.28, 0.46], [60, 0]);
-  const lineBBlur = band(scrollYProgress, [0.28, 0.46], [8, 0]);
+  const lineBOpacity = band(scrollYProgress, [0.04, 0.28], [0, 1]);
+  const lineBY = band(scrollYProgress, [0.04, 0.28], [60, 0]);
+  const lineBBlur = band(scrollYProgress, [0.04, 0.28], [10, 0]);
   const lineBFilter = useTransform(lineBBlur, (b) => `blur(${b}px)`);
 
-  const bodyOpacity = band(scrollYProgress, [0.5, 0.66, 0.95], [0, 1, 1]);
-  const bodyY = band(scrollYProgress, [0.5, 0.66], [24, 0]);
+  const haloOpacity = band(scrollYProgress, [0, 0.28, 0.95], [0.3, 0.65, 0.7]);
+  const haloScale = band(scrollYProgress, [0, 0.95], [0.9, 1.15]);
 
-  const ctaOpacity = band(scrollYProgress, [0.7, 0.86, 0.95], [0, 1, 1]);
-  const ctaY = band(scrollYProgress, [0.7, 0.86], [16, 0]);
-
-  const capOpacity = band(scrollYProgress, [0.86, 0.96], [0, 1]);
-
-  /* Atmospheric: the filament-warm halo intensifies as the amber line lands */
-  const haloOpacity = band(scrollYProgress, [0.18, 0.46, 0.9], [0, 0.55, 0.7]);
-  const haloScale = band(scrollYProgress, [0.18, 0.9], [0.8, 1.15]);
-
-  /* Scroll-cue at top fades in early then out as you progress */
-  const cueOpacity = band(scrollYProgress, [0, 0.06, 0.12], [0, 1, 0]);
+  /* Eyebrow dims slightly at the very end so it doesn't compete with
+     the section that follows. */
+  const eyebrowOpacity = band(scrollYProgress, [0, 0.9, 1], [1, 1, 0.55]);
 
   return (
-    <section ref={ref} className="relative" style={{ height: "320vh" }}>
+    <section ref={ref} className="relative" style={{ height: "260vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden aura">
-        {/* Ambient filament halo */}
+        {/* Filament halo — present from start, intensifies as amber lands */}
         <motion.div
           aria-hidden
           style={
             reduce
-              ? { opacity: 0.4 }
+              ? { opacity: 0.5 }
               : { opacity: haloOpacity, scale: haloScale }
           }
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[80vh] pointer-events-none"
@@ -78,7 +66,7 @@ export default function ScrollHero() {
           />
         </motion.div>
 
-        {/* Faint vertical hairlines for depth */}
+        {/* Faint vertical hairlines */}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none opacity-[0.04]"
@@ -92,11 +80,7 @@ export default function ScrollHero() {
 
         <div className="relative h-full flex flex-col items-center justify-center px-6 md:px-10 text-center">
           <motion.p
-            style={
-              reduce
-                ? { opacity: 1, y: 0 }
-                : { opacity: eyebrowOpacity, y: eyebrowY }
-            }
+            style={reduce ? { opacity: 1 } : { opacity: eyebrowOpacity }}
             className="font-mono text-[11px] md:text-[12px] uppercase tracking-[0.32em] text-soft"
           >
             <span>IMPATIENT</span>
@@ -104,17 +88,8 @@ export default function ScrollHero() {
             <span>BEHAVIORAL INTELLIGENCE</span>
           </motion.p>
 
-          <h1 className="mt-12 md:mt-16 font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.025em] text-[64px] md:text-[112px] lg:text-[148px]">
-            <motion.span
-              style={
-                reduce
-                  ? { opacity: 1, y: 0 }
-                  : { opacity: lineAOpacity, y: lineAY }
-              }
-              className="block"
-            >
-              Born from chronic illness.
-            </motion.span>
+          <h1 className="mt-12 md:mt-16 font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.025em] text-[56px] md:text-[104px] lg:text-[136px]">
+            <span className="block">Born from chronic illness.</span>
             <motion.span
               style={
                 reduce
@@ -131,26 +106,12 @@ export default function ScrollHero() {
             </motion.span>
           </h1>
 
-          <motion.p
-            style={
-              reduce
-                ? { opacity: 1, y: 0 }
-                : { opacity: bodyOpacity, y: bodyY }
-            }
-            className="mt-12 md:mt-16 max-w-[58ch] text-ink-secondary text-[17px] md:text-[20px] leading-[1.6]"
-          >
+          <p className="mt-10 md:mt-14 max-w-[58ch] text-ink-secondary text-[17px] md:text-[20px] leading-[1.6]">
             Your body has been keeping a notebook, quietly, for years.
             iMpatient is the first tool that gets to read it back.
-          </motion.p>
+          </p>
 
-          <motion.div
-            style={
-              reduce
-                ? { opacity: 1, y: 0 }
-                : { opacity: ctaOpacity, y: ctaY }
-            }
-            className="mt-10 md:mt-14 flex flex-wrap justify-center items-center gap-5"
-          >
+          <div className="mt-10 md:mt-12 flex flex-wrap justify-center items-center gap-5">
             <Link
               href="/waitlist"
               className="inline-flex items-center rounded-btn bg-ink-bright text-navy px-6 py-3.5 text-[15px] font-semibold hover:bg-white transition"
@@ -163,30 +124,15 @@ export default function ScrollHero() {
             >
               How it works
             </Link>
-          </motion.div>
+          </div>
 
-          <motion.p
-            style={reduce ? { opacity: 1 } : { opacity: capOpacity }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.32em] text-ink-tertiary"
-          >
+          <p className="absolute bottom-10 left-1/2 -translate-x-1/2 font-mono text-[10px] md:text-[11px] uppercase tracking-[0.32em] text-ink-tertiary">
             PRE-LAUNCH
             <span className="mx-3 opacity-50">·</span>
             IMPATIENT.APP
             <span className="mx-3 opacity-50">·</span>
             2026
-          </motion.p>
-
-          {/* Scroll cue */}
-          <motion.div
-            style={reduce ? { opacity: 0 } : { opacity: cueOpacity }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-ink-tertiary"
-            aria-hidden
-          >
-            <span className="font-mono text-[10px] uppercase tracking-[0.32em]">
-              scroll
-            </span>
-            <span className="w-px h-10 bg-current opacity-50" />
-          </motion.div>
+          </p>
         </div>
       </div>
     </section>
