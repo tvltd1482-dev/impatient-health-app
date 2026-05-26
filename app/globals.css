@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --page: #f5f7fc;
+  --ink: #0a1230;
+  --abyss-0: #060920;
+  --abyss-1: #0b1230;
+  --abyss-2: #0e1a44;
+  --filament-cool: #fff1ce;
+  --filament-mid: #f5b642;
+  --filament-warm: #e9b452;
+}
+
+html,
+body {
+  background: var(--page);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+::selection {
+  background: #e9b452;
+  color: #0a1230;
+}
+
+/* Aura: the dark surface gradient used on alph-facing sections */
+.aura {
+  background:
+    radial-gradient(120% 80% at 70% 20%, rgba(26, 85, 209, 0.18), transparent 60%),
+    radial-gradient(80% 60% at 20% 80%, rgba(245, 182, 66, 0.06), transparent 70%),
+    linear-gradient(180deg, #060920 0%, #0b1230 55%, #0e1a44 100%);
+  color: var(--ink-bright, #f3f6fc);
+}
+
+/* Filament: alph's warm spark — never substituted */
+.filament-glow {
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 241, 206, 0.95) 0%,
+    rgba(245, 182, 66, 0.6) 35%,
+    rgba(233, 180, 82, 0.18) 60%,
+    transparent 75%
+  );
+}
+
+/* Honour reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Wordmark spacing */
+.wordmark {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.wordmark .i {
+  font-weight: 400;
+  color: currentColor;
+  opacity: 0.7;
+}
+
+.wordmark .m {
+  font-weight: 800;
+}
+
+/* Hairline divider used between sections */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(10, 18, 48, 0.12), transparent);
+}
+
+.hairline-dark {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+}
