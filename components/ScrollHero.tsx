@@ -4,6 +4,7 @@ import {
   motion,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -27,32 +28,31 @@ export default function ScrollHero() {
     offset: ["start start", "end start"],
   });
 
-  /* First scene is FULLY VISIBLE from page load. The only scroll-driven
-     reveal is the amber "Designed for everyone." line + filament halo
-     intensification. Eyebrow, primary H1, body, CTAs render normally. */
+  /* Smooth raw scroll into a spring so values change continuously
+     instead of stepping per frame — this is what makes it feel buttery */
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
 
-  const lineBOpacity = band(scrollYProgress, [0.04, 0.28], [0, 1]);
-  const lineBY = band(scrollYProgress, [0.04, 0.28], [60, 0]);
-  const lineBBlur = band(scrollYProgress, [0.04, 0.28], [10, 0]);
-  const lineBFilter = useTransform(lineBBlur, (b) => `blur(${b}px)`);
+  /* Only opacity + translate. NO filter:blur (that was the lag).
+     Halo is opacity-only (no scale). */
 
-  const haloOpacity = band(scrollYProgress, [0, 0.28, 0.95], [0.3, 0.65, 0.7]);
-  const haloScale = band(scrollYProgress, [0, 0.95], [0.9, 1.15]);
+  const lineBOpacity = band(progress, [0.04, 0.32], [0, 1]);
+  const lineBY = band(progress, [0.04, 0.32], [40, 0]);
 
-  /* Eyebrow dims slightly at the very end so it doesn't compete with
-     the section that follows. */
-  const eyebrowOpacity = band(scrollYProgress, [0, 0.9, 1], [1, 1, 0.55]);
+  const haloOpacity = band(progress, [0, 0.32, 0.9], [0.35, 0.7, 0.7]);
+  const eyebrowOpacity = band(progress, [0, 0.9, 1], [1, 1, 0.55]);
 
   return (
-    <section ref={ref} className="relative" style={{ height: "260vh" }}>
+    <section ref={ref} className="relative" style={{ height: "240vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden aura">
-        {/* Filament halo — present from start, intensifies as amber lands */}
+        {/* Halo — no scale, no filter:blur. Cheap radial gradient. */}
         <motion.div
           aria-hidden
           style={
-            reduce
-              ? { opacity: 0.5 }
-              : { opacity: haloOpacity, scale: haloScale }
+            reduce ? { opacity: 0.55 } : { opacity: haloOpacity }
           }
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[80vh] pointer-events-none"
         >
@@ -60,13 +60,12 @@ export default function ScrollHero() {
             className="w-full h-full"
             style={{
               background:
-                "radial-gradient(closest-side, rgba(245,182,66,0.22) 0%, rgba(245,182,66,0.06) 35%, transparent 70%)",
-              filter: "blur(40px)",
+                "radial-gradient(closest-side, rgba(245,182,66,0.28) 0%, rgba(245,182,66,0.08) 40%, transparent 75%)",
             }}
           />
         </motion.div>
 
-        {/* Faint vertical hairlines */}
+        {/* Static vertical hairlines, no animation */}
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none opacity-[0.04]"
@@ -93,12 +92,8 @@ export default function ScrollHero() {
             <motion.span
               style={
                 reduce
-                  ? { opacity: 1, y: 0, filter: "blur(0)" }
-                  : {
-                      opacity: lineBOpacity,
-                      y: lineBY,
-                      filter: lineBFilter,
-                    }
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: lineBOpacity, y: lineBY, willChange: "transform, opacity" }
               }
               className="block text-filament-mid"
             >

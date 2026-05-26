@@ -4,6 +4,7 @@ import {
   motion,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from "framer-motion";
 import { useRef, type ReactNode } from "react";
@@ -44,40 +45,37 @@ export default function ScrollChapter({
     offset: ["start end", "end start"],
   });
 
-  /* Numeral starts huge & centered, scales down & drifts right, fades to watermark */
-  const numScale = useTransform(scrollYProgress, [0, 0.45, 1], [1.6, 0.85, 0.8]);
-  const numX = useTransform(scrollYProgress, [0, 0.45], [0, 240]);
-  const numOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.45, 0.85, 1],
-    [0, 0.7, 0.22, 0.18, 0.1],
-  );
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
 
-  /* Text reveals as numeral recedes */
-  const textOpacity = useTransform(
-    scrollYProgress,
-    [0.18, 0.4, 0.92],
-    [0, 1, 1],
-  );
-  const textY = useTransform(scrollYProgress, [0.18, 0.4], [40, 0]);
+  /* Numeral starts dominant, scales + drifts to watermark — transforms only */
+  const numScale = useTransform(progress, [0, 0.5, 1], [1.4, 0.85, 0.8]);
+  const numX = useTransform(progress, [0, 0.5], [0, 200]);
+  const numOpacity = useTransform(progress, [0, 0.25, 0.5, 1], [0.18, 0.45, 0.18, 0.1]);
 
-  /* Children (orbs / extras) come in last */
-  const childOpacity = useTransform(
-    scrollYProgress,
-    [0.5, 0.7, 0.95],
-    [0, 1, 1],
-  );
-  const childY = useTransform(scrollYProgress, [0.5, 0.7], [40, 0]);
+  const textOpacity = useTransform(progress, [0.15, 0.4], [0, 1]);
+  const textY = useTransform(progress, [0.15, 0.4], [40, 0]);
+
+  const childOpacity = useTransform(progress, [0.45, 0.7], [0, 1]);
+  const childY = useTransform(progress, [0.45, 0.7], [40, 0]);
 
   return (
-    <section ref={ref} className="relative" style={{ height: "260vh" }}>
+    <section ref={ref} className="relative" style={{ height: "220vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden aura">
         <motion.div
           aria-hidden
           style={
             reduce
               ? { opacity: 0.18, scale: 0.85 }
-              : { opacity: numOpacity, scale: numScale, x: numX }
+              : {
+                  opacity: numOpacity,
+                  scale: numScale,
+                  x: numX,
+                  willChange: "transform, opacity",
+                }
           }
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none"
         >
@@ -86,11 +84,9 @@ export default function ScrollChapter({
               fontFamily: "var(--font-newsreader)",
               fontStyle: "italic",
               fontWeight: 300,
-              fontSize: "clamp(280px, 36vw, 560px)",
+              fontSize: "clamp(260px, 32vw, 520px)",
               lineHeight: 1,
               color,
-              filter: "blur(0.5px)",
-              textShadow: `0 0 120px ${color}66`,
             }}
           >
             {number}
@@ -103,7 +99,7 @@ export default function ScrollChapter({
               style={
                 reduce
                   ? { opacity: 1, y: 0 }
-                  : { opacity: textOpacity, y: textY }
+                  : { opacity: textOpacity, y: textY, willChange: "transform, opacity" }
               }
               className="md:col-span-7"
             >
@@ -132,7 +128,7 @@ export default function ScrollChapter({
                 style={
                   reduce
                     ? { opacity: 1, y: 0 }
-                    : { opacity: childOpacity, y: childY }
+                    : { opacity: childOpacity, y: childY, willChange: "transform, opacity" }
                 }
                 className="md:col-span-5"
               >

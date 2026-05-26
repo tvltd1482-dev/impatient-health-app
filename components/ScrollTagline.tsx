@@ -4,6 +4,7 @@ import {
   motion,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
 } from "framer-motion";
 import { useRef } from "react";
@@ -18,26 +19,31 @@ export default function ScrollTagline() {
     offset: ["start end", "end start"],
   });
 
-  /* The tagline scales up and brightens through the viewport — Oura's signature */
-  const scale = useTransform(scrollYProgress, [0, 0.5, 1], [0.78, 1, 1.18]);
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
+
+  /* Tagline scales up + brightens through viewport — transforms only,
+     no blur. The opacity envelope keeps it crisp at peak. */
+  const scale = useTransform(progress, [0, 0.5, 1], [0.82, 1, 1.14]);
   const opacity = useTransform(
-    scrollYProgress,
-    [0, 0.18, 0.82, 1],
+    progress,
+    [0, 0.22, 0.78, 1],
     [0, 1, 1, 0],
   );
-  const blur = useTransform(scrollYProgress, [0, 0.18, 0.82, 1], [16, 0, 0, 16]);
-  const filter = useTransform(blur, (b) => `blur(${b}px)`);
 
   const haloOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.45, 0.55, 1],
-    [0, 0.45, 0.45, 0],
+    progress,
+    [0, 0.5, 1],
+    [0, 0.45, 0],
   );
 
-  const ctaOpacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
+  const ctaOpacity = useTransform(progress, [0.42, 0.6], [0, 1]);
 
   return (
-    <section ref={ref} className="relative" style={{ height: "200vh" }}>
+    <section ref={ref} className="relative" style={{ height: "180vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden aura">
         <motion.div
           aria-hidden
@@ -48,8 +54,7 @@ export default function ScrollTagline() {
             className="w-full h-full"
             style={{
               background:
-                "radial-gradient(closest-side, rgba(245,182,66,0.18) 0%, rgba(245,182,66,0.05) 40%, transparent 70%)",
-              filter: "blur(40px)",
+                "radial-gradient(closest-side, rgba(245,182,66,0.22) 0%, rgba(245,182,66,0.06) 45%, transparent 75%)",
             }}
           />
         </motion.div>
@@ -59,7 +64,7 @@ export default function ScrollTagline() {
             style={
               reduce
                 ? { opacity: 1 }
-                : { scale, opacity, filter }
+                : { scale, opacity, willChange: "transform, opacity" }
             }
             className="font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.02em] text-[44px] md:text-[88px] lg:text-[128px] max-w-[18ch]"
           >

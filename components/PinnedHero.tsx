@@ -4,6 +4,7 @@ import {
   motion,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -53,36 +54,29 @@ export default function PinnedHero({
     offset: ["start start", "end start"],
   });
 
-  /* Same approach as ScrollHero — first scene fully visible at load.
-     Only the accent line + halo are scroll-driven. */
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 28,
+    restDelta: 0.001,
+  });
 
-  const lineBOpacity = band(scrollYProgress, [0.04, 0.28], [0, 1]);
-  const lineBY = band(scrollYProgress, [0.04, 0.28], [60, 0]);
-  const lineBBlur = band(scrollYProgress, [0.04, 0.28], [10, 0]);
-  const lineBFilter = useTransform(lineBBlur, (b) => `blur(${b}px)`);
-
-  const haloOpacity = band(scrollYProgress, [0, 0.28, 0.95], [0.25, 0.55, 0.6]);
-  const haloScale = band(scrollYProgress, [0, 0.95], [0.9, 1.15]);
-
-  const eyebrowOpacity = band(scrollYProgress, [0, 0.9, 1], [1, 1, 0.55]);
+  const lineBOpacity = band(progress, [0.04, 0.32], [0, 1]);
+  const lineBY = band(progress, [0.04, 0.32], [40, 0]);
+  const haloOpacity = band(progress, [0, 0.32, 0.95], [0.3, 0.55, 0.55]);
+  const eyebrowOpacity = band(progress, [0, 0.9, 1], [1, 1, 0.55]);
 
   return (
-    <section ref={ref} className="relative" style={{ height: "240vh" }}>
+    <section ref={ref} className="relative" style={{ height: "220vh" }}>
       <div className="sticky top-0 h-screen overflow-hidden aura">
         <motion.div
           aria-hidden
-          style={
-            reduce
-              ? { opacity: 0.45 }
-              : { opacity: haloOpacity, scale: haloScale }
-          }
+          style={reduce ? { opacity: 0.45 } : { opacity: haloOpacity }}
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[80vh] pointer-events-none"
         >
           <div
             className="w-full h-full"
             style={{
-              background: `radial-gradient(closest-side, ${color}33 0%, ${color}11 35%, transparent 70%)`,
-              filter: "blur(40px)",
+              background: `radial-gradient(closest-side, ${color}44 0%, ${color}14 40%, transparent 75%)`,
             }}
           />
         </motion.div>
@@ -116,12 +110,8 @@ export default function PinnedHero({
             <motion.span
               style={
                 reduce
-                  ? { opacity: 1, y: 0, filter: "blur(0)" }
-                  : {
-                      opacity: lineBOpacity,
-                      y: lineBY,
-                      filter: lineBFilter,
-                    }
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: lineBOpacity, y: lineBY, willChange: "transform, opacity" }
               }
               className="block"
             >
