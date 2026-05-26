@@ -1,45 +1,34 @@
 import Link from "next/link";
-import Wordmark from "./Wordmark";
 
 export default function Footer() {
   return (
-    <footer className="aura relative">
-      <div className="mx-auto max-w-6xl px-6 md:px-10 py-20">
-        <div className="max-w-prose">
-          <p className="font-serif italic text-[28px] md:text-[36px] leading-[1.2] text-ink-bright">
-            We're here to give you a little of your time back.
+    <footer className="bg-page border-t border-navy/10">
+      <div className="mx-auto max-w-7xl px-6 md:px-10 pt-16 pb-10">
+        <p className="text-navy text-[18px] md:text-[22px] font-semibold tracking-[0.32em]">
+          IMPATIENT
+        </p>
+
+        <div className="mt-10 h-px bg-navy/10" />
+
+        <div className="mt-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-[13px] text-navy/55">
+          <p>
+            © {new Date().getFullYear()} SymbAIo Inc. All rights reserved.
           </p>
-        </div>
-
-        <div className="mt-16 hairline hairline-dark" />
-
-        <div className="mt-10 flex flex-col md:flex-row md:items-end md:justify-between gap-8">
-          <div>
-            <Wordmark size="sm" tone="dark" />
-            <p className="mt-3 text-ink-secondary text-[13px] max-w-sm">
-              Behavioral intelligence. Inspired by the 1.3 billion managing
-              chronic illness. Built for anyone whose life moves faster than
-              they can process it.
-            </p>
-          </div>
-          <nav className="flex flex-wrap items-center gap-x-8 gap-y-3 text-[14px] text-ink-primary">
-            <Link href="/" className="hover:text-ink-bright">
-              Home
-            </Link>
-            <Link href="/how-it-works" className="hover:text-ink-bright">
+          <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Link href="/how-it-works" className="hover:text-navy">
               How it works
             </Link>
-            <Link href="/about" className="hover:text-ink-bright">
+            <Link href="/about" className="hover:text-navy">
               About
             </Link>
-            <Link href="/waitlist" className="hover:text-ink-bright">
+            <Link href="/waitlist" className="hover:text-navy">
               Waitlist
             </Link>
+            <span className="opacity-50">Privacy</span>
+            <span className="opacity-50">Data security</span>
+            <span className="opacity-50">Conditions</span>
           </nav>
         </div>
-        <p className="mt-10 text-[12px] text-ink-tertiary font-mono">
-          iMpatient™ · pre-launch · {new Date().getFullYear()}
-        </p>
       </div>
     </footer>
   );
