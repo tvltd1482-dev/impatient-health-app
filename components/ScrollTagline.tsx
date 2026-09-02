@@ -4,7 +4,6 @@ import {
   motion,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
 } from "framer-motion";
 import { useRef } from "react";
@@ -19,20 +18,14 @@ export default function ScrollTagline() {
     offset: ["start end", "end start"],
   });
 
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  /* Atmosphere reads raw scroll progress. Springs are forbidden by the
+     design system outside the Pulse veil. */
+  const progress = scrollYProgress;
 
   /* Tagline scales up + brightens through viewport — transforms only,
      no blur. The opacity envelope keeps it crisp at peak. */
-  const scale = useTransform(progress, [0, 0.5, 1], [0.82, 1, 1.14]);
-  const opacity = useTransform(
-    progress,
-    [0, 0.22, 0.78, 1],
-    [0, 1, 1, 0],
-  );
+  const scale = 1;
+  const opacity = 1;
 
   const haloOpacity = useTransform(
     progress,
@@ -40,7 +33,7 @@ export default function ScrollTagline() {
     [0, 0.45, 0],
   );
 
-  const ctaOpacity = useTransform(progress, [0.42, 0.6], [0, 1]);
+  const ctaOpacity = 1;
 
   return (
     <section ref={ref} className="relative" style={{ height: "180vh" }}>
@@ -66,7 +59,7 @@ export default function ScrollTagline() {
                 ? { opacity: 1 }
                 : { scale, opacity, willChange: "transform, opacity" }
             }
-            className="font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.02em] text-[44px] md:text-[88px] lg:text-[128px] max-w-[18ch]"
+            className="font-serif italic font-normal text-ink-bright leading-[0.98] tracking-[-0.02em] text-[44px] md:text-[88px] lg:text-[128px] max-w-[18ch]"
           >
             We&rsquo;re here to give you
             <br />

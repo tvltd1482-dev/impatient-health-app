@@ -108,7 +108,7 @@ export default function AboutPage() {
             <h2 className="mt-6 text-ink-bright text-[36px] md:text-[56px] lg:text-[72px] leading-[1.05] tracking-[-0.02em] font-light max-w-[28ch]">
               <span className="font-semibold">iMpatient™</span> is a
               product of{" "}
-              <span className="font-serif italic font-light text-filament-mid">
+              <span className="font-serif italic font-normal text-filament-mid">
                 SymbAIo Inc.
               </span>
             </h2>

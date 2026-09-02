@@ -4,7 +4,6 @@ import {
   motion,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
 } from "framer-motion";
 import { useRef, type ReactNode } from "react";
@@ -45,22 +44,20 @@ export default function ScrollChapter({
     offset: ["start end", "end start"],
   });
 
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  /* Atmosphere reads raw scroll progress. Springs are forbidden by the
+     design system outside the Pulse veil. */
+  const progress = scrollYProgress;
 
   /* Numeral starts dominant, scales + drifts to watermark — transforms only */
   const numScale = useTransform(progress, [0, 0.5, 1], [1.4, 0.85, 0.8]);
   const numX = useTransform(progress, [0, 0.5], [0, 200]);
   const numOpacity = useTransform(progress, [0, 0.25, 0.5, 1], [0.18, 0.45, 0.18, 0.1]);
 
-  const textOpacity = useTransform(progress, [0.15, 0.4], [0, 1]);
-  const textY = useTransform(progress, [0.15, 0.4], [40, 0]);
+  const textOpacity = 1;
+  const textY = 0;
 
-  const childOpacity = useTransform(progress, [0.45, 0.7], [0, 1]);
-  const childY = useTransform(progress, [0.45, 0.7], [40, 0]);
+  const childOpacity = 1;
+  const childY = 0;
 
   return (
     <section ref={ref} className="relative" style={{ height: "220vh" }}>
@@ -111,7 +108,7 @@ export default function ScrollChapter({
                 />
                 {eyebrow}
               </p>
-              <h2 className="mt-8 md:mt-10 font-serif italic font-light text-ink-bright text-[44px] md:text-[80px] lg:text-[104px] leading-[1.0] tracking-[-0.02em]">
+              <h2 className="mt-8 md:mt-10 font-serif italic font-normal text-ink-bright text-[44px] md:text-[80px] lg:text-[104px] leading-[1.0] tracking-[-0.02em]">
                 {headline.primary}
                 <br />
                 <span style={{ color }}>{headline.accent}</span>

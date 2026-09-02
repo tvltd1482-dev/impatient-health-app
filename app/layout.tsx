@@ -16,23 +16,24 @@ const newsreader = Newsreader({
   subsets: ["latin"],
   variable: "--font-newsreader",
   style: ["normal", "italic"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500"],
   display: "swap",
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
   title: "iMpatient™ — behavioral intelligence",
   description:
-    "Your body has been keeping a notebook, quietly, for years. iMpatient is the first tool that gets to read it back.",
+    "iMpatient™ is a behavioral intelligence engine. It indexes the patterns of a life and returns them as warning, knowledge, context and growth.",
   openGraph: {
     title: "iMpatient™",
-    description: "We're here to give you a little of your time back.",
+    description: "A behavioral intelligence engine that indexes the patterns of a life.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "iMpatient™",
-    description: "We're here to give you a little of your time back.",
+    description: "A behavioral intelligence engine that indexes the patterns of a life.",
   },
 };
 

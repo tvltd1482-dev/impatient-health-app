@@ -4,7 +4,6 @@ import {
   motion,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -30,20 +29,18 @@ export default function ScrollHero() {
 
   /* Smooth raw scroll into a spring so values change continuously
      instead of stepping per frame — this is what makes it feel buttery */
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  /* Atmosphere reads raw scroll progress. Springs are forbidden by the
+     design system outside the Pulse veil. */
+  const progress = scrollYProgress;
 
   /* Only opacity + translate. NO filter:blur (that was the lag).
      Halo is opacity-only (no scale). */
 
-  const lineBOpacity = band(progress, [0.04, 0.32], [0, 1]);
-  const lineBY = band(progress, [0.04, 0.32], [40, 0]);
+  const lineBOpacity = 1;
+  const lineBY = 0;
 
   const haloOpacity = band(progress, [0, 0.32, 0.9], [0.35, 0.7, 0.7]);
-  const eyebrowOpacity = band(progress, [0, 0.9, 1], [1, 1, 0.55]);
+  const eyebrowOpacity = 1;
 
   return (
     <section ref={ref} className="relative" style={{ height: "240vh" }}>
@@ -87,7 +84,7 @@ export default function ScrollHero() {
             <span>BEHAVIORAL INTELLIGENCE</span>
           </motion.p>
 
-          <h1 className="mt-12 md:mt-16 font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.025em] text-[56px] md:text-[104px] lg:text-[136px]">
+          <h1 className="mt-12 md:mt-16 font-serif italic font-normal text-ink-bright leading-[0.98] tracking-[-0.025em] text-[56px] md:text-[104px] lg:text-[136px]">
             <span className="block">Born from chronic illness.</span>
             <motion.span
               style={

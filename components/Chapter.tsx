@@ -90,7 +90,7 @@ export default function Chapter({
           whileInView={reduce ? undefined : { opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15%" }}
           transition={{ duration: 0.85, delay: 0.06, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10 font-serif italic font-light text-ink-bright text-[44px] md:text-[64px] lg:text-[80px] leading-[1.02] tracking-[-0.015em]"
+          className="mt-10 font-serif italic font-normal text-ink-bright text-[44px] md:text-[64px] lg:text-[80px] leading-[1.02] tracking-[-0.015em]"
         >
           {headline.primary}
           <br />

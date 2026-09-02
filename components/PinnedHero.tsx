@@ -4,7 +4,6 @@ import {
   motion,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -54,16 +53,14 @@ export default function PinnedHero({
     offset: ["start start", "end start"],
   });
 
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 28,
-    restDelta: 0.001,
-  });
+  /* Atmosphere reads raw scroll progress. Springs are forbidden by the
+     design system outside the Pulse veil. */
+  const progress = scrollYProgress;
 
-  const lineBOpacity = band(progress, [0.04, 0.32], [0, 1]);
-  const lineBY = band(progress, [0.04, 0.32], [40, 0]);
+  const lineBOpacity = 1;
+  const lineBY = 0;
   const haloOpacity = band(progress, [0, 0.32, 0.95], [0.3, 0.55, 0.55]);
-  const eyebrowOpacity = band(progress, [0, 0.9, 1], [1, 1, 0.55]);
+  const eyebrowOpacity = 1;
 
   return (
     <section ref={ref} className="relative" style={{ height: "220vh" }}>
@@ -105,7 +102,7 @@ export default function PinnedHero({
             ))}
           </motion.p>
 
-          <h1 className="mt-12 md:mt-16 font-serif italic font-light text-ink-bright leading-[0.98] tracking-[-0.025em] text-[48px] md:text-[88px] lg:text-[112px]">
+          <h1 className="mt-12 md:mt-16 font-serif italic font-normal text-ink-bright leading-[0.98] tracking-[-0.025em] text-[48px] md:text-[88px] lg:text-[112px]">
             <span className="block">{primary}</span>
             <motion.span
               style={
