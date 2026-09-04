@@ -21,17 +21,17 @@ function PhoneCard({
   );
 }
 
-/* ─────────── 1 · 48h foresight ─────────── */
+/* ─────────── 1 · pattern precedent ─────────── */
 
-export function MockForesight() {
+export function MockPrecedent() {
   const reduce = useReducedMotion();
   return (
     <PhoneCard width={240}>
       <p className="font-mono text-[9px] uppercase tracking-[0.22em] text-navy/45">
-        next 48h · my day
+        recent pattern · my day
       </p>
       <p className="mt-3 font-serif italic text-navy text-[17px] leading-[1.2]">
-        pressure&rsquo;s dropping
+        this shape has landed
         <br />
         around <span className="text-[#E9B452]">3pm.</span>
       </p>

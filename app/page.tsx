@@ -3,7 +3,7 @@ import { CTA } from "@/components/CTA";
 import FeatureCard from "@/components/FeatureCard";
 import {
   MockAlph,
-  MockForesight,
+  MockPrecedent,
   MockNodes,
   MockPatternRing,
 } from "@/components/MockSurface";
@@ -23,7 +23,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-6 md:px-10 py-40 md:py-56">
           <Reveal>
             <p className="text-deep/70 text-[14px] md:text-[15px] font-medium">
-              A quieter way to know what&rsquo;s coming
+              A quieter way to read your own patterns
             </p>
           </Reveal>
           <Reveal delay={0.06}>
@@ -43,11 +43,11 @@ export default function HomePage() {
           <div className="mt-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
             <Reveal>
               <FeatureCard
-                eyebrow="48-hour foresight"
-                headline="A heads-up before things stack."
+                eyebrow="pattern precedent"
+                headline="What this pattern has done before."
                 tone="warm"
               >
-                <MockForesight />
+                <MockPrecedent />
               </FeatureCard>
             </Reveal>
             <Reveal delay={0.06}>

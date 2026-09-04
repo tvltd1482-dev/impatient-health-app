@@ -54,10 +54,10 @@ export default function HowItWorksPage() {
                 body: "Picks up signal the moment it lands — a missed lunch, a cluster of late nights, a calendar that just stacked.",
               },
               {
-                tag: "looking ahead",
+                tag: "reading the load",
                 dot: "caution" as const,
-                title: "What the next 48 hours hold.",
-                body: "Lines up tomorrow's calendar against the week behind, the weather coming through, the rhythms you already keep.",
+                title: "What is stacking up.",
+                body: "Lines up the week behind you against the rhythms you already keep, so the load that has been building is visible.",
               },
               {
                 tag: "remembering",
